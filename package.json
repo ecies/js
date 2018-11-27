@@ -1,0 +1,33 @@
+{
+    "name": "eciesjs",
+    "description": "Elliptic Curve Integrated Encryption Scheme for secp256k1",
+    "license": "MIT",
+    "author": {
+        "name": "Weiliang Li",
+        "email": "to.be.impressive@gmail.com",
+        "url": "https://github.com/kigawas"
+    },
+    "keywords": [
+        "secp256k1",
+        "crypto",
+        "elliptic curves",
+        "ecies",
+        "bitcoin",
+        "ethereum",
+        "cryptocurrency"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kigawas/eciesjs.git"
+    },
+    "version": "0.0.1",
+    "devDependencies": {
+        "tslint": "^5.11.0",
+        "typescript": "^3.1.6"
+    }
+}
