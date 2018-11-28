@@ -1,9 +1,14 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:11
+
+
 jobs:
-  build:
-    docker:
-      - image: circleci/node:11
-    working_directory: ~/repo
+  test:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache:
@@ -23,3 +28,32 @@ jobs:
       - run:
           name: Upload coverage
           command: npx codecov
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
