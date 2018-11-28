@@ -27,11 +27,13 @@ describe("test aes", function () {
     });
     it("test aes with key", function () {
         var prv = new keys_1.PrivateKey(utils_1.decodeHex("0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653d7d"));
-        var encrypted = Buffer.from(utils_1.decodeHex("04496071a70de6a27b690d3ccfed47fddd47b5a2e6de389dd661edc4e53a3a67f" +
+        var encryptedKnown = Buffer.from(utils_1.decodeHex("04496071a70de6a27b690d3ccfed47fddd47b5a2e6de389dd661edc4e53a3a67f" +
             "73278cf1e4a74e1a5332b4a6606585385b3d8e05c08a7ced1e3287e8fdc243520" +
             "ff276a665c5fcf9e5767a3ff4e423eec935148c81d4f650191423f1be996cef5e" +
             "deb2fc40387e6b511dd"));
-        var decrypted = index_1.decrypt(prv.toHex(), encrypted);
+        var decrypted = index_1.decrypt(prv.toHex(), encryptedKnown);
+        chai_1.expect(decrypted.toString()).to.be.equal(text);
+        var encrypted = index_1.encrypt(prv.publicKey.toHex(), Buffer.from(text));
         chai_1.expect(decrypted.toString()).to.be.equal(text);
     });
 });

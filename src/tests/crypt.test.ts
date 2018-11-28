@@ -39,7 +39,7 @@ describe("test aes", () => {
         const prv = new PrivateKey(
             decodeHex("0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653d7d"),
         );
-        const encrypted = Buffer.from(
+        const encryptedKnown = Buffer.from(
             decodeHex(
                 "04496071a70de6a27b690d3ccfed47fddd47b5a2e6de389dd661edc4e53a3a67f" +
                 "73278cf1e4a74e1a5332b4a6606585385b3d8e05c08a7ced1e3287e8fdc243520" +
@@ -48,7 +48,10 @@ describe("test aes", () => {
             ),
         );
 
-        const decrypted = decrypt(prv.toHex(), encrypted);
+        const decrypted = decrypt(prv.toHex(), encryptedKnown);
+        expect(decrypted.toString()).to.be.equal(text);
+
+        const encrypted = encrypt(prv.publicKey.toHex(), Buffer.from(text));
         expect(decrypted.toString()).to.be.equal(text);
     });
 });
