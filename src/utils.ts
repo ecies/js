@@ -1,5 +1,11 @@
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "crypto";
 import secp256k1 from "secp256k1";
+
+export function sha256(msg: Buffer): Buffer {
+    const hash = createHash("sha256");
+    hash.update(msg);
+    return hash.digest();
+}
 
 export function remove0x(hex: string): string {
     if (hex.startsWith("0x") || hex.startsWith("0X")) {
