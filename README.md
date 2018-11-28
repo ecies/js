@@ -19,28 +19,28 @@ Install with `npm install eciesjs`
 ```typescript
 > import { encrypt, decrypt } from 'eciesjs'
 > import { PrivateKey }from 'eciesjs/keys'
-> k = new PrivateKey()
-> data = Buffer.from('this is a test')
+> const k = new PrivateKey()
+> const data = Buffer.from('this is a test')
 > decrypt(k.toHex(), encrypt(k.publicKey.toHex(), data)).toString()
 'this is a test'
 ```
 
 ## API
 
-### `ecies.encrypt(receiver_pubhex: str, msg: bytes) -> bytes`
+### `eciesjs.encrypt(receiverPubhex: string, msg: Buffer): Buffer`
 
 Parameters:
 
--   **receiver_pubhex** - Receiver's secp256k1 public key hex string
+-   **receiverPubhex** - Receiver's secp256k1 public key hex string
 -   **msg** - Data to encrypt
 
-Returns:  **bytes**
+Returns:  **Buffer**
 
-### `ecies.decrypt(receiver_prvhex: str, msg: bytes) -> bytes`
+### `eciesjs.decrypt(receiverPrvhex: string, msg: Buffer): Buffer`
 
 Parameters:
 
--   **receiver_prvhex** - Receiver's secp256k1 private key hex string
+-   **receiverPrvhex** - Receiver's secp256k1 private key hex string
 -   **msg** - Data to decrypt
 
-Returns:  **bytes**
+Returns:  **Buffer**
