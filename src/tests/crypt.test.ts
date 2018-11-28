@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { remove0x, decodeHex, getValidSecret } from '../src/utils'
+import { remove0x, decodeHex, getValidSecret } from '../utils'
 
 describe('test string <-> buffer utils ', () => {
     it('should remove 0x', () => {

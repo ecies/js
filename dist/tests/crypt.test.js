@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var chai_1 = require("chai");
-var utils_1 = require("../src/utils");
+var utils_1 = require("../utils");
 describe('test string <-> buffer utils ', function () {
     it('should remove 0x', function () {
         chai_1.expect(utils_1.remove0x('0x0011')).to.equal('0011');
