@@ -1,15 +1,63 @@
 import secp256k1 from "secp256k1";
 
-import { triggerAsyncId } from "async_hooks";
 import { expect } from "chai";
+import { randomBytes } from "crypto";
+import { decrypt, encrypt } from "../index";
 import { PrivateKey, PublicKey } from "../keys";
-import { decodeHex, getValidSecret, remove0x, sha256 } from "../utils";
+import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x, sha256 } from "../utils";
+
+describe("test aes", () => {
+    const text = "helloworld";
+
+    it("tests aes with random key", () => {
+        const key = randomBytes(32);
+        const data = Buffer.from("this is a test");
+        expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).to.be.equal(true);
+    });
+
+    it("tests aes decrypt with known key and text 'helloworld'", () => {
+
+        const key = Buffer.from(
+            decodeHex("0000000000000000000000000000000000000000000000000000000000000000"),
+        );
+        const nonce = Buffer.from(
+            decodeHex("f3e1ba810d2c8900b11312b7c725565f"),
+        );
+        const tag = Buffer.from(
+            decodeHex("ec3b71e17c11dbe31484da9450edcf6c"),
+        );
+        const encrypted = Buffer.from(
+            decodeHex("02d2ffed93b856f148b9"),
+        );
+
+        const data = Buffer.concat([nonce, tag, encrypted]);
+        const decrypted = aesDecrypt(key, data);
+        expect(decrypted.toString()).to.be.equal(text);
+    });
+
+    it("test aes with key", () => {
+        const prv = new PrivateKey(
+            decodeHex("0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653d7d"),
+        );
+        const encrypted = Buffer.from(
+            decodeHex(
+                "04496071a70de6a27b690d3ccfed47fddd47b5a2e6de389dd661edc4e53a3a67f" +
+                "73278cf1e4a74e1a5332b4a6606585385b3d8e05c08a7ced1e3287e8fdc243520" +
+                "ff276a665c5fcf9e5767a3ff4e423eec935148c81d4f650191423f1be996cef5e" +
+                "deb2fc40387e6b511dd",
+            ),
+        );
+
+        const decrypted = decrypt(prv.toHex(), encrypted);
+        expect(decrypted.toString()).to.be.equal(text);
+    });
+});
 
 describe("test keys", () => {
 
     it("tests equal", () => {
         const prv = new PrivateKey();
-        const pub = PublicKey.fromHex(prv.publicKey.toHex());
+        const pub = PublicKey.fromHex(prv.publicKey.toHex(false));
 
         const isPubEqual = pub.uncompressed.equals(prv.publicKey.uncompressed);
         expect(isPubEqual).to.be.equal(true);
@@ -35,11 +83,9 @@ describe("test keys", () => {
 
         const k1 = new PrivateKey(one);
         const k2 = new PrivateKey(two);
-        console.log(k1.ecdh(k2.publicKey));
-        console.log(one.slice(0, 25));
         expect(k1.ecdh(k2.publicKey).equals(k2.ecdh(k1.publicKey))).to.be.equal(true);
-
     });
+
 });
 
 describe("test string <-> buffer utils ", () => {

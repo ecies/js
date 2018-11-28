@@ -18,6 +18,10 @@ function remove0x(hex) {
     return hex;
 }
 exports.remove0x = remove0x;
+function decodeHex(hex) {
+    return Buffer.from(remove0x(hex), "hex");
+}
+exports.decodeHex = decodeHex;
 function getValidSecret() {
     var key;
     do {
@@ -26,8 +30,21 @@ function getValidSecret() {
     return key;
 }
 exports.getValidSecret = getValidSecret;
-function decodeHex(hex) {
-    return Buffer.from(remove0x(hex), "hex");
+function aesEncrypt(key, plainText) {
+    var nonce = crypto_1.randomBytes(16);
+    var cipher = crypto_1.createCipheriv("aes-256-gcm", key, nonce);
+    var encrypted = Buffer.concat([cipher.update(plainText), cipher.final()]);
+    var tag = cipher.getAuthTag();
+    return Buffer.concat([nonce, tag, encrypted]);
 }
-exports.decodeHex = decodeHex;
+exports.aesEncrypt = aesEncrypt;
+function aesDecrypt(key, cipherText) {
+    var nonce = cipherText.slice(0, 16);
+    var tag = cipherText.slice(16, 32);
+    var ciphered = cipherText.slice(32);
+    var decipher = crypto_1.createDecipheriv("aes-256-gcm", key, nonce);
+    decipher.setAuthTag(tag);
+    return Buffer.concat([decipher.update(ciphered), decipher.final()]);
+}
+exports.aesDecrypt = aesDecrypt;
 //# sourceMappingURL=utils.js.map
