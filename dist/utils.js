@@ -24,9 +24,4 @@ function decodeHex(hex) {
     return Buffer.from(remove0x(hex), "hex");
 }
 exports.decodeHex = decodeHex;
-function hello(word) {
-    console.log(secp256k1_1["default"].privateKeyVerify(getValidSecret()));
-    return "Hello " + word + "!";
-}
-exports.hello = hello;
 //# sourceMappingURL=utils.js.map

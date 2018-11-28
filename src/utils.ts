@@ -19,8 +19,3 @@ export function getValidSecret(): Buffer {
 export function decodeHex(hex: string): Buffer {
     return Buffer.from(remove0x(hex), "hex");
 }
-
-export function hello(word: string): string {
-    console.log(secp256k1.privateKeyVerify(getValidSecret()));
-    return `Hello ${word}!`;
-}
