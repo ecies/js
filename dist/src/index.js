@@ -1,3 +1,2 @@
-import { hello } from './utils';
-export default hello;
+"use strict";
 //# sourceMappingURL=index.js.map
