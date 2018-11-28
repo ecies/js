@@ -1,6 +1,7 @@
-import { decode } from "punycode";
 import secp256k1 from "secp256k1";
-import { decodeHex, getValidSecret } from "../utils";
+
+import { decodeHex } from "../utils";
+
 export default class PublicKey {
 
     public static fromHex(hex: string): PublicKey {

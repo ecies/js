@@ -23,8 +23,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
       - run:
-          name: Run tests
-          command: npm test
+          name: Run tests and build js files
+          command: npm test && npm run build
       - run:
           name: Upload coverage
           command: npx codecov
