@@ -1,6 +1,6 @@
 # eciesjs
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3f8cbc3beb094cff82c1abebbc758003)](https://app.codacy.com/app/kigawas/eciesjs?utm_source=github.com&utm_medium=referral&utm_content=kigawas/eciesjs&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba01a8bb2d3344f29f98157ccbd14519)](https://app.codacy.com/app/kigawas/eciesjs?utm_source=github.com&utm_medium=referral&utm_content=kigawas/eciesjs&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/github/license/kigawas/eciesjs.svg)](https://github.com/kigawas/eciesjs)
 [![Npm Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
 [![Circle CI](https://img.shields.io/circleci/project/kigawas/eciesjs/master.svg)](https://circleci.com/gh/kigawas/eciesjs)
