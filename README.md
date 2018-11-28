@@ -9,3 +9,38 @@
 Elliptic Curve Integrated Encryption Scheme for secp256k1
 
 This is the JavaScript version of [eciespy](https://github.com/kigawas/eciespy)
+
+## Install
+
+Install with `npm install eciesjs`
+
+## Quick Start
+
+```typescript
+> import { encrypt, decrypt } from 'eciesjs'
+> import { PrivateKey }from 'eciesjs/keys'
+> k = new PrivateKey()
+> data = Buffer.from('this is a test')
+> decrypt(k.toHex(), encrypt(k.publicKey.toHex(), data)).toString()
+'this is a test'
+```
+
+## API
+
+### `ecies.encrypt(receiver_pubhex: str, msg: bytes) -> bytes`
+
+Parameters:
+
+-   **receiver_pubhex** - Receiver's secp256k1 public key hex string
+-   **msg** - Data to encrypt
+
+Returns:  **bytes**
+
+### `ecies.decrypt(receiver_prvhex: str, msg: bytes) -> bytes`
+
+Parameters:
+
+-   **receiver_prvhex** - Receiver's secp256k1 private key hex string
+-   **msg** - Data to decrypt
+
+Returns:  **bytes**
