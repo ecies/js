@@ -20,8 +20,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc",
-        "test": "mocha -r ts-node/register tests/**/*.test.ts",
-        "testWithCoverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register tests/**/*.test.ts && nyc report"
+        "test": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json"
     },
     "repository": {
         "type": "git",
@@ -32,6 +31,7 @@
         "@types/chai": "^4.1.7",
         "@types/mocha": "^5.2.5",
         "chai": "^4.2.0",
+        "codecov": "^3.1.0",
         "mocha": "^5.2.0",
         "nyc": "^13.1.0",
         "ts-node": "^7.0.1",
