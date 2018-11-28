@@ -20,7 +20,7 @@
     "types": "dist/src/index.d.ts",
     "scripts": {
         "build": "tsc",
-        "test": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register src/**/*.test.ts && nyc report --reporter=json"
+        "test": "nyc -r lcov -e .ts mocha -r ts-node/register src/**/*.test.ts && nyc report --reporter=json"
     },
     "repository": {
         "type": "git",

@@ -58,6 +58,14 @@ describe("test aes", () => {
 
 describe("test keys", () => {
 
+    it("test invalid", () => {
+        expect(
+            () => new PrivateKey(
+                decodeHex("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364142"),
+            )).to.throw(Error);
+
+    });
+
     it("tests equal", () => {
         const prv = new PrivateKey();
         const pub = PublicKey.fromHex(prv.publicKey.toHex(false));
