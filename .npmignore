@@ -1,4 +1,8 @@
-src
+.circleci/
+coverage
+src/
 tsconfig.json
 tslint.json
+.nyc_output/
 .prettierrc
+*.map
