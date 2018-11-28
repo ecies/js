@@ -6,13 +6,13 @@
 [![Circle CI](https://img.shields.io/circleci/project/kigawas/eciesjs/master.svg)](https://circleci.com/gh/kigawas/eciesjs)
 [![Codecov](https://img.shields.io/codecov/c/github/kigawas/eciesjs.svg)](https://codecov.io/gh/kigawas/eciesjs)
 
-Elliptic Curve Integrated Encryption Scheme for secp256k1
+Elliptic Curve Integrated Encryption Scheme for secp256k1, written in TypeScript with minimal dependencies.
 
-This is the JavaScript version of [eciespy](https://github.com/kigawas/eciespy), please go to there for detailed mechanism documentation.
+This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy), you may go there for documentation about detailed mechanism.
 
 ## Install
 
-Install with `npm install eciesjs` (only [`secp256k1`](https://github.com/cryptocoinjs/secp256k1-node) is the dependency).
+Install with `npm install eciesjs` ([`secp256k1`](https://github.com/cryptocoinjs/secp256k1-node) is the only dependency).
 
 ## Quick Start
 
@@ -51,23 +51,37 @@ Returns:  **Buffer**
 
 ### `PrivateKey`
 
+-   Methods
+
 ```typescript
-    static fromHex(hex: string): PrivateKey;
-    readonly secret: Buffer;
-    readonly publicKey: PublicKey;
-    constructor(secret?: Buffer);
-    toHex(): string;
-    ecdh(pub: PublicKey): Buffer;
-    equals(other: PrivateKey): boolean;
+static fromHex(hex: string): PrivateKey;
+constructor(secret?: Buffer);
+toHex(): string;
+ecdh(pub: PublicKey): Buffer;
+equals(other: PrivateKey): boolean;
+```
+
+-   Properties
+
+```typescript
+readonly secret: Buffer;
+readonly publicKey: PublicKey;
 ```
 
 ### `PublicKey`
 
+-   Methods
+
 ```typescript
-    static fromHex(hex: string): PublicKey;
-    readonly uncompressed: Buffer;
-    readonly compressed: Buffer;
-    constructor(buffer: Buffer);
-    toHex(compressed?: boolean): string;
-    equals(other: PublicKey): boolean;
+static fromHex(hex: string): PublicKey;
+constructor(buffer: Buffer);
+toHex(compressed?: boolean): string;
+equals(other: PublicKey): boolean;
+```
+
+-   Properties
+
+```typescript
+readonly uncompressed: Buffer;
+readonly compressed: Buffer;
 ```
