@@ -1,8 +1,16 @@
+# ci
 .circleci/
-coverage
+
+# source code
 src/
+
+# config
 tsconfig.json
 tslint.json
+
+# coverage
+coverage
 .nyc_output/
-.prettierrc
+
+# map files
 *.map
