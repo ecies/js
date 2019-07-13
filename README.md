@@ -6,7 +6,7 @@
 [![Circle CI](https://img.shields.io/circleci/project/kigawas/eciesjs/master.svg)](https://circleci.com/gh/kigawas/eciesjs)
 [![Codecov](https://img.shields.io/codecov/c/github/kigawas/eciesjs.svg)](https://codecov.io/gh/kigawas/eciesjs)
 
-Elliptic Curve Integrated Encryption Scheme for secp256k1, written in TypeScript with minimal dependencies.
+Elliptic Curve Integrated Encryption Scheme for secp256k1, written in TypeScript with **minimal** dependencies.
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy), you may go there for documentation about detailed mechanism.
 
