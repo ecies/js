@@ -8,7 +8,7 @@
 
 Elliptic Curve Integrated Encryption Scheme for secp256k1, written in TypeScript with **minimal** dependencies.
 
-This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy), you may go there for documentation about detailed mechanism.
+This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy) with a built-in class-like secp256k1 [API](#privatekey), you may go there for detailed documentation of the mechanism under the hood.
 
 ## Install
 
