@@ -1,6 +1,8 @@
+import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
-import { decodeHex } from "../utils";
+import {decodeHex} from "../utils";
+import PrivateKey from "./PrivateKey";
 
 export default class PublicKey {
 
@@ -21,6 +23,15 @@ export default class PublicKey {
     constructor(buffer: Buffer) {
         this.uncompressed = secp256k1.publicKeyConvert(buffer, false);
         this.compressed = secp256k1.publicKeyConvert(buffer, true);
+    }
+
+    public decapsulateKEM(priv: PrivateKey) {
+        return hkdf(Buffer.concat([
+            this.uncompressed,
+            secp256k1.ecdhUnsafe(this.uncompressed, priv.secret),
+        ]), 32, {
+            hash: "SHA-256",
+        });
     }
 
     public toHex(compressed: boolean = true): string {
