@@ -57,6 +57,7 @@ Returns:  **Buffer**
 static fromHex(hex: string): PrivateKey;
 constructor(secret?: Buffer);
 toHex(): string;
+encapsulateKEM(pub: PublicKey): Buffer;
 ecdh(pub: PublicKey): Buffer;
 equals(other: PrivateKey): boolean;
 ```
@@ -76,6 +77,7 @@ readonly publicKey: PublicKey;
 static fromHex(hex: string): PublicKey;
 constructor(buffer: Buffer);
 toHex(compressed?: boolean): string;
+decapsulateKEM(priv: PrivateKey): Buffer;
 equals(other: PublicKey): boolean;
 ```
 

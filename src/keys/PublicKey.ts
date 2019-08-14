@@ -25,21 +25,21 @@ export default class PublicKey {
         this.compressed = secp256k1.publicKeyConvert(buffer, true);
     }
 
-    public decapsulateKEM(priv: PrivateKey) {
-        return hkdf(Buffer.concat([
-            this.uncompressed,
-            secp256k1.ecdhUnsafe(this.uncompressed, priv.secret),
-        ]), 32, {
-            hash: "SHA-256",
-        });
-    }
-
     public toHex(compressed: boolean = true): string {
         if (compressed) {
             return this.compressed.toString("hex");
         } else {
             return this.uncompressed.toString("hex");
         }
+    }
+
+    public decapsulateKEM(priv: PrivateKey): Buffer {
+        return hkdf(Buffer.concat([
+            this.uncompressed,
+            secp256k1.ecdhUnsafe(this.uncompressed, priv.secret),
+        ]), 32, {
+            hash: "SHA-256",
+        });
     }
 
     public equals(other: PublicKey): boolean {

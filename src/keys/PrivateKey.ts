@@ -25,7 +25,7 @@ export default class PrivateKey {
         return `0x${this.secret.toString("hex")}`;
     }
 
-    public encapsulateKEM(pub: PublicKey) {
+    public encapsulateKEM(pub: PublicKey): Buffer {
         return hkdf(Buffer.concat([
             this.publicKey.uncompressed,
             secp256k1.ecdhUnsafe(pub.compressed, this.secret),
@@ -34,8 +34,8 @@ export default class PrivateKey {
         });
     }
 
-    public ecdh(pub: PublicKey) {
-        return secp256k1.ecdh(pub.compressed, this.secret);
+    public ecdh(pub: PublicKey): Buffer {
+        return secp256k1.ecdhUnsafe(pub.compressed, this.secret);
     }
 
     public equals(other: PrivateKey): boolean {
