@@ -24,7 +24,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/kigawas/eciesjs.git"
+        "url": "https://github.com/ecies/js.git"
     },
     "version": "0.1.6",
     "devDependencies": {
