@@ -102,13 +102,13 @@ describe("test keys", () => {
     });
 
     it("tests multiply and hkdf", () => {
-        const one = Buffer.from(new Uint8Array(32));
-        one[31] = 2;
         const two = Buffer.from(new Uint8Array(32));
-        two[31] = 3;
+        two[31] = 2;
+        const three = Buffer.from(new Uint8Array(32));
+        three[31] = 3;
 
-        const k1 = new PrivateKey(one);
-        const k2 = new PrivateKey(two);
+        const k1 = new PrivateKey(two);
+        const k2 = new PrivateKey(three);
         expect(k1.multiply(k2.publicKey).equals(k2.multiply(k1.publicKey))).to.be.equal(true);
 
         const derived = k1.encapsulateKEM(k2.publicKey);
