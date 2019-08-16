@@ -101,15 +101,21 @@ describe("test keys", () => {
         expect(ethPub.equals(ethPrv.publicKey)).to.be.equal(true);
     });
 
-    it("tests ecdh", () => {
+    it("tests multiply and hkdf", () => {
         const one = Buffer.from(new Uint8Array(32));
-        one[31] = 1;
+        one[31] = 2;
         const two = Buffer.from(new Uint8Array(32));
-        two[31] = 2;
+        two[31] = 3;
 
         const k1 = new PrivateKey(one);
         const k2 = new PrivateKey(two);
-        expect(k1.ecdh(k2.publicKey).equals(k2.ecdh(k1.publicKey))).to.be.equal(true);
+        expect(k1.multiply(k2.publicKey).equals(k2.multiply(k1.publicKey))).to.be.equal(true);
+
+        const derived = k1.encapsulateKEM(k2.publicKey);
+        const knownDerived = Buffer.from(decodeHex(
+            "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82",
+        ));
+        expect(derived.equals(knownDerived)).to.be.equal(true);
     });
 
 });

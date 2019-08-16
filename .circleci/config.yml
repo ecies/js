@@ -5,7 +5,6 @@ defaults: &defaults
   docker:
     - image: circleci/node:12
 
-
 jobs:
   test:
     <<: *defaults
@@ -13,8 +12,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
       - run:
           name: Install dependencies
           command: npm install
@@ -24,7 +23,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package-lock.json" }}
       - run:
           name: Run tests and build js files
-          command: npm test && npm run build && npm pack --dry-run
+          command: npm test -- --bail --ci && npm run build && npm pack --dry-run
       - run:
           name: Upload coverage
           command: npx codecov
