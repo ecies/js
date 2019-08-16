@@ -17,16 +17,11 @@ Install with `npm install eciesjs` ([`secp256k1`](https://github.com/cryptocoinj
 ## Quick Start
 
 ```typescript
-> import { encrypt, decrypt, PrivateKey, utils } from 'eciesjs'
+> import { encrypt, decrypt, PrivateKey } from 'eciesjs'
 > const k1 = new PrivateKey()
 > const data = Buffer.from('this is a test')
 > decrypt(k1.toHex(), encrypt(k1.publicKey.toHex(), data)).toString()
 'this is a test'
-> utils.sha256(Buffer.from('0')).slice(0, 8)
-<Buffer 5f ec eb 66 ff c8 6f 38>
-> const k2 = new PrivateKey()
-> k1.ecdh(k2.publicKey).equals(k2.ecdh(k1.publicKey))
-true
 ```
 
 ## API

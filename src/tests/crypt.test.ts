@@ -112,10 +112,12 @@ describe("test keys", () => {
         expect(k1.multiply(k2.publicKey).equals(k2.multiply(k1.publicKey))).to.be.equal(true);
 
         const derived = k1.encapsulateKEM(k2.publicKey);
+        const anotherDerived = k1.publicKey.decapsulateKEM(k2);
         const knownDerived = Buffer.from(decodeHex(
             "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82",
         ));
         expect(derived.equals(knownDerived)).to.be.equal(true);
+        expect(anotherDerived.equals(knownDerived)).to.be.equal(true);
     });
 
 });

@@ -1,5 +1,5 @@
 import { PrivateKey, PublicKey } from "./keys";
-import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x, sha256 } from "./utils";
+import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
 
 export function encrypt(receiverPubhex: string, msg: Buffer): Buffer {
     const disposableKey = new PrivateKey();
@@ -20,5 +20,5 @@ export function decrypt(receiverPrvhex: string, msg: Buffer): Buffer {
 export { PrivateKey, PublicKey } from "./keys";
 
 export const utils = {
-    aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x, sha256,
+    aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x,
 };

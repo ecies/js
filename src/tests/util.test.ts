@@ -1,15 +1,9 @@
 import secp256k1 from "secp256k1";
 
 import { expect } from "chai";
-import { decodeHex, getValidSecret, remove0x, sha256 } from "../utils";
+import { decodeHex, getValidSecret, remove0x } from "../utils";
 
 describe("test string <-> buffer utils ", () => {
-    it("tests sha256", () => {
-        const digest = sha256(Buffer.from(new Uint8Array(16))).toString("hex");
-        const allZeroDigest = "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb";
-        expect(digest).to.equal(allZeroDigest);
-    });
-
     it("should remove 0x", () => {
         expect(remove0x("0x0011")).to.equal("0011");
         expect(remove0x("0011")).to.equal("0011");
