@@ -58,7 +58,7 @@ static fromHex(hex: string): PrivateKey;
 constructor(secret?: Buffer);
 toHex(): string;
 encapsulateKEM(pub: PublicKey): Buffer;
-ecdh(pub: PublicKey): Buffer;
+multiply(pub: PublicKey): Buffer;
 equals(other: PrivateKey): boolean;
 ```
 
