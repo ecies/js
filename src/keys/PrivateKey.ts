@@ -26,12 +26,13 @@ export default class PrivateKey {
     }
 
     public encapsulateKEM(pub: PublicKey): Buffer {
-        return hkdf(Buffer.concat([
+        const master = Buffer.concat([
             this.publicKey.uncompressed,
             this.multiply(pub),
-        ]), 32, {
-                hash: "SHA-256",
-            });
+        ]);
+        return hkdf(master, 32, {
+            hash: "SHA-256",
+        });
     }
 
     public multiply(pub: PublicKey): Buffer {

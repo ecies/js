@@ -34,12 +34,13 @@ export default class PublicKey {
     }
 
     public decapsulateKEM(priv: PrivateKey): Buffer {
-        return hkdf(Buffer.concat([
+        const master = Buffer.concat([
             this.uncompressed,
             priv.multiply(this),
-        ]), 32, {
-                hash: "SHA-256",
-            });
+        ]);
+        return hkdf(master, 32, {
+            hash: "SHA-256",
+        });
     }
 
     public equals(other: PublicKey): boolean {
