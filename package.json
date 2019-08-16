@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "@types/secp256k1": "^3.5.0",
+        "futoin-hkdf": "^1.2.0",
         "secp256k1": "^3.6.0"
     }
 }

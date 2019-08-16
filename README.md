@@ -1,6 +1,6 @@
 # eciesjs
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba01a8bb2d3344f29f98157ccbd14519)](https://app.codacy.com/app/ecies/js)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/app/ecies/js)
 [![License](https://img.shields.io/github/license/ecies/js.svg)](https://github.com/ecies/js)
 [![Npm Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
 [![Circle CI](https://img.shields.io/circleci/project/ecies/js/master.svg)](https://circleci.com/gh/ecies/js)
@@ -57,6 +57,7 @@ Returns:  **Buffer**
 static fromHex(hex: string): PrivateKey;
 constructor(secret?: Buffer);
 toHex(): string;
+encapsulateKEM(pub: PublicKey): Buffer;
 ecdh(pub: PublicKey): Buffer;
 equals(other: PrivateKey): boolean;
 ```
@@ -76,6 +77,7 @@ readonly publicKey: PublicKey;
 static fromHex(hex: string): PublicKey;
 constructor(buffer: Buffer);
 toHex(compressed?: boolean): string;
+decapsulateKEM(priv: PrivateKey): Buffer;
 equals(other: PublicKey): boolean;
 ```
 

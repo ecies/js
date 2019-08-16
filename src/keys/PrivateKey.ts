@@ -1,3 +1,4 @@
+import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
 import { decodeHex, getValidSecret } from "../utils";
@@ -24,8 +25,17 @@ export default class PrivateKey {
         return `0x${this.secret.toString("hex")}`;
     }
 
-    public ecdh(pub: PublicKey) {
-        return secp256k1.ecdh(pub.compressed, this.secret);
+    public encapsulateKEM(pub: PublicKey): Buffer {
+        return hkdf(Buffer.concat([
+            this.publicKey.uncompressed,
+            this.multiply(pub),
+        ]), 32, {
+                hash: "SHA-256",
+            });
+    }
+
+    public multiply(pub: PublicKey): Buffer {
+        return secp256k1.ecdhUnsafe(pub.compressed, this.secret, false);
     }
 
     public equals(other: PrivateKey): boolean {
