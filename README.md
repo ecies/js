@@ -12,7 +12,7 @@ This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawa
 
 ## Install
 
-Install with `npm install eciesjs` ([`secp256k1`](https://github.com/cryptocoinjs/secp256k1-node) is the only dependency).
+Install with `npm install eciesjs`
 
 ## Quick Start
 
