@@ -33,7 +33,7 @@ export default class PublicKey {
         }
     }
 
-    public decapsulateKEM(priv: PrivateKey): Buffer {
+    public decapsulate(priv: PrivateKey): Buffer {
         const master = Buffer.concat([
             this.uncompressed,
             priv.multiply(this),
