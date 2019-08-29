@@ -25,7 +25,7 @@ export default class PrivateKey {
         return `0x${this.secret.toString("hex")}`;
     }
 
-    public encapsulateKEM(pub: PublicKey): Buffer {
+    public encapsulate(pub: PublicKey): Buffer {
         const master = Buffer.concat([
             this.publicKey.uncompressed,
             this.multiply(pub),
