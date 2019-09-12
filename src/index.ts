@@ -1,18 +1,25 @@
 import { PrivateKey, PublicKey } from "./keys";
 import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
 
-export function encrypt(receiverPubhex: string, msg: Buffer): Buffer {
-    const disposableKey = new PrivateKey();
-    const receiverPubkey = PublicKey.fromHex(receiverPubhex);
-    const aesKey = disposableKey.encapsulate(receiverPubkey);
+const UNCOMPRESSED_PUBLIC_KEY_SIZE = 65;
+
+export function encrypt(receiverRawPub: string | Buffer, msg: Buffer): Buffer {
+    const ephemeralKey = new PrivateKey();
+
+    const receiverPubkey = receiverRawPub instanceof Buffer ?
+        new PublicKey(receiverRawPub) : PublicKey.fromHex(receiverRawPub);
+
+    const aesKey = ephemeralKey.encapsulate(receiverPubkey);
     const encrypted = aesEncrypt(aesKey, msg);
-    return Buffer.concat([disposableKey.publicKey.uncompressed, encrypted]);
+    return Buffer.concat([ephemeralKey.publicKey.uncompressed, encrypted]);
 }
 
-export function decrypt(receiverPrvhex: string, msg: Buffer): Buffer {
-    const receiverPrvkey = PrivateKey.fromHex(receiverPrvhex);
-    const senderPubkey = new PublicKey(msg.slice(0, 65));
-    const encrypted = msg.slice(65);
+export function decrypt(receiverRawPrv: string | Buffer, msg: Buffer): Buffer {
+    const receiverPrvkey = receiverRawPrv instanceof Buffer ?
+        new PrivateKey(receiverRawPrv) : PrivateKey.fromHex(receiverRawPrv);
+
+    const senderPubkey = new PublicKey(msg.slice(0, UNCOMPRESSED_PUBLIC_KEY_SIZE));
+    const encrypted = msg.slice(UNCOMPRESSED_PUBLIC_KEY_SIZE);
     const aesKey = senderPubkey.decapsulate(receiverPrvkey);
     return aesDecrypt(aesKey, encrypted);
 }
