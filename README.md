@@ -26,20 +26,20 @@ Install with `npm install eciesjs`
 
 ## API
 
-### `encrypt(receiverPubhex: string, msg: Buffer): Buffer`
+### `encrypt(receiverRawPub: string | Buffer, msg: Buffer): Buffer`
 
 Parameters:
 
--   **receiverPubhex** - Receiver's secp256k1 public key hex string
+-   **receiverRawPub** - Receiver's secp256k1 public key, hex string or buffer
 -   **msg** - Data to encrypt
 
 Returns:  **Buffer**
 
-### `decrypt(receiverPrvhex: string, msg: Buffer): Buffer`
+### `decrypt(receiverRawPrv: string | Buffer, msg: Buffer): Buffer`
 
 Parameters:
 
--   **receiverPrvhex** - Receiver's secp256k1 private key hex string
+-   **receiverRawPrv** - Receiver's secp256k1 private key, hex string or buffer
 -   **msg** - Data to decrypt
 
 Returns:  **Buffer**
