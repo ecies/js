@@ -6,9 +6,9 @@
 [![Circle CI](https://img.shields.io/circleci/project/ecies/js/master.svg)](https://circleci.com/gh/ecies/js)
 [![Codecov](https://img.shields.io/codecov/c/github/ecies/js.svg)](https://codecov.io/gh/ecies/js)
 
-Elliptic Curve Integrated Encryption Scheme for secp256k1, written in TypeScript with **minimal** dependencies.
+Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
 
-This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy) with a built-in class-like secp256k1 [API](#privatekey), you may go there for detailed documentation of the mechanism under the hood.
+This is the JavaScript/TypeScript version of [eciespy](https://github.com/kigawas/eciespy) with a built-in class-like secp256k1 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
 ## Install
 
