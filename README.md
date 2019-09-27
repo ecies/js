@@ -82,3 +82,24 @@ equals(other: PublicKey): boolean;
 readonly uncompressed: Buffer;
 readonly compressed: Buffer;
 ```
+
+## Release Notes
+
+### 0.3.0
+
+-   API change: `encrypt/decrypt` now can take both hex string and Buffer
+
+### 0.2.0
+
+-   API change: use `HKDF-sha256` to derive shared keys instead of `sha256`
+-   Bump dependency versions
+-   Update documentation
+
+### 0.1.1 ~ 0.1.5
+
+-   Bump dependency versions
+-   Update documentation
+
+### 0.1.0
+
+-   First beta version release
