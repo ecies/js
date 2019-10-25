@@ -85,6 +85,11 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
+### 0.3.1
+
+-   Bump dependencies
+-   Update documentation
+
 ### 0.3.0
 
 -   API change: `encrypt/decrypt` now can take both hex string and Buffer
@@ -92,12 +97,12 @@ readonly compressed: Buffer;
 ### 0.2.0
 
 -   API change: use `HKDF-sha256` to derive shared keys instead of `sha256`
--   Bump dependency versions
+-   Bump dependencies
 -   Update documentation
 
 ### 0.1.1 ~ 0.1.5
 
--   Bump dependency versions
+-   Bump dependencies
 -   Update documentation
 
 ### 0.1.0
