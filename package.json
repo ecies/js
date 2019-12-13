@@ -28,9 +28,9 @@
     },
     "version": "0.3.3",
     "devDependencies": {
-        "@types/chai": "^4.2.2",
+        "@types/chai": "^4.2.7",
         "@types/mocha": "^5.2.5",
-        "@types/node": "^12.7.5",
+        "@types/node": "^12.12.17",
         "axios": "^0.19.0",
         "chai": "^4.2.0",
         "codecov": "^3.1.0",
@@ -38,7 +38,7 @@
         "nyc": "^14.0.0",
         "ts-node": "^8.0.2",
         "tslint": "^5.20.0",
-        "typescript": "^3.6.3"
+        "typescript": "^3.7.3"
     },
     "dependencies": {
         "@types/secp256k1": "^3.5.0",
