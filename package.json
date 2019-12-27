@@ -26,7 +26,7 @@
         "type": "git",
         "url": "https://github.com/ecies/js.git"
     },
-    "version": "0.3.3",
+    "version": "0.3.4",
     "devDependencies": {
         "@types/chai": "^4.2.7",
         "@types/mocha": "^5.2.5",
