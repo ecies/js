@@ -18,7 +18,7 @@ export default class PrivateKey {
         if (!secp256k1.privateKeyVerify(this.secret)) {
             throw new Error("Invalid private key");
         }
-        this.publicKey = new PublicKey(secp256k1.publicKeyCreate(this.secret));
+        this.publicKey = new PublicKey(Buffer.from(secp256k1.publicKeyCreate(this.secret)));
     }
 
     public toHex(): string {
@@ -36,7 +36,7 @@ export default class PrivateKey {
     }
 
     public multiply(pub: PublicKey): Buffer {
-        return secp256k1.ecdhUnsafe(pub.compressed, this.secret, false);
+        return Buffer.from(secp256k1.publicKeyTweakMul(pub.compressed, this.secret, false));
     }
 
     public equals(other: PrivateKey): boolean {
