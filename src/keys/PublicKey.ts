@@ -21,8 +21,8 @@ export default class PublicKey {
     public readonly compressed: Buffer;
 
     constructor(buffer: Buffer) {
-        this.uncompressed = secp256k1.publicKeyConvert(buffer, false);
-        this.compressed = secp256k1.publicKeyConvert(buffer, true);
+        this.uncompressed = Buffer.from(secp256k1.publicKeyConvert(buffer, false));
+        this.compressed = Buffer.from(secp256k1.publicKeyConvert(buffer, true));
     }
 
     public toHex(compressed: boolean = true): string {
