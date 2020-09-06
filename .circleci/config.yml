@@ -6,7 +6,7 @@ defaults: &defaults
     - image: circleci/node:12
 
 jobs:
-  test:
+  test: &test-template
     <<: *defaults
     steps:
       - checkout
@@ -29,7 +29,13 @@ jobs:
           command: npx codecov
       - persist_to_workspace:
           root: ~/repo
-          paths: .
+          paths:
+            - .
+
+  test-14:
+    <<: *test-template
+    docker:
+      - image: circleci/node:14
 
   deploy:
     <<: *defaults
@@ -48,6 +54,10 @@ workflows:
   test-deploy:
     jobs:
       - test:
+          filters:
+            tags:
+              only: /^v.*/
+      - test-14:
           filters:
             tags:
               only: /^v.*/
