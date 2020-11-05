@@ -22,8 +22,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
       - run:
-          name: Run tests and build js files
-          command: npm test -- --bail --ci && npm run build && npm pack --dry-run
+          name: Run tests
+          command: npm test -- --bail --ci
       - run:
           name: Upload coverage
           command: npx codecov
@@ -43,12 +43,23 @@ jobs:
     docker:
       - image: circleci/node:15
 
-  deploy:
+  pre-deploy:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: Install and build
           command: yarn install && npm run build && npm publish --dry-run
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
@@ -60,15 +71,19 @@ workflows:
   version: 2
   test-deploy:
     jobs:
+      - pre-deploy:
+          filters:
+            tags:
+              only: /^v.*/
+      - test-10:
+          filters:
+            tags:
+              only: /^v.*/
       - test-12:
           filters:
             tags:
               only: /^v.*/
       - test-14:
-          filters:
-            tags:
-              only: /^v.*/
-      - test-10:
           filters:
             tags:
               only: /^v.*/
@@ -78,9 +93,10 @@ workflows:
               only: /^v.*/
       - deploy:
           requires:
+            - pre-deploy
+            - test-10
             - test-12
             - test-14
-            - test-10
           filters:
             tags:
               only: /^v.*/

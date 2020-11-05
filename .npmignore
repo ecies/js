@@ -4,6 +4,9 @@
 # source code
 src/
 
+# tests
+dist/tests/
+
 # config
 tsconfig.json
 tslint.json
@@ -17,4 +20,7 @@ coverage
 *.map
 
 # github
-.github
+.github/
+
+# tar
+*.tgz
