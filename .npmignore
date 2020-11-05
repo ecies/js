@@ -5,7 +5,6 @@
 src/
 
 # tests
-
 dist/tests/
 
 # config
