@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 defaults: &defaults
   working_directory: ~/repo
@@ -27,20 +27,16 @@ jobs:
       - run:
           name: Upload coverage
           command: npx codecov
-      - persist_to_workspace:
-          root: ~/repo
-          paths:
-            - .
-
-  test-14:
-    <<: *test-template
-    docker:
-      - image: circleci/node:14
 
   test-10:
     <<: *test-template
     docker:
       - image: circleci/node:10
+
+  test-14:
+    <<: *test-template
+    docker:
+      - image: circleci/node:14
 
   test-15:
     <<: *test-template
@@ -50,8 +46,9 @@ jobs:
   deploy:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/repo
+      - run:
+          name: Install and build
+          command: yarn install && npm run build && npm publish --dry-run
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
