@@ -24,3 +24,5 @@ coverage
 
 # tar
 *.tgz
+
+.vscode/

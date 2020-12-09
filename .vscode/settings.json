@@ -1,0 +1,10 @@
+{
+  "spellright.language": ["en"],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext", "typescript"],
+  "spellright.ignoreFiles": [
+    "**/*.test.ts",
+    "**/node_modules/",
+    "**/.gitignore",
+    "**/.spellignore"
+  ]
+}
