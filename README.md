@@ -10,9 +10,13 @@ Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/py) with a built-in class-like secp256k1 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
+If you want a WASM version to run in browsers, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+
 ## Install
 
-Install with `npm install eciesjs`
+```bash
+npm install eciesjs
+```
 
 ## Quick Start
 
@@ -30,23 +34,23 @@ Install with `npm install eciesjs`
 
 Parameters:
 
--   **receiverRawPub** - Receiver's secp256k1 public key, hex string or buffer
--   **msg** - Data to encrypt
+- **receiverRawPub** - Receiver's secp256k1 public key, hex string or buffer
+- **msg** - Data to encrypt
 
-Returns:  **Buffer**
+Returns: **Buffer**
 
 ### `decrypt(receiverRawPrv: string | Buffer, msg: Buffer): Buffer`
 
 Parameters:
 
--   **receiverRawPrv** - Receiver's secp256k1 private key, hex string or buffer
--   **msg** - Data to decrypt
+- **receiverRawPrv** - Receiver's secp256k1 private key, hex string or buffer
+- **msg** - Data to decrypt
 
-Returns:  **Buffer**
+Returns: **Buffer**
 
 ### `PrivateKey`
 
--   Methods
+- Methods
 
 ```typescript
 static fromHex(hex: string): PrivateKey;
@@ -57,7 +61,7 @@ multiply(pub: PublicKey): Buffer;
 equals(other: PrivateKey): boolean;
 ```
 
--   Properties
+- Properties
 
 ```typescript
 readonly secret: Buffer;
@@ -66,7 +70,7 @@ readonly publicKey: PublicKey;
 
 ### `PublicKey`
 
--   Methods
+- Methods
 
 ```typescript
 static fromHex(hex: string): PublicKey;
@@ -76,7 +80,7 @@ decapsulate(priv: PrivateKey): Buffer;
 equals(other: PublicKey): boolean;
 ```
 
--   Properties
+- Properties
 
 ```typescript
 readonly uncompressed: Buffer;
@@ -85,26 +89,26 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.8
+### 0.3.1 ~ 0.3.9
 
--   Bump dependencies
--   Update documentation
+- Bump dependencies
+- Update documentation
 
 ### 0.3.0
 
--   API change: `encrypt/decrypt` now can take both hex string and Buffer
+- API change: `encrypt/decrypt` now can take both hex string and Buffer
 
 ### 0.2.0
 
--   API change: use `HKDF-sha256` to derive shared keys instead of `sha256`
--   Bump dependencies
--   Update documentation
+- API change: use `HKDF-sha256` to derive shared keys instead of `sha256`
+- Bump dependencies
+- Update documentation
 
 ### 0.1.1 ~ 0.1.5
 
--   Bump dependencies
--   Update documentation
+- Bump dependencies
+- Update documentation
 
 ### 0.1.0
 
--   First beta version release
+- First beta version release
