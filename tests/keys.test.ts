@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { PrivateKey, PublicKey } from "../keys";
-import { decodeHex } from "../utils";
+import { PrivateKey, PublicKey } from "../src/keys";
+import { decodeHex } from "../src/utils";
 
 const ETH_PRVHEX = "0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653d7d";
 const ETH_PUBHEX = "0x98afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140"

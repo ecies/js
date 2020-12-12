@@ -3,9 +3,9 @@ import { expect } from "chai";
 import { randomBytes } from "crypto";
 import { stringify } from "querystring";
 
-import { decrypt, encrypt } from "../index";
-import { PrivateKey } from "../keys";
-import { aesDecrypt, aesEncrypt, decodeHex } from "../utils";
+import { decrypt, encrypt } from "../src/index";
+import { PrivateKey } from "../src/keys";
+import { aesDecrypt, aesEncrypt, decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://eciespy.herokuapp.com/";
 

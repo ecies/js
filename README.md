@@ -3,7 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/app/ecies/js)
 [![License](https://img.shields.io/github/license/ecies/js.svg)](https://github.com/ecies/js)
 [![Npm Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
-[![Circle CI](https://img.shields.io/circleci/project/ecies/js/master.svg)](https://circleci.com/gh/ecies/js)
+[![CI](https://github.com/ecies/js/workflows/Build/badge.svg)](https://github.com/ecies/js/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ecies/js.svg)](https://codecov.io/gh/ecies/js)
 
 Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.

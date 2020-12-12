@@ -1,7 +1,7 @@
 import secp256k1 from "secp256k1";
 
 import { expect } from "chai";
-import { decodeHex, getValidSecret, remove0x } from "../utils";
+import { decodeHex, getValidSecret, remove0x } from "../src/utils";
 
 describe("test string <-> buffer utils ", () => {
     it("should remove 0x", () => {
