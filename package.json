@@ -18,9 +18,12 @@
     ],
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "tsc",
-        "test": "nyc -r lcov -e .ts mocha -r ts-node/register src/**/*.test.ts && nyc report --reporter=json"
+        "test": "nyc -r lcov -e .ts mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json"
     },
     "repository": {
         "type": "git",
@@ -33,15 +36,15 @@
         "secp256k1": "^4.0.2"
     },
     "devDependencies": {
-        "@types/chai": "^4.2.12",
+        "@types/chai": "^4.2.14",
         "@types/mocha": "^8.2.0",
-        "@types/node": "^14.14.0",
+        "@types/node": "^14.14.12",
         "axios": "^0.21.0",
         "chai": "^4.2.0",
         "codecov": "^3.8.1",
         "mocha": "^8.2.1",
         "nyc": "^15.1.0",
         "ts-node": "^9.1.1",
-        "typescript": "^4.1.2"
+        "typescript": "^4.1.3"
     }
 }
