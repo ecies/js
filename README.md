@@ -5,6 +5,7 @@
 [![Npm Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
 [![CI](https://github.com/ecies/js/workflows/Build/badge.svg)](https://github.com/ecies/js/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ecies/js.svg)](https://codecov.io/gh/ecies/js)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fecies%2Fjs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fecies%2Fjs?ref=badge_shield)
 
 Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
 
@@ -112,3 +113,7 @@ readonly compressed: Buffer;
 ### 0.1.0
 
 - First beta version release
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fecies%2Fjs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fecies%2Fjs?ref=badge_large)
