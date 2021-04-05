@@ -10,7 +10,7 @@ Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/py) with a built-in class-like secp256k1 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
-If you want a WASM version to run in browsers, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+If you want a WASM version to run directly in browsers, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
 ## Install
 
@@ -89,14 +89,14 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.9
+### 0.3.1 ~ 0.3.10
 
 - Bump dependencies
 - Update documentation
 
 ### 0.3.0
 
-- API change: `encrypt/decrypt` now can take both hex string and Buffer
+- API change: `encrypt/decrypt` now can take both hex `string` and `Buffer`
 
 ### 0.2.0
 
