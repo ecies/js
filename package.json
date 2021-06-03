@@ -22,7 +22,7 @@
         "dist"
     ],
     "scripts": {
-        "build": "tsc",
+        "build": "npx tsc",
         "test": "nyc -r lcov -e .ts mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json"
     },
     "repository": {

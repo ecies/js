@@ -32,7 +32,8 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - run: yarn install
-      - run: npm test -- --bail --ci
-      - run: npx codecov
+      - run: yarn install && npm test -- --bail --ci && npx codecov
+        if: ${{ matrix.node != '10' }}
+      - run: yarn install --production
+        if: ${{ matrix.node == '10' }}
       - run: npm run build && npm publish --dry-run
