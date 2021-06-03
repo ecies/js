@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [12, 14, 16]
+        node: [10, 12, 14, 16]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -32,7 +32,9 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - run: yarn install
-      - run: npm test -- --bail --ci
+      - run: yarn install && npm test -- --bail --ci
+        if: ${{ matrix.node != '10' }}
+      - run: yarn install --production
+        if: ${{ matrix.node == '10' }}
       - run: npx codecov
       - run: npm run build && npm publish --dry-run
