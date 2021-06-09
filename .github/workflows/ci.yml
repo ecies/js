@@ -34,6 +34,8 @@ jobs:
 
       - run: yarn install && npm test -- --bail --ci && npx codecov
         if: ${{ matrix.node != '10' }}
+
       - run: yarn install --production --ignore-engines
         if: ${{ matrix.node == '10' }}
+
       - run: npm run build && npm publish --dry-run

@@ -1,7 +1,7 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
 import secp256k1 from "secp256k1";
 
-import { AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH } from "./consts";
+import { AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH, SECRET_KEY_LENGTH } from "./consts";
 
 export function remove0x(hex: string): string {
     if (hex.startsWith("0x") || hex.startsWith("0X")) {
@@ -17,7 +17,7 @@ export function decodeHex(hex: string): Buffer {
 export function getValidSecret(): Buffer {
     let key: Buffer;
     do {
-        key = randomBytes(32);
+        key = randomBytes(SECRET_KEY_LENGTH);
     } while (!secp256k1.privateKeyVerify(key));
     return key;
 }
