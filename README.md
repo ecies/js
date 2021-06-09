@@ -87,6 +87,10 @@ readonly uncompressed: Buffer;
 readonly compressed: Buffer;
 ```
 
+## Node.js Compatibility
+
+Node.js 10's official security support [ended on Apr 30 2021](https://endoflife.date/nodejs) and we still support it, albeit it is strongly not recommended to run on an outdated runtime.
+
 ## Release Notes
 
 ### 0.3.1 ~ 0.3.10
