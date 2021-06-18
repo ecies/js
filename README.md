@@ -36,20 +36,20 @@ Run the code below with `npx ts-node`.
 
 ## API
 
-### `encrypt(receiverRawPub: string | Buffer, msg: Buffer): Buffer`
+### `encrypt(receiverRawPK: string | Buffer, msg: Buffer): Buffer`
 
 Parameters:
 
-- **receiverRawPub** - Receiver's secp256k1 public key, hex string or buffer
+- **receiverRawPK** - Receiver's secp256k1 public key, hex string or buffer
 - **msg** - Data to encrypt
 
 Returns: **Buffer**
 
-### `decrypt(receiverRawPrv: string | Buffer, msg: Buffer): Buffer`
+### `decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer`
 
 Parameters:
 
-- **receiverRawPrv** - Receiver's secp256k1 private key, hex string or buffer
+- **receiverRawSK** - Receiver's secp256k1 private key, hex string or buffer
 - **msg** - Data to decrypt
 
 Returns: **Buffer**
@@ -95,10 +95,11 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.10
+### 0.3.1 ~ 0.3.11
 
 - Bump dependencies
 - Update documentation
+- Extract constant variables and rename some parameters
 
 ### 0.3.0
 

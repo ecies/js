@@ -1,38 +1,46 @@
 import { PrivateKey, PublicKey } from "./keys";
-import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
+import {
+  aesDecrypt,
+  aesEncrypt,
+  decodeHex,
+  getValidSecret,
+  remove0x,
+} from "./utils";
 import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "./consts";
 
-export function encrypt(receiverRawPub: string | Buffer, msg: Buffer): Buffer {
-    const ephemeralKey = new PrivateKey();
+export function encrypt(receiverRawPK: string | Buffer, msg: Buffer): Buffer {
+  const ephemeralKey = new PrivateKey();
 
-    const receiverPubkey =
-        receiverRawPub instanceof Buffer
-            ? new PublicKey(receiverRawPub)
-            : PublicKey.fromHex(receiverRawPub);
+  const receiverPK =
+    receiverRawPK instanceof Buffer
+      ? new PublicKey(receiverRawPK)
+      : PublicKey.fromHex(receiverRawPK);
 
-    const aesKey = ephemeralKey.encapsulate(receiverPubkey);
-    const encrypted = aesEncrypt(aesKey, msg);
-    return Buffer.concat([ephemeralKey.publicKey.uncompressed, encrypted]);
+  const aesKey = ephemeralKey.encapsulate(receiverPK);
+  const encrypted = aesEncrypt(aesKey, msg);
+  return Buffer.concat([ephemeralKey.publicKey.uncompressed, encrypted]);
 }
 
-export function decrypt(receiverRawPrv: string | Buffer, msg: Buffer): Buffer {
-    const receiverPrvkey =
-        receiverRawPrv instanceof Buffer
-            ? new PrivateKey(receiverRawPrv)
-            : PrivateKey.fromHex(receiverRawPrv);
+export function decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer {
+  const receiverSK =
+    receiverRawSK instanceof Buffer
+      ? new PrivateKey(receiverRawSK)
+      : PrivateKey.fromHex(receiverRawSK);
 
-    const senderPubkey = new PublicKey(msg.slice(0, UNCOMPRESSED_PUBLIC_KEY_SIZE));
-    const encrypted = msg.slice(UNCOMPRESSED_PUBLIC_KEY_SIZE);
-    const aesKey = senderPubkey.decapsulate(receiverPrvkey);
-    return aesDecrypt(aesKey, encrypted);
+  const senderPubkey = new PublicKey(
+    msg.slice(0, UNCOMPRESSED_PUBLIC_KEY_SIZE)
+  );
+  const encrypted = msg.slice(UNCOMPRESSED_PUBLIC_KEY_SIZE);
+  const aesKey = senderPubkey.decapsulate(receiverSK);
+  return aesDecrypt(aesKey, encrypted);
 }
 
 export { PrivateKey, PublicKey } from "./keys";
 
 export const utils = {
-    aesDecrypt,
-    aesEncrypt,
-    decodeHex,
-    getValidSecret,
-    remove0x,
+  aesDecrypt,
+  aesEncrypt,
+  decodeHex,
+  getValidSecret,
+  remove0x,
 };
