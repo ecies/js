@@ -1,50 +1,50 @@
 {
-    "name": "eciesjs",
-    "description": "Elliptic Curve Integrated Encryption Scheme for secp256k1",
-    "license": "MIT",
-    "author": {
-        "name": "Weiliang Li",
-        "email": "to.be.impressive@gmail.com",
-        "url": "https://github.com/kigawas"
-    },
-    "keywords": [
-        "secp256k1",
-        "crypto",
-        "elliptic curves",
-        "ecies",
-        "bitcoin",
-        "ethereum",
-        "cryptocurrency"
-    ],
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "npx tsc",
-        "test": "nyc -r lcov -e .ts mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ecies/js.git"
-    },
-    "version": "0.3.11",
-    "dependencies": {
-        "@types/secp256k1": "^4.0.2",
-        "futoin-hkdf": "^1.3.3",
-        "secp256k1": "^4.0.2"
-    },
-    "devDependencies": {
-        "@types/chai": "^4.2.18",
-        "@types/mocha": "^8.2.2",
-        "@types/node": "^15.12.2",
-        "axios": "^0.21.1",
-        "chai": "^4.3.4",
-        "codecov": "^3.8.2",
-        "mocha": "^9.0.0",
-        "nyc": "^15.1.0",
-        "ts-node": "^10.0.0",
-        "typescript": "^4.3.2"
-    }
+  "name": "eciesjs",
+  "description": "Elliptic Curve Integrated Encryption Scheme for secp256k1",
+  "license": "MIT",
+  "author": {
+    "name": "Weiliang Li",
+    "email": "to.be.impressive@gmail.com",
+    "url": "https://github.com/kigawas"
+  },
+  "keywords": [
+    "secp256k1",
+    "crypto",
+    "elliptic curves",
+    "ecies",
+    "bitcoin",
+    "ethereum",
+    "cryptocurrency"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "test": "nyc -r lcov -e .ts mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ecies/js.git"
+  },
+  "version": "0.3.11",
+  "dependencies": {
+    "@types/secp256k1": "^4.0.2",
+    "futoin-hkdf": "^1.3.3",
+    "secp256k1": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.12.2",
+    "axios": "^0.21.1",
+    "chai": "^4.3.4",
+    "codecov": "^3.8.2",
+    "mocha": "^9.0.0",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  }
 }
