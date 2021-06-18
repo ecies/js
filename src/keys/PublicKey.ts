@@ -2,12 +2,13 @@ import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
 import { decodeHex } from "../utils";
+import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from '../consts';
 import PrivateKey from "./PrivateKey";
 
 export default class PublicKey {
   public static fromHex(hex: string): PublicKey {
     const decoded = decodeHex(hex);
-    if (decoded.length === 64) {
+    if (decoded.length === UNCOMPRESSED_PUBLIC_KEY_SIZE - 1) {
       // eth public key
       const prefix: Buffer = Buffer.from([0x04]);
       const fixed: Buffer = Buffer.concat([prefix, decoded]);
