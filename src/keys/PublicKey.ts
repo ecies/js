@@ -2,7 +2,7 @@ import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
 import { decodeHex } from "../utils";
-import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from '../consts';
+import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
 import PrivateKey from "./PrivateKey";
 
 export default class PublicKey {
