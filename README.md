@@ -95,7 +95,7 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.12
+### 0.3.1 ~ 0.3.13
 
 - Bump dependencies
 - Update documentation
