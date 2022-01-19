@@ -20,7 +20,7 @@ npm install eciesjs
 
 ### Node.js Compatibility
 
-We'll still be compatible with Node.js 10 for a while, albeit its official security support [ended on Apr 30 2021](https://endoflife.date/nodejs). Please note that it is strongly **not recommended** to run on an outdated runtime.
+You may still build with Node.js 10 for a while, albeit its official security support [ended on Apr 30 2021](https://endoflife.date/nodejs). Please note that it is strongly **not recommended** to run on an outdated runtime.
 
 ## Quick Start
 
