@@ -716,9 +716,9 @@ fsevents@~2.3.2:
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
 futoin-hkdf@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.4.3.tgz#19c52e556e90517b0fcd4263a1543a1d9d07caff"
-  integrity sha512-K4MIe2xSVRMYxsA4w0ap5fp1C2hA9StA2Ad1JZHX57VMCdHIRB5BSrd1FhuadTQG9MkjggaTCrw7v5XXFyY3/w==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.5.0.tgz#f10cc4d32f1e26568ded58d5a6535a97aa3a064c"
+  integrity sha512-4CerDhtTgx4i5PKccQIpEp4T9wqmosPIP9Kep35SdCpYkQeriD3zddUVhrO1Fc4QvGhsAnd2rXyoOr5047mJEg==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
