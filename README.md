@@ -91,9 +91,10 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.14
+### 0.3.1 ~ 0.3.15
 
-- Drop Node 10 support
+- Support Node 18
+- Drop Node 10, 12 support
 - Bump dependencies
 - Update documentation
 - Extract constant variables and rename some parameters
