@@ -7,7 +7,7 @@ import { decrypt, encrypt } from "../src/index";
 import { PrivateKey, PublicKey } from "../src/keys";
 import { aesDecrypt, aesEncrypt, decodeHex } from "../src/utils";
 
-const PYTHON_BACKEND = "https://eciespy.herokuapp.com/";
+const PYTHON_BACKEND = "https://ecies.deta.dev/";
 
 describe("test encrypt and decrypt", () => {
   const TEXT = "helloworld";
@@ -15,16 +15,12 @@ describe("test encrypt and decrypt", () => {
   it("tests aes with random key", () => {
     const key = randomBytes(32);
     const data = Buffer.from("this is a test");
-    expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).to.be.equal(
-      true
-    );
+    expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).to.be.equal(true);
   });
 
   it("tests aes decrypt with known key and TEXT", () => {
     const key = Buffer.from(
-      decodeHex(
-        "0000000000000000000000000000000000000000000000000000000000000000"
-      )
+      decodeHex("0000000000000000000000000000000000000000000000000000000000000000")
     );
     const nonce = Buffer.from(decodeHex("f3e1ba810d2c8900b11312b7c725565f"));
     const tag = Buffer.from(decodeHex("ec3b71e17c11dbe31484da9450edcf6c"));
