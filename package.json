@@ -33,7 +33,7 @@
   "dependencies": {
     "@types/secp256k1": "^4.0.3",
     "futoin-hkdf": "^1.5.1",
-    "secp256k1": "^4.0.3"
+    "secp256k1": "^5.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
