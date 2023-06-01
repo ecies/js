@@ -91,9 +91,9 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.16
+### 0.3.1 ~ 0.3.17
 
-- Support Node 18
+- Support Node 18, 20
 - Drop Node 10, 12 support
 - Bump dependencies
 - Update documentation
