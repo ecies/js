@@ -1,8 +1,8 @@
+import { secp256k1 } from "@noble/curves/secp256k1";
 import hkdf from "futoin-hkdf";
-import secp256k1 from "secp256k1";
 
+import { ONE, UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
 import { decodeHex } from "../utils";
-import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
 import PrivateKey from "./PrivateKey";
 
 export default class PublicKey {
@@ -21,8 +21,8 @@ export default class PublicKey {
   public readonly compressed: Buffer;
 
   constructor(buffer: Buffer) {
-    this.uncompressed = Buffer.from(secp256k1.publicKeyConvert(buffer, false));
-    this.compressed = Buffer.from(secp256k1.publicKeyConvert(buffer, true));
+    this.uncompressed = Buffer.from(secp256k1.getSharedSecret(ONE, buffer, false));
+    this.compressed = Buffer.from(secp256k1.getSharedSecret(ONE, buffer, true));
   }
 
   public toHex(compressed: boolean = true): string {

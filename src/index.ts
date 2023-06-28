@@ -1,12 +1,6 @@
-import { PrivateKey, PublicKey } from "./keys";
-import {
-  aesDecrypt,
-  aesEncrypt,
-  decodeHex,
-  getValidSecret,
-  remove0x,
-} from "./utils";
 import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "./consts";
+import { PrivateKey, PublicKey } from "./keys";
+import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
 
 export function encrypt(receiverRawPK: string | Buffer, msg: Buffer): Buffer {
   const ephemeralKey = new PrivateKey();
@@ -27,10 +21,8 @@ export function decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer {
       ? new PrivateKey(receiverRawSK)
       : PrivateKey.fromHex(receiverRawSK);
 
-  const senderPubkey = new PublicKey(
-    msg.slice(0, UNCOMPRESSED_PUBLIC_KEY_SIZE)
-  );
-  const encrypted = msg.slice(UNCOMPRESSED_PUBLIC_KEY_SIZE);
+  const senderPubkey = new PublicKey(msg.subarray(0, UNCOMPRESSED_PUBLIC_KEY_SIZE));
+  const encrypted = msg.subarray(UNCOMPRESSED_PUBLIC_KEY_SIZE);
   const aesKey = senderPubkey.decapsulate(receiverSK);
   return aesDecrypt(aesKey, encrypted);
 }
