@@ -31,8 +31,7 @@
   },
   "version": "0.4.0",
   "dependencies": {
-    "@noble/curves": "^1.1.0",
-    "futoin-hkdf": "^1.5.2"
+    "@noble/curves": "^1.1.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",

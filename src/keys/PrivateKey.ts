@@ -1,5 +1,6 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
-import hkdf from "futoin-hkdf";
+import { hkdf } from "@noble/hashes/hkdf";
+import { sha256 } from "@noble/hashes/sha256";
 
 import { decodeHex, getValidSecret } from "../utils";
 import PublicKey from "./PublicKey";
@@ -26,9 +27,7 @@ export default class PrivateKey {
 
   public encapsulate(pub: PublicKey): Buffer {
     const master = Buffer.concat([this.publicKey.uncompressed, this.multiply(pub)]);
-    return hkdf(master, 32, {
-      hash: "SHA-256",
-    });
+    return Buffer.from(hkdf(sha256, master, undefined, undefined, 32));
   }
 
   public multiply(pub: PublicKey): Buffer {

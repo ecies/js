@@ -7,10 +7,9 @@ import { PrivateKey, PublicKey } from "../src/keys";
 import { aesDecrypt, aesEncrypt, decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://eciespydemo-1-d5397785.deta.app/";
+const TEXT = "helloworld";
 
 describe("test encrypt and decrypt", () => {
-  const TEXT = "helloworld";
-
   it("tests aes with random key", () => {
     const key = randomBytes(32);
     const data = Buffer.from("this is a test");
@@ -73,7 +72,7 @@ describe("test encrypt and decrypt", () => {
     const encryptedKnown = Buffer.from(decodeHex(res.data));
     const decrypted = decrypt(prv.toHex(), encryptedKnown);
 
-    expect(decrypted.toString()).toBe(TEXT);
+    expect(decrypted.toString()).toEqual(TEXT);
 
     const encrypted = encrypt(prv.publicKey.toHex(), Buffer.from(TEXT));
     res = await axios.post(
@@ -83,6 +82,6 @@ describe("test encrypt and decrypt", () => {
         prv: prv.toHex(),
       })
     );
-    expect(TEXT).toBe(res.data);
+    expect(TEXT).toEqual(res.data);
   });
 });

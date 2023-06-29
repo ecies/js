@@ -1190,11 +1190,6 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-futoin-hkdf@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.5.2.tgz#d316623d29f45fe5e6f136f435eccd74096bf676"
-  integrity sha512-Bnytx8kQJQoEAPGgTZw3kVPy8e/n9CDftPzc0okgaujmbdF1x7w8wg+u2xS0CML233HgruNk6VQW28CzuUFMKw==
-
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"

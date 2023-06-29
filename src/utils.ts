@@ -31,9 +31,9 @@ export function aesEncrypt(key: Buffer, plainText: Buffer): Buffer {
 }
 
 export function aesDecrypt(key: Buffer, cipherText: Buffer): Buffer {
-  const nonce = cipherText.slice(0, AES_IV_LENGTH);
-  const tag = cipherText.slice(AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH);
-  const ciphered = cipherText.slice(AES_IV_PLUS_TAG_LENGTH);
+  const nonce = cipherText.subarray(0, AES_IV_LENGTH);
+  const tag = cipherText.subarray(AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH);
+  const ciphered = cipherText.subarray(AES_IV_PLUS_TAG_LENGTH);
   const decipher = createDecipheriv("aes-256-gcm", key, nonce);
   decipher.setAuthTag(tag);
   return Buffer.concat([decipher.update(ciphered), decipher.final()]);
