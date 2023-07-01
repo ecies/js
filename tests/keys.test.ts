@@ -11,13 +11,13 @@ describe("test keys", () => {
     // 0 < private key < group order int
     const groupOrderInt =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141";
-    expect(() => new PrivateKey(decodeHex(groupOrderInt))).toThrow(Error);
+    expect(() => PrivateKey.fromHex(groupOrderInt)).toThrow(Error);
 
     const groupOrderIntAdd1 =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364142";
-    expect(() => new PrivateKey(decodeHex(groupOrderIntAdd1))).toThrow(Error);
+    expect(() => PrivateKey.fromHex(groupOrderIntAdd1)).toThrow(Error);
 
-    expect(() => new PrivateKey(decodeHex("0"))).toThrow(Error);
+    expect(() => PrivateKey.fromHex("0")).toThrow(Error);
   });
 
   it("tests equal", () => {

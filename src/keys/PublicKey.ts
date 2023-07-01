@@ -1,7 +1,6 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { hkdf } from "@noble/hashes/hkdf";
 import { sha256 } from "@noble/hashes/sha256";
-
 import { ONE, UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
 import { decodeHex } from "../utils";
 import PrivateKey from "./PrivateKey";
