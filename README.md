@@ -89,39 +89,29 @@ readonly uncompressed: Buffer;
 readonly compressed: Buffer;
 ```
 
-## Release Notes
+## Configuration
 
-### 0.4.0
+Ephemeral key format in the payload and shared key in the key derivation can be configured as compressed or uncompressed format.
 
-- Change secp256k1 library to [noble-curves](https://github.com/paulmillr/noble-curves), which is [audited](https://github.com/paulmillr/noble-curves/tree/main/audit)
-- Change hash library to [noble-hashes](https://github.com/paulmillr/noble-hashes)
-- Change test library to [jest](https://jestjs.io/)
-- Bump dependencies
-- Drop Node 14 support
+```ts
+class Config {
+  isEphemeralKeyCompressed: boolean = false;
+  isHkdfKeyCompressed: boolean = false;
+  symmetricAlgorithm: Algorithm = "aes-256-gcm"; // currently we only support aes-256-gcm
+  symmetricNonceLength: NonceLength = 16;
+}
 
-### 0.3.1 ~ 0.3.17
+export const ECIES_CONFIG = new Config();
+```
 
-- Support Node 18, 20
-- Drop Node 10, 12 support
-- Bump dependencies
-- Update documentation
-- Extract constant variables and rename some parameters
+For example, if you set `isEphemeralKeyCompressed = true`, the payload would be like: `33 Bytes + AES` instead of `65 Bytes + AES`.
 
-### 0.3.0
+If you set `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral public key (compressed) + shared public key (compressed)` instead of `ephemeral public key (uncompressed) + shared public key (uncompressed)`.
 
-- API change: `encrypt/decrypt` now can take both hex `string` and `Buffer`
+If you set `symmetricNonceLength = 12`, then the nonce of aes-256-gcm would be 12 bytes.
 
-### 0.2.0
+For compatibility, make sure different applications share the same configuration.
 
-- API change: use `HKDF-sha256` to derive shared keys instead of `sha256`
-- Bump dependencies
-- Update documentation
+## Changelog
 
-### 0.1.1 ~ 0.1.5
-
-- Bump dependencies
-- Update documentation
-
-### 0.1.0
-
-- First beta version release
+See [CHANGELOG.md](./CHANGELOG.md)

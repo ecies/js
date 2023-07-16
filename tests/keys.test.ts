@@ -1,3 +1,4 @@
+import { ECIES_CONFIG } from "../src/config";
 import { PrivateKey, PublicKey } from "../src/keys";
 import { decodeHex } from "../src/utils";
 
@@ -5,6 +6,19 @@ const PRV_HEX = "0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653
 const PUB_HEX =
   "0x98afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140" +
   "a4e28911fcf83ab1f457a30b4959efc4b9306f514a4c3711a16a80e3b47eb58b";
+
+function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
+  const derived1 = k1.encapsulate(k2.publicKey);
+  const derived2 = k1.publicKey.decapsulate(k2);
+  const knownDerived = Buffer.from(decodeHex(knownHex));
+  expect(derived1.equals(knownDerived)).toBe(true);
+  expect(derived2.equals(knownDerived)).toBe(true);
+}
+
+const two = Buffer.from(new Uint8Array(32));
+two[31] = 2;
+const three = Buffer.from(new Uint8Array(32));
+three[31] = 3;
 
 describe("test keys", () => {
   it("tests invalid", () => {
@@ -15,6 +29,7 @@ describe("test keys", () => {
 
     const groupOrderIntAdd1 =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364142";
+
     expect(() => PrivateKey.fromHex(groupOrderIntAdd1)).toThrow(Error);
 
     expect(() => PrivateKey.fromHex("0")).toThrow(Error);
@@ -44,21 +59,28 @@ describe("test keys", () => {
   });
 
   it("tests multiply and hkdf", () => {
-    const two = Buffer.from(new Uint8Array(32));
-    two[31] = 2;
-    const three = Buffer.from(new Uint8Array(32));
-    three[31] = 3;
-
     const k1 = new PrivateKey(two);
     const k2 = new PrivateKey(three);
+
     expect(k1.multiply(k2.publicKey).equals(k2.multiply(k1.publicKey))).toBe(true);
 
-    const derived = k1.encapsulate(k2.publicKey);
-    const anotherDerived = k1.publicKey.decapsulate(k2);
-    const knownDerived = Buffer.from(
-      decodeHex("6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82")
+    checkHkdf(
+      k1,
+      k2,
+      "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82"
     );
-    expect(derived.equals(knownDerived)).toBe(true);
-    expect(anotherDerived.equals(knownDerived)).toBe(true);
+  });
+
+  it("tests hkdf config", () => {
+    const k1 = new PrivateKey(two);
+    const k2 = new PrivateKey(three);
+
+    ECIES_CONFIG.isHkdfKeyCompressed = true;
+    checkHkdf(
+      k1,
+      k2,
+      "b192b226edb3f02da11ef9c6ce4afe1c7e40be304e05ae3b988f4834b1cb6c69"
+    );
+    ECIES_CONFIG.isHkdfKeyCompressed = false;
   });
 });
