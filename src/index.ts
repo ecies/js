@@ -1,4 +1,4 @@
-import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "./consts";
+import { ephemeralKeySize, isEphemeralKeyCompressed } from "./config";
 import { PrivateKey, PublicKey } from "./keys";
 import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
 
@@ -12,7 +12,12 @@ export function encrypt(receiverRawPK: string | Buffer, msg: Buffer): Buffer {
 
   const aesKey = ephemeralKey.encapsulate(receiverPK);
   const encrypted = aesEncrypt(aesKey, msg);
-  return Buffer.concat([ephemeralKey.publicKey.uncompressed, encrypted]);
+
+  if (isEphemeralKeyCompressed()) {
+    return Buffer.concat([ephemeralKey.publicKey.compressed, encrypted]);
+  } else {
+    return Buffer.concat([ephemeralKey.publicKey.uncompressed, encrypted]);
+  }
 }
 
 export function decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer {
@@ -21,8 +26,9 @@ export function decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer {
       ? new PrivateKey(receiverRawSK)
       : PrivateKey.fromHex(receiverRawSK);
 
-  const senderPubkey = new PublicKey(msg.subarray(0, UNCOMPRESSED_PUBLIC_KEY_SIZE));
-  const encrypted = msg.subarray(UNCOMPRESSED_PUBLIC_KEY_SIZE);
+  const keySize = ephemeralKeySize();
+  const senderPubkey = new PublicKey(msg.subarray(0, keySize));
+  const encrypted = msg.subarray(keySize);
   const aesKey = senderPubkey.decapsulate(receiverSK);
   return aesDecrypt(aesKey, encrypted);
 }

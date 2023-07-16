@@ -1,7 +1,12 @@
-import { secp256k1 } from "@noble/curves/secp256k1";
-import { hkdf } from "@noble/hashes/hkdf";
-import { sha256 } from "@noble/hashes/sha256";
-import { decodeHex, getValidSecret } from "../utils";
+import { isHkdfKeyCompressed } from "../config";
+import {
+  decodeHex,
+  deriveKey,
+  getPublicKey,
+  getSharedPoint,
+  getValidSecret,
+  isValidPrivateKey,
+} from "../utils";
 import PublicKey from "./PublicKey";
 
 export default class PrivateKey {
@@ -13,11 +18,11 @@ export default class PrivateKey {
   public readonly publicKey: PublicKey;
 
   constructor(secret?: Buffer) {
-    this.secret = secret || getValidSecret();
-    if (!secp256k1.utils.isValidPrivateKey(this.secret)) {
+    this.secret = secret === undefined ? getValidSecret() : secret;
+    if (!isValidPrivateKey(this.secret)) {
       throw new Error("Invalid private key");
     }
-    this.publicKey = new PublicKey(Buffer.from(secp256k1.getPublicKey(this.secret)));
+    this.publicKey = new PublicKey(getPublicKey(this.secret));
   }
 
   public toHex(): string {
@@ -25,12 +30,18 @@ export default class PrivateKey {
   }
 
   public encapsulate(pub: PublicKey): Buffer {
-    const master = Buffer.concat([this.publicKey.uncompressed, this.multiply(pub)]);
-    return Buffer.from(hkdf(sha256, master, undefined, undefined, 32));
+    let master: Buffer;
+
+    if (isHkdfKeyCompressed()) {
+      master = Buffer.concat([this.publicKey.compressed, this.multiply(pub, true)]);
+    } else {
+      master = Buffer.concat([this.publicKey.uncompressed, this.multiply(pub, false)]);
+    }
+    return deriveKey(master);
   }
 
-  public multiply(pub: PublicKey): Buffer {
-    return Buffer.from(secp256k1.getSharedSecret(this.secret, pub.compressed, false));
+  public multiply(pub: PublicKey, compressed: boolean = false): Buffer {
+    return getSharedPoint(this.secret, pub.compressed, compressed);
   }
 
   public equals(other: PrivateKey): boolean {
