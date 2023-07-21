@@ -8,12 +8,13 @@
     "aes",
     "aes-256-gcm",
     "axios",
+    "chacha",
     "Codacy",
     "Codecov",
     "consts",
     "ecies",
-    "eciespy",
     "eciesjs",
+    "eciespy",
     "eth",
     "futoin-hkdf",
     "helloworld",
@@ -22,7 +23,8 @@
     "Npm",
     "Prv",
     "querystring",
-    "secp256k1"
+    "secp256k1",
+    "xchacha20"
   ],
   // flagWords - list of words to be always considered incorrect
   // This is useful for offensive words and common spelling errors.

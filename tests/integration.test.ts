@@ -20,7 +20,7 @@ describe("test encrypt and decrypt", () => {
         pub: prv.publicKey.toHex(),
       })
     );
-    const encryptedKnown = Buffer.from(decodeHex(res.data));
+    const encryptedKnown = decodeHex(res.data);
     const decrypted = decrypt(prv.toHex(), encryptedKnown);
 
     expect(decrypted.toString()).toEqual(TEXT);

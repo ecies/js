@@ -7,6 +7,11 @@
     "email": "to.be.impressive@gmail.com",
     "url": "https://github.com/kigawas"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ecies/js.git"
+  },
+  "version": "0.4.2",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -28,12 +33,8 @@
     "build": "npx tsc",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ecies/js.git"
-  },
-  "version": "0.4.1",
   "dependencies": {
+    "@noble/ciphers": "^0.1.4",
     "@noble/curves": "^1.1.0"
   },
   "devDependencies": {

@@ -7,32 +7,35 @@ const PUB_HEX =
   "0x98afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140" +
   "a4e28911fcf83ab1f457a30b4959efc4b9306f514a4c3711a16a80e3b47eb58b";
 
-function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
-  const derived1 = k1.encapsulate(k2.publicKey);
-  const derived2 = k1.publicKey.decapsulate(k2);
-  const knownDerived = Buffer.from(decodeHex(knownHex));
-  expect(derived1.equals(knownDerived)).toBe(true);
-  expect(derived2.equals(knownDerived)).toBe(true);
-}
-
 const two = Buffer.from(new Uint8Array(32));
 two[31] = 2;
 const three = Buffer.from(new Uint8Array(32));
 three[31] = 3;
 
 describe("test keys", () => {
+  function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
+    const derived1 = k1.encapsulate(k2.publicKey);
+    const derived2 = k1.publicKey.decapsulate(k2);
+
+    const knownDerived = decodeHex(knownHex);
+    expect(derived1).toEqual(knownDerived);
+    expect(derived2).toEqual(knownDerived);
+  }
+
   it("tests invalid", () => {
     // 0 < private key < group order int
+    const ERROR = "Invalid private key";
     const groupOrderInt =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141";
-    expect(() => PrivateKey.fromHex(groupOrderInt)).toThrow(Error);
+    expect(() => PrivateKey.fromHex(groupOrderInt)).toThrow(ERROR);
 
     const groupOrderIntAdd1 =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364142";
 
-    expect(() => PrivateKey.fromHex(groupOrderIntAdd1)).toThrow(Error);
+    expect(() => PrivateKey.fromHex(groupOrderIntAdd1)).toThrow(ERROR);
 
-    expect(() => PrivateKey.fromHex("0")).toThrow(Error);
+    expect(() => PrivateKey.fromHex("0")).toThrow(ERROR);
+    expect(() => new PrivateKey(decodeHex("0"))).toThrow(ERROR);
   });
 
   it("tests equal", () => {
@@ -49,7 +52,7 @@ describe("test keys", () => {
   it("tests eth key compatibility", () => {
     const ethPrv = PrivateKey.fromHex(PRV_HEX);
     const ethPub = PublicKey.fromHex(PUB_HEX);
-    expect(ethPub.equals(ethPrv.publicKey)).toBe(true);
+    expect(ethPub).toEqual(ethPrv.publicKey);
     expect(ethPub.compressed.toString("hex")).toEqual(
       "0398afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140"
     );
@@ -62,7 +65,7 @@ describe("test keys", () => {
     const k1 = new PrivateKey(two);
     const k2 = new PrivateKey(three);
 
-    expect(k1.multiply(k2.publicKey).equals(k2.multiply(k1.publicKey))).toBe(true);
+    expect(k1.multiply(k2.publicKey)).toEqual(k2.multiply(k1.publicKey));
 
     checkHkdf(
       k1,

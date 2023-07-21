@@ -94,10 +94,13 @@ readonly compressed: Buffer;
 Ephemeral key format in the payload and shared key in the key derivation can be configured as compressed or uncompressed format.
 
 ```ts
+export type SymmetricAlgorithm = "aes-256-gcm" | "xchacha20";
+export type NonceLength = 12 | 16; // bytes. Only for aes-256-gcm
+
 class Config {
   isEphemeralKeyCompressed: boolean = false;
   isHkdfKeyCompressed: boolean = false;
-  symmetricAlgorithm: Algorithm = "aes-256-gcm"; // currently we only support aes-256-gcm
+  symmetricAlgorithm: SymmetricAlgorithm = "aes-256-gcm";
   symmetricNonceLength: NonceLength = 16;
 }
 
@@ -108,10 +111,12 @@ For example, if you set `isEphemeralKeyCompressed = true`, the payload would be 
 
 If you set `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral public key (compressed) + shared public key (compressed)` instead of `ephemeral public key (uncompressed) + shared public key (uncompressed)`.
 
-If you set `symmetricNonceLength = 12`, then the nonce of aes-256-gcm would be 12 bytes.
+If you set `symmetricAlgorithm = "xchacha20"`, plaintext data will encrypted with XChacha20-Poly1305.
+
+If you set `symmetricNonceLength = 12`, then the nonce of aes-256-gcm would be 12 bytes. XChacha20-Poly1305's nonce is always 24 bytes.
 
 For compatibility, make sure different applications share the same configuration.
 
 ## Changelog
 
-See [CHANGELOG.md](./CHANGELOG.md)
+See [CHANGELOG.md](./CHANGELOG.md).
