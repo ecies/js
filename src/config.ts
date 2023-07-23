@@ -1,7 +1,7 @@
 import { COMPRESSED_PUBLIC_KEY_SIZE, UNCOMPRESSED_PUBLIC_KEY_SIZE } from "./consts";
 
-export type SymmetricAlgorithm = "aes-256-gcm";
-export type NonceLength = 12 | 16 | 24; // bytes
+export type SymmetricAlgorithm = "aes-256-gcm" | "xchacha20";
+export type NonceLength = 12 | 16; // bytes. Only for aes-256-gcm
 
 class Config {
   isEphemeralKeyCompressed: boolean = false;
