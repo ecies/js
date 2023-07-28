@@ -1,6 +1,7 @@
 import { ECIES_CONFIG } from "../src/config";
 import { decrypt, encrypt } from "../src/index";
 import { PrivateKey, PublicKey } from "../src/keys";
+import { decodeHex } from "../src/utils";
 
 const TEXT = "helloworld🌍";
 
@@ -19,19 +20,13 @@ function checkHex(sk: PrivateKey) {
 }
 
 describe("test encrypt and decrypt", () => {
-  it("tests encrypt/decrypt buffer", () => {
+  it("tests encrypt/decrypt", () => {
     const prv1 = new PrivateKey();
     check(prv1);
-
-    const prv2 = new PrivateKey();
-    check(prv2, true);
-  });
-
-  it("tests encrypt/decrypt hex", () => {
-    const prv1 = new PrivateKey();
     checkHex(prv1);
 
     const prv2 = new PrivateKey();
+    check(prv2, true);
     checkHex(prv2);
   });
 
@@ -46,12 +41,54 @@ describe("test encrypt and decrypt", () => {
     expect(decrypt(sk.toHex(), enc).toString()).toBe(TEXT);
   });
 
-  it("tests ephemeral key config", () => {
+  it("tests config can be changed", () => {
+    ECIES_CONFIG.isEphemeralKeyCompressed = true;
+    ECIES_CONFIG.isHkdfKeyCompressed = true;
+
+    const prv1 = new PrivateKey();
+    check(prv1);
+
+    const prv2 = new PrivateKey();
+    checkHex(prv2);
+
+    ECIES_CONFIG.isEphemeralKeyCompressed = false;
+    ECIES_CONFIG.isHkdfKeyCompressed = false;
+  });
+
+  it("tests encrypt/decrypt chacha", () => {
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
     ECIES_CONFIG.isEphemeralKeyCompressed = true;
 
     const prv1 = new PrivateKey();
     check(prv1);
 
+    const prv2 = new PrivateKey();
+    checkHex(prv2);
+
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
     ECIES_CONFIG.isEphemeralKeyCompressed = false;
+  });
+
+  it("tests known sk pk chacha", () => {
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
+
+    const sk = PrivateKey.fromHex(
+      "0000000000000000000000000000000000000000000000000000000000000002"
+    );
+    const pk = PublicKey.fromHex(
+      "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5"
+    );
+    const enc = encrypt(pk.toHex(), Buffer.from(TEXT));
+    expect(decrypt(sk.toHex(), enc).toString()).toBe(TEXT);
+
+    const known_enc = decodeHex(
+      "0x04e314abc14398e07974cd50221b682ed5f0629e977345fc03e2047208ee6e279f" +
+        "fb2a6942878d3798c968d89e59c999e082b0598d1b641968c48c8d47c570210d0a" +
+        "b1ade95eeca1080c45366562f9983faa423ee3fd3260757053d5843c5f453e1ee6" +
+        "bb955c8e5d4aee8572139357a091909357a8931b"
+    );
+    expect(decrypt(sk.toHex(), known_enc).toString()).toBe(TEXT);
+
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 });

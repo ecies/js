@@ -1,8 +1,9 @@
 
 # Changelog
 
-## 0.4.1 ~ 0.4.2
+## 0.4.1 ~ 0.4.3
 
+- Fix symmetric encryption internal types
 - Add XChacha20 as an optional encryption backend
 - Add configuration for more compatibility
 - Bump dependencies
