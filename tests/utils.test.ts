@@ -1,15 +1,8 @@
 import { randomBytes } from "crypto";
+import { ECIES_CONFIG, utils } from "../src/index";
+import { deriveKey, isValidPrivateKey } from "../src/utils";
 
-import { ECIES_CONFIG } from "../src/config";
-import {
-  aesDecrypt,
-  aesEncrypt,
-  decodeHex,
-  deriveKey,
-  getValidSecret,
-  isValidPrivateKey,
-  remove0x,
-} from "../src/utils";
+const { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } = utils;
 
 const TEXT = "helloworld🌍";
 

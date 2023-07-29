@@ -1,6 +1,6 @@
-import { ECIES_CONFIG } from "../src/config";
-import { PrivateKey, PublicKey } from "../src/keys";
-import { decodeHex } from "../src/utils";
+import { ECIES_CONFIG, PrivateKey, PublicKey, utils } from "../src/index";
+
+const decodeHex = utils.decodeHex;
 
 const PRV_HEX = "0x95d3c5e483e9b1d4f5fc8e79b2deaf51362980de62dbb082a9a4257eef653d7d";
 const PUB_HEX =

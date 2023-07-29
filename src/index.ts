@@ -33,6 +33,7 @@ export function decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer {
   return aesDecrypt(aesKey, encrypted);
 }
 
+export { ECIES_CONFIG } from "./config";
 export { PrivateKey, PublicKey } from "./keys";
 
 export const utils = {
