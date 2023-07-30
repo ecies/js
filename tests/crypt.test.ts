@@ -1,7 +1,13 @@
-import { ECIES_CONFIG } from "../src/config";
-import { decrypt, encrypt } from "../src/index";
-import { PrivateKey, PublicKey } from "../src/keys";
-import { decodeHex } from "../src/utils";
+import {
+  ECIES_CONFIG,
+  PrivateKey,
+  PublicKey,
+  decrypt,
+  encrypt,
+  utils,
+} from "../src/index";
+
+const decodeHex = utils.decodeHex;
 
 const TEXT = "helloworld🌍";
 
@@ -44,6 +50,7 @@ describe("test encrypt and decrypt", () => {
   it("tests config can be changed", () => {
     ECIES_CONFIG.isEphemeralKeyCompressed = true;
     ECIES_CONFIG.isHkdfKeyCompressed = true;
+    ECIES_CONFIG.symmetricNonceLength = 12;
 
     const prv1 = new PrivateKey();
     check(prv1);
@@ -53,6 +60,7 @@ describe("test encrypt and decrypt", () => {
 
     ECIES_CONFIG.isEphemeralKeyCompressed = false;
     ECIES_CONFIG.isHkdfKeyCompressed = false;
+    ECIES_CONFIG.symmetricNonceLength = 16;
   });
 
   it("tests encrypt/decrypt chacha", () => {

@@ -1,8 +1,9 @@
 
 # Changelog
 
-## 0.4.1 ~ 0.4.3
+## 0.4.1 ~ 0.4.4
 
+- Export config
 - Fix symmetric encryption internal types
 - Add XChacha20 as an optional encryption backend
 - Add configuration for more compatibility
