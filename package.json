@@ -34,7 +34,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@noble/ciphers": "^0.1.4",
+    "@noble/ciphers": "^0.2.0",
     "@noble/curves": "^1.1.0"
   },
   "devDependencies": {
