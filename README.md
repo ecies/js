@@ -56,10 +56,10 @@ Returns: **Buffer**
 
 ```typescript
 static fromHex(hex: string): PrivateKey;
-constructor(secret?: Buffer);
+constructor(secret?: Uint8Array);
 toHex(): string;
-encapsulate(pub: PublicKey): Buffer;
-multiply(pub: PublicKey): Buffer;
+encapsulate(pk: PublicKey): Uint8Array;
+multiply(pub: PublicKey, compressed?: boolean): Uint8Array;
 equals(other: PrivateKey): boolean;
 ```
 
@@ -76,9 +76,9 @@ readonly publicKey: PublicKey;
 
 ```typescript
 static fromHex(hex: string): PublicKey;
-constructor(buffer: Buffer);
+constructor(buffer: Uint8Array);
 toHex(compressed?: boolean): string;
-decapsulate(priv: PrivateKey): Buffer;
+decapsulate(sk: PrivateKey): Uint8Array;
 equals(other: PublicKey): boolean;
 ```
 
@@ -111,9 +111,9 @@ For example, if you set `isEphemeralKeyCompressed = true`, the payload would be 
 
 If you set `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral public key (compressed) + shared public key (compressed)` instead of `ephemeral public key (uncompressed) + shared public key (uncompressed)`.
 
-If you set `symmetricAlgorithm = "xchacha20"`, plaintext data will encrypted with XChacha20-Poly1305.
+If you set `symmetricAlgorithm = "xchacha20"`, plaintext data will encrypted with XChaCha20-Poly1305.
 
-If you set `symmetricNonceLength = 12`, then the nonce of aes-256-gcm would be 12 bytes. XChacha20-Poly1305's nonce is always 24 bytes.
+If you set `symmetricNonceLength = 12`, then the nonce of aes-256-gcm would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes.
 
 For compatibility, make sure different applications share the same configuration.
 

@@ -20,6 +20,7 @@ function check(sk: PrivateKey, compressed: boolean = false) {
     expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
   }
 }
+
 function checkHex(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
   expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
@@ -89,13 +90,15 @@ describe("test encrypt and decrypt", () => {
     const enc = encrypt(pk.toHex(), Buffer.from(TEXT));
     expect(decrypt(sk.toHex(), enc).toString()).toBe(TEXT);
 
-    const known_enc = decodeHex(
-      "0x04e314abc14398e07974cd50221b682ed5f0629e977345fc03e2047208ee6e279f" +
-        "fb2a6942878d3798c968d89e59c999e082b0598d1b641968c48c8d47c570210d0a" +
-        "b1ade95eeca1080c45366562f9983faa423ee3fd3260757053d5843c5f453e1ee6" +
-        "bb955c8e5d4aee8572139357a091909357a8931b"
+    const known = Buffer.from(
+      decodeHex(
+        "0x04e314abc14398e07974cd50221b682ed5f0629e977345fc03e2047208ee6e279f" +
+          "fb2a6942878d3798c968d89e59c999e082b0598d1b641968c48c8d47c570210d0a" +
+          "b1ade95eeca1080c45366562f9983faa423ee3fd3260757053d5843c5f453e1ee6" +
+          "bb955c8e5d4aee8572139357a091909357a8931b"
+      )
     );
-    expect(decrypt(sk.toHex(), known_enc).toString()).toBe(TEXT);
+    expect(decrypt(sk.toHex(), known).toString()).toBe(TEXT);
 
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });

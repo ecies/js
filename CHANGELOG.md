@@ -1,11 +1,12 @@
 
 # Changelog
 
-## 0.4.1 ~ 0.4.4
+## 0.4.1 ~ 0.4.5
 
+- Revamp browser compatibility
 - Export config
 - Fix symmetric encryption internal types
-- Add XChacha20 as an optional encryption backend
+- Add XChaCha20 as an optional encryption backend
 - Add configuration for more compatibility
 - Bump dependencies
 
