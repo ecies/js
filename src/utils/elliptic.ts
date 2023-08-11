@@ -1,28 +1,37 @@
+import { concatBytes } from "@noble/ciphers/utils";
+import { randomBytes } from "@noble/ciphers/webcrypto/utils";
 import { secp256k1 } from "@noble/curves/secp256k1";
-import { randomBytes } from "crypto";
 
 import { SECRET_KEY_LENGTH } from "../consts";
+import { deriveKey } from "./symmetric";
 
-export function isValidPrivateKey(secret: Buffer) {
+export function isValidPrivateKey(secret: Uint8Array) {
   return secp256k1.utils.isValidPrivateKey(secret);
 }
 
-export function getValidSecret(): Buffer {
-  let key: Buffer;
+export function getValidSecret(): Uint8Array {
+  let key: Uint8Array;
   do {
     key = randomBytes(SECRET_KEY_LENGTH);
   } while (!isValidPrivateKey(key));
   return key;
 }
 
-export function getPublicKey(secret: Buffer): Buffer {
-  return Buffer.from(secp256k1.getPublicKey(secret));
+export function getPublicKey(secret: Uint8Array): Uint8Array {
+  return secp256k1.getPublicKey(secret);
 }
 
 export function getSharedPoint(
-  skRaw: Buffer | bigint,
-  pkRaw: Buffer,
+  skRaw: Uint8Array | bigint,
+  pkRaw: Uint8Array,
   compressed: boolean
-): Buffer {
-  return Buffer.from(secp256k1.getSharedSecret(skRaw, pkRaw, compressed));
+): Uint8Array {
+  return secp256k1.getSharedSecret(skRaw, pkRaw, compressed);
+}
+
+export function getSharedKey(
+  ephemeralSenderPoint: Uint8Array,
+  sharedPoint: Uint8Array
+): Uint8Array {
+  return deriveKey(concatBytes(ephemeralSenderPoint, sharedPoint));
 }

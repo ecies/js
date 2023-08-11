@@ -1,8 +1,8 @@
 import { isHkdfKeyCompressed } from "../config";
 import {
   decodeHex,
-  deriveKey,
   getPublicKey,
+  getSharedKey,
   getSharedPoint,
   getValidSecret,
   isValidPrivateKey,
@@ -17,30 +17,33 @@ export default class PrivateKey {
   public readonly secret: Buffer;
   public readonly publicKey: PublicKey;
 
-  constructor(secret?: Buffer) {
-    this.secret = secret === undefined ? getValidSecret() : secret;
-    if (!isValidPrivateKey(this.secret)) {
+  constructor(secret?: Uint8Array) {
+    const sk = secret === undefined ? getValidSecret() : secret;
+    if (!isValidPrivateKey(sk)) {
       throw new Error("Invalid private key");
     }
-    this.publicKey = new PublicKey(getPublicKey(this.secret));
+    this.secret = Buffer.from(sk);
+    this.publicKey = new PublicKey(getPublicKey(sk));
   }
 
   public toHex(): string {
     return this.secret.toString("hex");
   }
 
-  public encapsulate(pub: PublicKey): Buffer {
-    let master: Buffer;
-
+  public encapsulate(pk: PublicKey): Uint8Array {
+    let senderPoint: Uint8Array;
+    let sharedPoint: Uint8Array;
     if (isHkdfKeyCompressed()) {
-      master = Buffer.concat([this.publicKey.compressed, this.multiply(pub, true)]);
+      senderPoint = this.publicKey.compressed;
+      sharedPoint = this.multiply(pk, true);
     } else {
-      master = Buffer.concat([this.publicKey.uncompressed, this.multiply(pub, false)]);
+      senderPoint = this.publicKey.uncompressed;
+      sharedPoint = this.multiply(pk, false);
     }
-    return deriveKey(master);
+    return getSharedKey(senderPoint, sharedPoint);
   }
 
-  public multiply(pub: PublicKey, compressed: boolean = false): Buffer {
+  public multiply(pub: PublicKey, compressed: boolean = false): Uint8Array {
     return getSharedPoint(this.secret, pub.compressed, compressed);
   }
 

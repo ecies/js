@@ -1,6 +1,6 @@
 import { isHkdfKeyCompressed } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, ONE } from "../consts";
-import { decodeHex, deriveKey, getSharedPoint } from "../utils";
+import { decodeHex, getSharedKey, getSharedPoint } from "../utils";
 import PrivateKey from "./PrivateKey";
 
 export default class PublicKey {
@@ -8,8 +8,9 @@ export default class PublicKey {
     const decoded = decodeHex(hex);
     if (decoded.length === ETH_PUBLIC_KEY_SIZE) {
       // eth public key
-      const prefix: Buffer = Buffer.from([0x04]);
-      const fixed: Buffer = Buffer.concat([prefix, decoded]);
+      const fixed = new Uint8Array(1 + decoded.length);
+      fixed.set([0x04]);
+      fixed.set(decoded, 1);
       return new PublicKey(fixed);
     }
     return new PublicKey(decoded);
@@ -18,9 +19,9 @@ export default class PublicKey {
   public readonly uncompressed: Buffer;
   public readonly compressed: Buffer;
 
-  constructor(buffer: Buffer) {
-    this.uncompressed = getSharedPoint(ONE, buffer, false);
-    this.compressed = getSharedPoint(ONE, buffer, true);
+  constructor(buffer: Uint8Array) {
+    this.uncompressed = Buffer.from(getSharedPoint(ONE, buffer, false));
+    this.compressed = Buffer.from(getSharedPoint(ONE, buffer, true));
   }
 
   public toHex(compressed: boolean = true): string {
@@ -31,15 +32,17 @@ export default class PublicKey {
     }
   }
 
-  public decapsulate(priv: PrivateKey): Buffer {
-    let master: Buffer;
-
+  public decapsulate(sk: PrivateKey): Uint8Array {
+    let senderPoint: Uint8Array;
+    let sharedPoint: Uint8Array;
     if (isHkdfKeyCompressed()) {
-      master = Buffer.concat([this.compressed, priv.multiply(this, true)]);
+      senderPoint = this.compressed;
+      sharedPoint = sk.multiply(this, true);
     } else {
-      master = Buffer.concat([this.uncompressed, priv.multiply(this, false)]);
+      senderPoint = this.uncompressed;
+      sharedPoint = sk.multiply(this, false);
     }
-    return deriveKey(master);
+    return getSharedKey(senderPoint, sharedPoint);
   }
 
   public equals(other: PublicKey): boolean {
