@@ -24,15 +24,15 @@ Run the code below with `npx ts-node`.
 
 ```typescript
 > import { encrypt, decrypt, PrivateKey } from 'eciesjs'
-> const k1 = new PrivateKey()
-> const data = Buffer.from('this is a test')
-> decrypt(k1.toHex(), encrypt(k1.publicKey.toHex(), data)).toString()
-'this is a test'
+> const sk = new PrivateKey()
+> const data = Buffer.from('hello world🌍')
+> decrypt(sk.toHex(), encrypt(sk.publicKey.toHex(), data)).toString()
+'hello world🌍'
 ```
 
 ## API
 
-### `encrypt(receiverRawPK: string | Buffer, msg: Buffer): Buffer`
+### `encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Buffer`
 
 Parameters:
 
@@ -41,7 +41,7 @@ Parameters:
 
 Returns: **Buffer**
 
-### `decrypt(receiverRawSK: string | Buffer, msg: Buffer): Buffer`
+### `decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Buffer`
 
 Parameters:
 
@@ -59,7 +59,7 @@ static fromHex(hex: string): PrivateKey;
 constructor(secret?: Uint8Array);
 toHex(): string;
 encapsulate(pk: PublicKey): Uint8Array;
-multiply(pub: PublicKey, compressed?: boolean): Uint8Array;
+multiply(pk: PublicKey, compressed?: boolean): Uint8Array;
 equals(other: PrivateKey): boolean;
 ```
 

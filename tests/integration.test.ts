@@ -1,5 +1,6 @@
 import { HttpsProxyAgent } from "https-proxy-agent";
 import fetch, { RequestInit } from "node-fetch";
+
 import { PrivateKey, decrypt, encrypt, utils } from "../src/index";
 
 const decodeHex = utils.decodeHex;
@@ -9,23 +10,21 @@ const TEXT = "helloworld🌍";
 
 describe("test encrypt and decrypt", () => {
   it("tests encryption against python version", async () => {
-    const prv = new PrivateKey();
+    const sk = new PrivateKey();
     const res = await eciesApi(PYTHON_BACKEND, {
       data: TEXT,
-      pub: prv.publicKey.toHex(),
+      pub: sk.publicKey.toHex(),
     });
-    const encryptedKnown = decodeHex(await res.text());
-    const decrypted = decrypt(prv.toHex(), Buffer.from(encryptedKnown));
-
+    const decrypted = decrypt(sk.toHex(), decodeHex(await res.text()));
     expect(decrypted.toString()).toEqual(TEXT);
   });
 
   it("tests decryption against python version", async () => {
-    const prv = new PrivateKey();
-    const encrypted = encrypt(prv.publicKey.toHex(), Buffer.from(TEXT));
+    const sk = new PrivateKey();
+    const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
     const res = await eciesApi(PYTHON_BACKEND, {
       data: encrypted.toString("hex"),
-      prv: prv.toHex(),
+      prv: sk.toHex(),
     });
     expect(TEXT).toEqual(await res.text());
   });
