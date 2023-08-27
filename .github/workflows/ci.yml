@@ -18,13 +18,14 @@ jobs:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
         with:
-          version: "8.6.12"
+          version: "latest"
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - run: pnpm install && npm test -- --bail --ci
+      - run: pnpm install
+      - run: npm test -- --bail --ci
       - uses: codecov/codecov-action@v3
       - run: npm run build && npm publish --dry-run

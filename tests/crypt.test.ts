@@ -28,13 +28,13 @@ function checkHex(sk: PrivateKey) {
 
 describe("test encrypt and decrypt", () => {
   it("tests encrypt/decrypt", () => {
-    const prv1 = new PrivateKey();
-    check(prv1);
-    checkHex(prv1);
+    const sk1 = new PrivateKey();
+    check(sk1);
+    checkHex(sk1);
 
-    const prv2 = new PrivateKey();
-    check(prv2, true);
-    checkHex(prv2);
+    const sk2 = new PrivateKey();
+    check(sk2, true);
+    checkHex(sk2);
   });
 
   it("tests known sk pk", () => {
@@ -53,11 +53,11 @@ describe("test encrypt and decrypt", () => {
     ECIES_CONFIG.isHkdfKeyCompressed = true;
     ECIES_CONFIG.symmetricNonceLength = 12;
 
-    const prv1 = new PrivateKey();
-    check(prv1);
+    const sk1 = new PrivateKey();
+    check(sk1);
 
-    const prv2 = new PrivateKey();
-    checkHex(prv2);
+    const sk2 = new PrivateKey();
+    checkHex(sk2);
 
     ECIES_CONFIG.isEphemeralKeyCompressed = false;
     ECIES_CONFIG.isHkdfKeyCompressed = false;
@@ -68,11 +68,11 @@ describe("test encrypt and decrypt", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
     ECIES_CONFIG.isEphemeralKeyCompressed = true;
 
-    const prv1 = new PrivateKey();
-    check(prv1);
+    const sk1 = new PrivateKey();
+    check(sk1);
 
-    const prv2 = new PrivateKey();
-    checkHex(prv2);
+    const sk2 = new PrivateKey();
+    checkHex(sk2);
 
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
     ECIES_CONFIG.isEphemeralKeyCompressed = false;

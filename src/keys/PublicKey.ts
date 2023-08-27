@@ -1,3 +1,5 @@
+import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+
 import { isHkdfKeyCompressed } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, ONE } from "../consts";
 import { decodeHex, getSharedKey, getSharedPoint } from "../utils";
@@ -16,7 +18,7 @@ export default class PublicKey {
     return new PublicKey(decoded);
   }
 
-  public readonly uncompressed: Buffer;
+  public readonly uncompressed: Buffer; // TODO: Uint8Array
   public readonly compressed: Buffer;
 
   constructor(buffer: Uint8Array) {
@@ -26,9 +28,9 @@ export default class PublicKey {
 
   public toHex(compressed: boolean = true): string {
     if (compressed) {
-      return this.compressed.toString("hex");
+      return bytesToHex(this.compressed);
     } else {
-      return this.uncompressed.toString("hex");
+      return bytesToHex(this.uncompressed);
     }
   }
 
@@ -46,6 +48,6 @@ export default class PublicKey {
   }
 
   public equals(other: PublicKey): boolean {
-    return this.uncompressed.equals(other.uncompressed);
+    return equalBytes(this.uncompressed, other.uncompressed);
   }
 }

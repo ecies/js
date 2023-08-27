@@ -1,7 +1,7 @@
+import { concatBytes } from "@noble/ciphers/utils";
 import { aes_256_gcm as aes } from "@noble/ciphers/webcrypto/aes";
 import { randomBytes } from "@noble/ciphers/webcrypto/utils";
 
-import { concatBytes } from "@noble/ciphers/utils";
 import { decodeHex } from "../../src/utils";
 import { aes256gcm } from "../../src/utils/compat";
 

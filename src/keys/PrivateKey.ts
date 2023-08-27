@@ -1,3 +1,5 @@
+import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+
 import { isHkdfKeyCompressed } from "../config";
 import {
   decodeHex,
@@ -14,7 +16,7 @@ export default class PrivateKey {
     return new PrivateKey(decodeHex(hex));
   }
 
-  public readonly secret: Buffer;
+  public readonly secret: Buffer; // TODO: Uint8Array
   public readonly publicKey: PublicKey;
 
   constructor(secret?: Uint8Array) {
@@ -27,7 +29,7 @@ export default class PrivateKey {
   }
 
   public toHex(): string {
-    return this.secret.toString("hex");
+    return bytesToHex(this.secret);
   }
 
   public encapsulate(pk: PublicKey): Uint8Array {
@@ -43,11 +45,11 @@ export default class PrivateKey {
     return getSharedKey(senderPoint, sharedPoint);
   }
 
-  public multiply(pub: PublicKey, compressed: boolean = false): Uint8Array {
-    return getSharedPoint(this.secret, pub.compressed, compressed);
+  public multiply(pk: PublicKey, compressed: boolean = false): Uint8Array {
+    return getSharedPoint(this.secret, pk.compressed, compressed);
   }
 
   public equals(other: PrivateKey): boolean {
-    return this.secret.equals(other.secret);
+    return equalBytes(this.secret, other.secret);
   }
 }

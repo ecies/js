@@ -31,13 +31,12 @@ describe("test keys", () => {
   });
 
   it("tests equal", () => {
-    const prv = new PrivateKey();
-    const pub = PublicKey.fromHex(prv.publicKey.toHex(false));
+    const sk = new PrivateKey();
+    const pk = PublicKey.fromHex(sk.publicKey.toHex(false));
 
-    const isPubEqual = pub.uncompressed.equals(prv.publicKey.uncompressed);
-    expect(isPubEqual).toBe(true);
+    expect(pk.equals(sk.publicKey)).toBe(true);
 
-    const isFromHexWorking = prv.equals(PrivateKey.fromHex(prv.toHex()));
+    const isFromHexWorking = sk.equals(PrivateKey.fromHex(sk.toHex()));
     expect(isFromHexWorking).toBe(true);
   });
 
@@ -50,10 +49,10 @@ describe("test keys", () => {
         "a4e28911fcf83ab1f457a30b4959efc4b9306f514a4c3711a16a80e3b47eb58b"
     );
     expect(ethPub).toEqual(ethPrv.publicKey);
-    expect(ethPub.compressed.toString("hex")).toEqual(
+    expect(ethPub.toHex(true)).toEqual(
       "0398afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140"
     );
-    expect(ethPub.uncompressed.toString("hex")).toEqual(
+    expect(ethPub.toHex(false)).toEqual(
       "0498afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140" +
         "a4e28911fcf83ab1f457a30b4959efc4b9306f514a4c3711a16a80e3b47eb58b"
     );
