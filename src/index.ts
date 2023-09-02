@@ -41,6 +41,7 @@ export { ECIES_CONFIG } from "./config";
 export { PrivateKey, PublicKey } from "./keys";
 
 export const utils = {
+  // TODO: review these before 0.5.0
   aesDecrypt,
   aesEncrypt,
   decodeHex,

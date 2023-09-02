@@ -1,34 +1,33 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
 import { isHkdfKeyCompressed } from "../config";
-import { ETH_PUBLIC_KEY_SIZE, ONE } from "../consts";
-import { decodeHex, getSharedKey, getSharedPoint } from "../utils";
-import PrivateKey from "./PrivateKey";
+import { convertPublicKeyFormat, getSharedKey, hexToPublicKey } from "../utils";
+import { PrivateKey } from "./PrivateKey";
 
-export default class PublicKey {
+export class PublicKey {
   public static fromHex(hex: string): PublicKey {
-    const decoded = decodeHex(hex);
-    if (decoded.length === ETH_PUBLIC_KEY_SIZE) {
-      // eth public key
-      const fixed = new Uint8Array(1 + decoded.length);
-      fixed.set([0x04]);
-      fixed.set(decoded, 1);
-      return new PublicKey(fixed);
-    }
-    return new PublicKey(decoded);
+    return new PublicKey(hexToPublicKey(hex));
   }
 
-  public readonly uncompressed: Buffer; // TODO: Uint8Array
-  public readonly compressed: Buffer;
+  private readonly data: Uint8Array; // always compressed if secp256k1
 
-  constructor(buffer: Uint8Array) {
-    this.uncompressed = Buffer.from(getSharedPoint(ONE, buffer, false));
-    this.compressed = Buffer.from(getSharedPoint(ONE, buffer, true));
+  get uncompressed(): Buffer {
+    // TODO: Uint8Array
+    return Buffer.from(convertPublicKeyFormat(this.data, false));
+  }
+
+  get compressed(): Buffer {
+    // TODO: Uint8Array
+    return Buffer.from(this.data);
+  }
+
+  constructor(data: Uint8Array) {
+    this.data = convertPublicKeyFormat(data, true);
   }
 
   public toHex(compressed: boolean = true): string {
     if (compressed) {
-      return bytesToHex(this.compressed);
+      return bytesToHex(this.data);
     } else {
       return bytesToHex(this.uncompressed);
     }
@@ -38,7 +37,7 @@ export default class PublicKey {
     let senderPoint: Uint8Array;
     let sharedPoint: Uint8Array;
     if (isHkdfKeyCompressed()) {
-      senderPoint = this.compressed;
+      senderPoint = this.data;
       sharedPoint = sk.multiply(this, true);
     } else {
       senderPoint = this.uncompressed;
@@ -48,6 +47,6 @@ export default class PublicKey {
   }
 
   public equals(other: PublicKey): boolean {
-    return equalBytes(this.uncompressed, other.uncompressed);
+    return equalBytes(this.data, other.data);
   }
 }

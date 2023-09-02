@@ -3,6 +3,7 @@
 
 ## 0.4.1 ~ 0.4.5
 
+- Support curve25519 (x25519 and ed25519) tentatively
 - Revamp browser compatibility
 - Export config
 - Fix symmetric encryption internal types
@@ -12,8 +13,8 @@
 
 ## 0.4.0
 
-- Change secp256k1 library to [noble-curves](https://github.com/paulmillr/noble-curves), which is [audited](https://github.com/paulmillr/noble-curves/tree/main/audit)
-- Change hash library to [noble-hashes](https://github.com/paulmillr/noble-hashes)
+- Change secp256k1 library to audited [noble-curves](https://github.com/paulmillr/noble-curves)
+- Change hash library to audited [noble-hashes](https://github.com/paulmillr/noble-hashes)
 - Change test library to [jest](https://jestjs.io/)
 - Bump dependencies
 - Drop Node 14 support

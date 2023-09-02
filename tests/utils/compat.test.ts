@@ -11,22 +11,22 @@ const encoder = new TextEncoder();
 describe("test compat utils", () => {
   const msg = encoder.encode(TEXT);
 
-  async function testRandom() {
+  async function testRandom(aad?: Uint8Array) {
     const key = randomBytes();
     const nonce = randomBytes(16);
-    // @ts-ignore
-    const noble = aes(key, nonce);
-    const compat = aes256gcm(key, nonce);
+    const noble = aes(key, nonce, aad);
+    const compat = aes256gcm(key, nonce, aad);
     // same encryption
     expect(await noble.encrypt(msg)).toStrictEqual(compat.encrypt(msg));
-    // noble encrypts compat decrypts
+    // noble encrypts, compat decrypts
     expect(compat.decrypt(await noble.encrypt(msg))).toStrictEqual(msg);
-    // noble decrypts compat encrypts
+    // noble decrypts, compat encrypts
     expect(await noble.decrypt(compat.encrypt(msg))).toStrictEqual(msg);
   }
 
   it("test aes random", async () => {
     await testRandom();
+    await testRandom(randomBytes(16));
   });
 
   it("test aes known key", async () => {
@@ -38,9 +38,10 @@ describe("test compat utils", () => {
     const encrypted = decodeHex("02d2ffed93b856f148b9");
     const known = concatBytes(encrypted, tag);
     const msg = encoder.encode("helloworld");
+    const aad = Uint8Array.from([]);
 
-    const noble = aes(key, nonce);
-    const compat = aes256gcm(key, nonce, Uint8Array.from([]));
+    const noble = aes(key, nonce, aad);
+    const compat = aes256gcm(key, nonce, aad);
     expect(compat.decrypt(known)).toStrictEqual(msg);
     expect(await noble.decrypt(known)).toStrictEqual(compat.decrypt(known));
   });
