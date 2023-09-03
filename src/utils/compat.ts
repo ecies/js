@@ -4,7 +4,6 @@ import { createCipheriv, createDecipheriv } from "crypto";
 import { AEAD_TAG_LENGTH } from "../consts";
 
 // make node's aes compatible with `@noble/ciphers`
-// the implementation of `@noble/ciphers` does not support aad yet
 export function aes256gcm(
   key: Uint8Array,
   nonce: Uint8Array,
@@ -12,6 +11,9 @@ export function aes256gcm(
 ): Cipher {
   const encrypt = (plainText: Uint8Array) => {
     const cipher = createCipheriv("aes-256-gcm", key, nonce);
+    if (AAD) {
+      cipher.setAAD(AAD);
+    }
     const updated = cipher.update(plainText);
     const finalized = cipher.final();
     const tag = cipher.getAuthTag();
@@ -23,6 +25,9 @@ export function aes256gcm(
     const tag = cipherText.subarray(-AEAD_TAG_LENGTH);
 
     const decipher = createDecipheriv("aes-256-gcm", key, nonce);
+    if (AAD) {
+      decipher.setAAD(AAD);
+    }
     decipher.setAuthTag(tag);
     const updated = decipher.update(encrypted);
     const finalized = decipher.final();

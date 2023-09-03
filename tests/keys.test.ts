@@ -7,7 +7,7 @@ two[31] = 2;
 const three = new Uint8Array(32);
 three[31] = 3;
 
-describe("test keys", () => {
+describe("test secp256k1 keys", () => {
   function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
     const derived1 = k1.encapsulate(k2.publicKey);
     const derived2 = k1.publicKey.decapsulate(k2);
