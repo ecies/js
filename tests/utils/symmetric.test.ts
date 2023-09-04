@@ -51,7 +51,7 @@ describe("test random symmetric", () => {
 });
 
 describe("test known symmetric", () => {
-  it("tests hkdf with know key", () => {
+  it("tests hkdf", () => {
     const knownKey = Uint8Array.from(
       decodeHex("0x8da4e775a563c18f715f802a063c5a31b8a11f5c5ee1879ec3454e5f3c738d2d")
     );
@@ -60,7 +60,7 @@ describe("test known symmetric", () => {
     );
   });
 
-  it("tests xchacha20 decrypt with known key", () => {
+  it("tests xchacha20 decrypt", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
     const key = decodeHex(

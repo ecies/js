@@ -3,7 +3,7 @@ import { createCipheriv, createDecipheriv } from "crypto";
 
 import { AEAD_TAG_LENGTH } from "../consts";
 
-// make node's aes compatible with `@noble/ciphers`
+// make `node:crypto`'s aes compatible with `@noble/ciphers`
 export function aes256gcm(
   key: Uint8Array,
   nonce: Uint8Array,
@@ -16,8 +16,7 @@ export function aes256gcm(
     }
     const updated = cipher.update(plainText);
     const finalized = cipher.final();
-    const tag = cipher.getAuthTag();
-    return concatBytes(updated, finalized, tag);
+    return concatBytes(updated, finalized, cipher.getAuthTag());
   };
 
   const decrypt = (cipherText: Uint8Array) => {

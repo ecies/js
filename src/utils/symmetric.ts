@@ -8,6 +8,33 @@ import { symmetricAlgorithm, symmetricNonceLength } from "../config";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts";
 import { aes256gcm } from "./compat";
 
+export function aesEncrypt(key: Uint8Array, plainText: Uint8Array): Uint8Array {
+  // TODO: Rename to symEncrypt
+  return _exec(true, key, plainText);
+}
+
+export function aesDecrypt(key: Uint8Array, cipherText: Uint8Array): Uint8Array {
+  // TODO: Rename to symDecrypt
+  return _exec(false, key, cipherText);
+}
+
+export function deriveKey(master: Uint8Array): Uint8Array {
+  // 32 bytes shared secret for aes and xchacha20
+  return hkdf(sha256, master, undefined, undefined, 32);
+}
+
+function _exec(is_encryption: boolean, key: Uint8Array, data: Uint8Array): Uint8Array {
+  const algorithm = symmetricAlgorithm();
+  const callback = is_encryption ? _encrypt : _decrypt;
+  if (algorithm === "aes-256-gcm") {
+    return callback(aes256gcm, key, data, symmetricNonceLength());
+  } else if (algorithm === "xchacha20") {
+    return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH);
+  } else {
+    throw new Error("Not implemented");
+  }
+}
+
 function _encrypt(
   func: (key: Uint8Array, nonce: Uint8Array, AAD?: Uint8Array) => Cipher,
   key: Uint8Array,
@@ -37,33 +64,4 @@ function _decrypt(
   const decipher = func(key, Uint8Array.from(nonce)); // to reset byteOffset
   const ciphered = concatBytes(encrypted, tag);
   return decipher.decrypt(ciphered);
-}
-
-export function aesEncrypt(key: Uint8Array, plainText: Uint8Array): Uint8Array {
-  // TODO: Rename to symEncrypt
-  const algorithm = symmetricAlgorithm();
-  if (algorithm === "aes-256-gcm") {
-    return _encrypt(aes256gcm, key, plainText, symmetricNonceLength());
-  } else if (algorithm === "xchacha20") {
-    return _encrypt(xchacha20, key, plainText, XCHACHA20_NONCE_LENGTH);
-  } else {
-    throw new Error("Not implemented");
-  }
-}
-
-export function aesDecrypt(key: Uint8Array, cipherText: Uint8Array): Uint8Array {
-  // TODO: Rename to symDecrypt
-  const algorithm = symmetricAlgorithm();
-  if (algorithm === "aes-256-gcm") {
-    return _decrypt(aes256gcm, key, cipherText, symmetricNonceLength());
-  } else if (algorithm === "xchacha20") {
-    return _decrypt(xchacha20, key, cipherText, XCHACHA20_NONCE_LENGTH);
-  } else {
-    throw new Error("Not implemented");
-  }
-}
-
-export function deriveKey(master: Uint8Array): Uint8Array {
-  // 32 bytes shared secret for aes and chacha20
-  return hkdf(sha256, master, undefined, undefined, 32);
 }

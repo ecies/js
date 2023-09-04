@@ -137,9 +137,9 @@ If you set `isHkdfKeyCompressed = true`, the hkdf key would be derived from `eph
 
 ### Symmetric cipher configuration
 
-If you set `symmetricAlgorithm = "xchacha20"`, plaintext data will encrypted with XChaCha20-Poly1305.
+If you set `symmetricAlgorithm = "xchacha20"`, plaintext data would be encrypted with XChaCha20-Poly1305.
 
-If you set `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes.
+If you set `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes regardless of `symmetricNonceLength`.
 
 ## Security Audit
 

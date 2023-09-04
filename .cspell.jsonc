@@ -24,6 +24,7 @@
     "Prv",
     "querystring",
     "secp256k1",
+    "xchacha",
     "xchacha20"
   ],
   // flagWords - list of words to be always considered incorrect

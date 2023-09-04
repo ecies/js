@@ -8,8 +8,8 @@ const decodeHex = utils.decodeHex;
 const PYTHON_BACKEND = "https://eciespydemo-1-d5397785.deta.app/";
 const TEXT = "helloworld🌍";
 
-describe("test encrypt and decrypt", () => {
-  it("tests encryption against python version", async () => {
+describe("test encrypt and decrypt against python version", () => {
+  it("tests encrypt", async () => {
     const sk = new PrivateKey();
     const res = await eciesApi(PYTHON_BACKEND, {
       data: TEXT,
@@ -19,7 +19,7 @@ describe("test encrypt and decrypt", () => {
     expect(decrypted.toString()).toEqual(TEXT);
   });
 
-  it("tests decryption against python version", async () => {
+  it("tests decrypt", async () => {
     const sk = new PrivateKey();
     const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
     const res = await eciesApi(PYTHON_BACKEND, {
