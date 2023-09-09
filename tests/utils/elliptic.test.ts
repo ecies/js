@@ -4,7 +4,7 @@ import { decodeHex, getSharedPoint, isValidPrivateKey } from "../../src/utils/";
 const { getValidSecret } = utils;
 
 describe("test random elliptic", () => {
-  it("should generate valid secret", () => {
+  it("generates valid secret", () => {
     const key = getValidSecret();
     expect(isValidPrivateKey(key)).toBe(true);
   });
@@ -12,8 +12,9 @@ describe("test random elliptic", () => {
 
 describe("test known elliptic", () => {
   function testKnown(sk: string, pk: string, shared: string) {
-    const sharedPoint = getSharedPoint(decodeHex(sk), decodeHex(pk));
-    expect(sharedPoint).toStrictEqual(decodeHex(shared));
+    expect(getSharedPoint(decodeHex(sk), decodeHex(pk))).toStrictEqual(
+      decodeHex(shared)
+    );
   }
 
   it("tests x25519", () => {

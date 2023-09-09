@@ -8,7 +8,7 @@ import { aes256gcm } from "../../src/utils/compat";
 const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();
 
-describe("test compat utils", () => {
+describe("test random compat", () => {
   const msg = encoder.encode(TEXT);
 
   async function testRandom(aad?: Uint8Array) {
@@ -24,12 +24,14 @@ describe("test compat utils", () => {
     expect(await noble.decrypt(compat.encrypt(msg))).toStrictEqual(msg);
   }
 
-  it("test aes random", async () => {
+  it("tests aes", async () => {
     await testRandom();
     await testRandom(randomBytes(16));
   });
+});
 
-  it("test aes known key", async () => {
+describe("test known compat", () => {
+  it("tests aes", async () => {
     const key = decodeHex(
       "0000000000000000000000000000000000000000000000000000000000000000"
     );
@@ -43,6 +45,6 @@ describe("test compat utils", () => {
     const noble = aes(key, nonce, aad);
     const compat = aes256gcm(key, nonce, aad);
     expect(compat.decrypt(known)).toStrictEqual(msg);
-    expect(await noble.decrypt(known)).toStrictEqual(compat.decrypt(known));
+    expect(await noble.decrypt(known)).toStrictEqual(msg);
   });
 });

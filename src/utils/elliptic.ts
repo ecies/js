@@ -17,9 +17,9 @@ export function getValidSecret(): Uint8Array {
 }
 
 export function isValidPrivateKey(secret: Uint8Array): boolean {
-  // only key in (0, group order) is valid on secp256k1
-  // any 32-byte key is valid on curve25519
-  return toCurve(
+  // on secp256k1: only key ∈ (0, group order) is valid
+  // on curve25519: any 32-byte key is valid
+  return _exec(
     (curve) => curve.utils.isValidPrivateKey(secret),
     () => true,
     () => true
@@ -27,7 +27,7 @@ export function isValidPrivateKey(secret: Uint8Array): boolean {
 }
 
 export function getPublicKey(secret: Uint8Array): Uint8Array {
-  return toCurve(
+  return _exec(
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret)
@@ -35,43 +35,44 @@ export function getPublicKey(secret: Uint8Array): Uint8Array {
 }
 
 export function getSharedKey(
-  ephemeralSenderPoint: Uint8Array,
+  ephemeralPoint: Uint8Array,
   sharedPoint: Uint8Array
 ): Uint8Array {
-  return deriveKey(concatBytes(ephemeralSenderPoint, sharedPoint));
+  return deriveKey(concatBytes(ephemeralPoint, sharedPoint));
 }
 
 export function getSharedPoint(
-  skRaw: Uint8Array,
-  pkRaw: Uint8Array,
+  sk: Uint8Array,
+  pk: Uint8Array,
   compressed?: boolean
 ): Uint8Array {
-  return toCurve(
-    (curve) => curve.getSharedSecret(skRaw, pkRaw, compressed),
-    (curve) => curve.getSharedSecret(skRaw, pkRaw),
+  return _exec(
+    (curve) => curve.getSharedSecret(sk, pk, compressed),
+    (curve) => curve.getSharedSecret(sk, pk),
     (curve) => {
-      // Note: scalar is hashed from skRaw
-      const { scalar } = curve.utils.getExtendedPublicKey(skRaw);
-      const point = curve.ExtendedPoint.fromHex(pkRaw).multiply(scalar);
+      // Note: scalar is hashed from sk
+      const { scalar } = curve.utils.getExtendedPublicKey(sk);
+      const point = curve.ExtendedPoint.fromHex(pk).multiply(scalar);
       return point.toRawBytes();
     }
   );
 }
 
 export function convertPublicKeyFormat(
-  pkRaw: Uint8Array,
+  pk: Uint8Array,
   compressed: boolean
 ): Uint8Array {
-  return toCurve(
-    (curve) => curve.getSharedSecret(BigInt(1), pkRaw, compressed), // only for secp256k1
-    () => pkRaw,
-    () => pkRaw
+  // only for secp256k1
+  return _exec(
+    (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
+    () => pk,
+    () => pk
   );
 }
 
 export function hexToPublicKey(hex: string): Uint8Array {
   const decoded = decodeHex(hex);
-  return toCurve(
+  return _exec(
     () => {
       if (decoded.length === ETH_PUBLIC_KEY_SIZE) {
         const fixed = new Uint8Array(1 + decoded.length);
@@ -86,7 +87,7 @@ export function hexToPublicKey(hex: string): Uint8Array {
   );
 }
 
-function toCurve<T>(
+function _exec<T>(
   secp256k1Callback: (curve: typeof secp256k1) => T,
   x25519Callback: (curve: typeof x25519) => T,
   ed25519Callback: (curve: typeof ed25519) => T

@@ -11,22 +11,22 @@ const decodeHex = utils.decodeHex;
 
 const TEXT = "helloworld🌍";
 
-function check(sk: PrivateKey, compressed: boolean = false) {
-  if (compressed) {
-    const encrypted = encrypt(sk.publicKey.compressed, Buffer.from(TEXT));
-    expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
-  } else {
-    const encrypted = encrypt(sk.publicKey.uncompressed, Buffer.from(TEXT));
+describe("test random encrypt and decrypt", () => {
+  function check(sk: PrivateKey, compressed: boolean = false) {
+    if (compressed) {
+      const encrypted = encrypt(sk.publicKey.compressed, Buffer.from(TEXT));
+      expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
+    } else {
+      const encrypted = encrypt(sk.publicKey.uncompressed, Buffer.from(TEXT));
+      expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
+    }
+  }
+
+  function checkHex(sk: PrivateKey) {
+    const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
     expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
   }
-}
 
-function checkHex(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
-  expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
-}
-
-describe("test random encrypt and decrypt", () => {
   function testRandom() {
     const sk1 = new PrivateKey();
     check(sk1);
@@ -81,6 +81,9 @@ describe("test known encrypt and decrypt", () => {
   function testKnown(sk: PrivateKey, pk: PublicKey, msg: string, enc?: Uint8Array) {
     if (enc === undefined) {
       enc = encrypt(pk.toHex(), Buffer.from(msg));
+    } else {
+      // it should not be equal due to ephemeral key
+      expect(enc).not.toStrictEqual(encrypt(pk.toHex(), Buffer.from(msg)));
     }
 
     expect(decrypt(sk.toHex(), enc).toString()).toBe(msg);
