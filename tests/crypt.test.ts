@@ -65,8 +65,9 @@ describe("test random encrypt and decrypt", () => {
 
   it("tests curve25519 and chacha", () => {
     ECIES_CONFIG.ellipticCurve = "x25519";
-    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
+    testRandom();
 
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
     testRandom();
 
     ECIES_CONFIG.ellipticCurve = "ed25519";

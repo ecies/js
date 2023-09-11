@@ -26,7 +26,7 @@ Run the code below with `npx ts-node`.
 > import { encrypt, decrypt, PrivateKey } from 'eciesjs'
 > const sk = new PrivateKey()
 > const data = Buffer.from('hello world🌍')
-> decrypt(sk.toHex(), encrypt(sk.publicKey.toHex(), data)).toString()
+> decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data)).toString()
 'hello world🌍'
 ```
 
@@ -123,23 +123,23 @@ export const ECIES_CONFIG = new Config();
 
 ### Elliptic curve configuration
 
-If you set `ellipticCurve = "x25519"` or `ellipticCurve = "ed25519"`, x25519 (key exchange function on curve25519) or ed25519 (signature algorithm on curve25519) will be used for key exchange instead of secp256k1.
+On `ellipticCurve = "x25519"` or `ellipticCurve = "ed25519"`, x25519 (key exchange function on curve25519) or ed25519 (signature algorithm on curve25519) will be used for key exchange instead of secp256k1.
 
-In this case, the payload would always be: `32 Bytes + AES` regardless of `isEphemeralKeyCompressed`.
+In this case, the payload would always be: `32 Bytes + Ciphered` regardless of `isEphemeralKeyCompressed`.
 
-> If you don't know how to choose between x25519 and ed25519, just use x25519 for efficiency.
+> If you don't know how to choose between x25519 and ed25519, just use the dedicated key exchange function x25519 for efficiency.
 
 ### Secp256k1-specific configuration
 
-If you set `isEphemeralKeyCompressed = true`, the payload would be: `33 Bytes + AES` instead of `65 Bytes + AES`.
+On `isEphemeralKeyCompressed = true`, the payload would be: `33 Bytes + Ciphered` instead of `65 Bytes + Ciphered`.
 
-If you set `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral public key (compressed) + shared public key (compressed)` instead of `ephemeral public key (uncompressed) + shared public key (uncompressed)`.
+On `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral public key (compressed) + shared public key (compressed)` instead of `ephemeral public key (uncompressed) + shared public key (uncompressed)`.
 
 ### Symmetric cipher configuration
 
-If you set `symmetricAlgorithm = "xchacha20"`, plaintext data would be encrypted with XChaCha20-Poly1305.
+On `symmetricAlgorithm = "xchacha20"`, plaintext data would be encrypted with XChaCha20-Poly1305.
 
-If you set `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes regardless of `symmetricNonceLength`.
+On `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes regardless of `symmetricNonceLength`.
 
 ## Security Audit
 
