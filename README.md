@@ -18,6 +18,8 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 npm install eciesjs
 ```
 
+We recommend using the latest Node runtime although it's still possible to install on old versions.
+
 ## Quick Start
 
 Run the code below with `npx ts-node`.

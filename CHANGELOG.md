@@ -3,9 +3,9 @@
 
 ## 0.4.1 ~ 0.4.5
 
+- Drop Node 16 support
 - Support curve25519 (x25519 and ed25519) tentatively
 - Revamp browser compatibility
-- Export config
 - Fix symmetric encryption internal types
 - Add XChaCha20 as an optional encryption backend
 - Add configuration for more compatibility
