@@ -1,2 +1,2 @@
-export { default as PrivateKey } from "./PrivateKey";
-export { default as PublicKey } from "./PublicKey";
+export { PrivateKey } from "./PrivateKey";
+export { PublicKey } from "./PublicKey";

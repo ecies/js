@@ -1,13 +1,8 @@
-import axios from "axios";
-import { expect } from "chai";
 import { randomBytes } from "crypto";
-import { stringify } from "querystring";
 
 import { decrypt, encrypt } from "../src/index";
 import { PrivateKey, PublicKey } from "../src/keys";
 import { aesDecrypt, aesEncrypt, decodeHex } from "../src/utils";
-
-const PYTHON_BACKEND = "https://ecies.deta.dev/";
 
 describe("test encrypt and decrypt", () => {
   const TEXT = "helloworld";
@@ -15,7 +10,7 @@ describe("test encrypt and decrypt", () => {
   it("tests aes with random key", () => {
     const key = randomBytes(32);
     const data = Buffer.from("this is a test");
-    expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).to.be.equal(true);
+    expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).toEqual(true);
   });
 
   it("tests aes decrypt with known key and TEXT", () => {
@@ -28,27 +23,27 @@ describe("test encrypt and decrypt", () => {
 
     const data = Buffer.concat([nonce, tag, encrypted]);
     const decrypted = aesDecrypt(key, data);
-    expect(decrypted.toString()).to.be.equal(TEXT);
+    expect(decrypted.toString()).toEqual(TEXT);
   });
 
   it("tests encrypt/decrypt buffer", () => {
     const prv1 = new PrivateKey();
     const encrypted1 = encrypt(prv1.publicKey.uncompressed, Buffer.from(TEXT));
-    expect(decrypt(prv1.secret, encrypted1).toString()).to.be.equal(TEXT);
+    expect(decrypt(prv1.secret, encrypted1).toString()).toEqual(TEXT);
 
     const prv2 = new PrivateKey();
     const encrypted2 = encrypt(prv2.publicKey.compressed, Buffer.from(TEXT));
-    expect(decrypt(prv2.secret, encrypted2).toString()).to.be.equal(TEXT);
+    expect(decrypt(prv2.secret, encrypted2).toString()).toEqual(TEXT);
   });
 
   it("tests encrypt/decrypt hex", () => {
     const prv1 = new PrivateKey();
     const encrypted1 = encrypt(prv1.publicKey.toHex(), Buffer.from(TEXT));
-    expect(decrypt(prv1.toHex(), encrypted1).toString()).to.be.equal(TEXT);
+    expect(decrypt(prv1.toHex(), encrypted1).toString()).toEqual(TEXT);
 
     const prv2 = new PrivateKey();
     const encrypted2 = encrypt(prv2.publicKey.toHex(), Buffer.from(TEXT));
-    expect(decrypt(prv2.toHex(), encrypted2).toString()).to.be.equal(TEXT);
+    expect(decrypt(prv2.toHex(), encrypted2).toString()).toEqual(TEXT);
   });
 
   it("tests sk pk", () => {
@@ -59,37 +54,6 @@ describe("test encrypt and decrypt", () => {
       "048e41409f2e109f2d704f0afd15d1ab53935fd443729913a7e8536b4cef8cf5773d4db7bbd99e9ed64595e24a251c9836f35d4c9842132443c17f6d501b3410d2"
     );
     const enc = encrypt(pk.toHex(), Buffer.from(TEXT));
-    expect(decrypt(sk.toHex(), enc).toString()).to.be.equal(TEXT);
-  });
-
-  it("tests encrypt/decrypt against python version", () => {
-    const prv = new PrivateKey();
-
-    axios
-      .post(
-        PYTHON_BACKEND,
-        stringify({
-          data: TEXT,
-          pub: prv.publicKey.toHex(),
-        })
-      )
-      .then((res) => {
-        const encryptedKnown = Buffer.from(decodeHex(res.data));
-        const decrypted = decrypt(prv.toHex(), encryptedKnown);
-        expect(decrypted.toString()).to.be.equal(TEXT);
-      });
-
-    const encrypted = encrypt(prv.publicKey.toHex(), Buffer.from(TEXT));
-    axios
-      .post(
-        PYTHON_BACKEND,
-        stringify({
-          data: encrypted.toString("hex"),
-          prv: prv.toHex(),
-        })
-      )
-      .then((res) => {
-        expect(TEXT).to.be.equal(res.data);
-      });
+    expect(decrypt(sk.toHex(), enc).toString()).toEqual(TEXT);
   });
 });

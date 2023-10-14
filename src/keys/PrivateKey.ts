@@ -2,9 +2,9 @@ import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
 import { decodeHex, getValidSecret } from "../utils";
-import PublicKey from "./PublicKey";
+import { PublicKey } from "./PublicKey";
 
-export default class PrivateKey {
+export class PrivateKey {
   public static fromHex(hex: string): PrivateKey {
     return new PrivateKey(decodeHex(hex));
   }
@@ -17,9 +17,7 @@ export default class PrivateKey {
     if (!secp256k1.privateKeyVerify(this.secret)) {
       throw new Error("Invalid private key");
     }
-    this.publicKey = new PublicKey(
-      Buffer.from(secp256k1.publicKeyCreate(this.secret))
-    );
+    this.publicKey = new PublicKey(Buffer.from(secp256k1.publicKeyCreate(this.secret)));
   }
 
   public toHex(): string {
@@ -27,19 +25,14 @@ export default class PrivateKey {
   }
 
   public encapsulate(pub: PublicKey): Buffer {
-    const master = Buffer.concat([
-      this.publicKey.uncompressed,
-      this.multiply(pub),
-    ]);
+    const master = Buffer.concat([this.publicKey.uncompressed, this.multiply(pub)]);
     return hkdf(master, 32, {
       hash: "SHA-256",
     });
   }
 
   public multiply(pub: PublicKey): Buffer {
-    return Buffer.from(
-      secp256k1.publicKeyTweakMul(pub.compressed, this.secret, false)
-    );
+    return Buffer.from(secp256k1.publicKeyTweakMul(pub.compressed, this.secret, false));
   }
 
   public equals(other: PrivateKey): boolean {

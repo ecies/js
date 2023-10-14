@@ -1,11 +1,11 @@
 import hkdf from "futoin-hkdf";
 import secp256k1 from "secp256k1";
 
-import { decodeHex } from "../utils";
 import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
-import PrivateKey from "./PrivateKey";
+import { decodeHex } from "../utils";
+import { PrivateKey } from "./PrivateKey";
 
-export default class PublicKey {
+export class PublicKey {
   public static fromHex(hex: string): PublicKey {
     const decoded = decodeHex(hex);
     if (decoded.length === UNCOMPRESSED_PUBLIC_KEY_SIZE - 1) {
