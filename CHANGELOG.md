@@ -1,7 +1,7 @@
 
 # Changelog
 
-## 0.4.1 ~ 0.4.5
+## 0.4.1 ~ 0.4.6
 
 - Drop Node 16 support
 - Support curve25519 (x25519 and ed25519) tentatively
