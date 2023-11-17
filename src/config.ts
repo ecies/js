@@ -5,8 +5,11 @@ import {
 } from "./consts";
 
 export type EllipticCurve = "secp256k1" | "x25519" | "ed25519";
-export type SymmetricAlgorithm = "aes-256-gcm" | "xchacha20";
-export type NonceLength = 12 | 16;
+export type SymmetricAlgorithm =
+  | "aes-256-gcm"
+  | "xchacha20"
+  | "aes-256-cbc" /* NOT RECOMMENDED, only for compatibility */;
+export type NonceLength = 12 | 16; // aes-256-gcm only
 
 class Config {
   ellipticCurve: EllipticCurve = "secp256k1";

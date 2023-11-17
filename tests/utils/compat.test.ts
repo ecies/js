@@ -1,5 +1,5 @@
 import { concatBytes } from "@noble/ciphers/utils";
-import { aes_256_gcm as aes } from "@noble/ciphers/webcrypto/aes";
+import { gcm } from "@noble/ciphers/webcrypto/aes";
 import { randomBytes } from "@noble/ciphers/webcrypto/utils";
 
 import { decodeHex } from "../../src/utils";
@@ -14,7 +14,7 @@ describe("test random compat", () => {
   async function testRandom(aad?: Uint8Array) {
     const key = randomBytes();
     const nonce = randomBytes(16);
-    const noble = aes(key, nonce, aad);
+    const noble = gcm(key, nonce, aad);
     const compat = aes256gcm(key, nonce, aad);
     // same encryption
     expect(await noble.encrypt(msg)).toStrictEqual(compat.encrypt(msg));
@@ -42,7 +42,7 @@ describe("test known compat", () => {
     const msg = encoder.encode("helloworld");
     const aad = Uint8Array.from([]);
 
-    const noble = aes(key, nonce, aad);
+    const noble = gcm(key, nonce, aad);
     const compat = aes256gcm(key, nonce, aad);
     expect(compat.decrypt(known)).toStrictEqual(msg);
     expect(await noble.decrypt(known)).toStrictEqual(msg);
