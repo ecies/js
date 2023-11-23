@@ -4,7 +4,7 @@ import { randomBytes } from "@noble/ciphers/webcrypto/utils";
 import { ECIES_CONFIG, utils } from "../../src/index";
 import { deriveKey } from "../../src/utils";
 
-const { aesDecrypt, aesEncrypt, decodeHex } = utils;
+const { symDecrypt, symEncrypt, decodeHex } = utils;
 
 const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();
@@ -14,7 +14,7 @@ describe("test random symmetric", () => {
   function testRandomKey() {
     const key = randomBytes(32);
     const data = encoder.encode(TEXT);
-    expect(data).toEqual(aesDecrypt(key, aesEncrypt(key, data)));
+    expect(data).toEqual(symDecrypt(key, symEncrypt(key, data)));
   }
 
   it("tests aes", () => {
@@ -42,7 +42,7 @@ describe("test random symmetric", () => {
 
     expect(testRandomKey).toThrow("Not implemented");
 
-    expect(() => aesDecrypt(randomBytes(32), decodeHex("01010e0e"))).toThrow(
+    expect(() => symDecrypt(randomBytes(32), decodeHex("01010e0e"))).toThrow(
       "Not implemented"
     );
 
@@ -71,7 +71,7 @@ describe("test known symmetric", () => {
     const encrypted = decodeHex("aa0664f3c00a09d098bf");
     const data = concatBytes(nonce, tag, encrypted);
 
-    const decrypted = aesDecrypt(key, data);
+    const decrypted = symDecrypt(key, data);
     expect(decoder.decode(decrypted)).toBe("helloworld");
 
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";

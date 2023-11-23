@@ -2,7 +2,15 @@ import { concatBytes } from "@noble/ciphers/utils";
 
 import { ephemeralKeySize, isEphemeralKeyCompressed } from "./config";
 import { PrivateKey, PublicKey } from "./keys";
-import { aesDecrypt, aesEncrypt, decodeHex, getValidSecret, remove0x } from "./utils";
+import {
+  aesDecrypt,
+  aesEncrypt,
+  decodeHex,
+  getValidSecret,
+  remove0x,
+  symDecrypt,
+  symEncrypt,
+} from "./utils";
 
 export function encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Buffer {
   const ephemeralKey = new PrivateKey();
@@ -13,7 +21,7 @@ export function encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Bu
       : PublicKey.fromHex(receiverRawPK);
 
   const symKey = ephemeralKey.encapsulate(receiverPK);
-  const encrypted = aesEncrypt(symKey, msg);
+  const encrypted = symEncrypt(symKey, msg);
 
   let pk: Uint8Array;
   if (isEphemeralKeyCompressed()) {
@@ -34,7 +42,7 @@ export function decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Bu
   const senderPK = new PublicKey(msg.subarray(0, keySize));
   const encrypted = msg.subarray(keySize);
   const symKey = senderPK.decapsulate(receiverSK);
-  return Buffer.from(aesDecrypt(symKey, encrypted));
+  return Buffer.from(symDecrypt(symKey, encrypted));
 }
 
 export { ECIES_CONFIG } from "./config";
@@ -42,8 +50,10 @@ export { PrivateKey, PublicKey } from "./keys";
 
 export const utils = {
   // TODO: review these before 0.5.0
-  aesDecrypt,
   aesEncrypt,
+  aesDecrypt,
+  symEncrypt,
+  symDecrypt,
   decodeHex,
   getValidSecret,
   remove0x,

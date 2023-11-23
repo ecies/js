@@ -6,22 +6,18 @@ export const aes256gcm = (
   key: Uint8Array,
   nonce: Uint8Array,
   AAD?: Uint8Array
-): Cipher => {
-  return _compatAES("aes-256-gcm", key, nonce, AAD);
-};
+): Cipher => _compatAES("aes-256-gcm", key, nonce, AAD);
 
 // NOT RECOMMENDED. There is neither AAD nor AEAD tag in cbc mode
 export const aes256cbc = (
   key: Uint8Array,
   nonce: Uint8Array,
   AAD?: Uint8Array
-): Cipher => {
-  return _compatAES("aes-256-cbc", key, nonce);
-};
+): Cipher => _compatAES("aes-256-cbc", key, nonce);
 
 // make `node:crypto`'s aes compatible with `@noble/ciphers`
 function _compatAES(
-  algorithm: "aes-256-cbc" | "aes-256-gcm",
+  algorithm: "aes-256-gcm" | "aes-256-cbc",
   key: Uint8Array,
   nonce: Uint8Array,
   AAD?: Uint8Array
