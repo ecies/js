@@ -3,6 +3,7 @@
 
 ## 0.4.1 ~ 0.4.6
 
+- Revamp util functions
 - Drop Node 16 support
 - Support curve25519 (x25519 and ed25519) tentatively
 - Revamp browser compatibility

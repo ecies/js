@@ -8,20 +8,21 @@ import { symmetricAlgorithm, symmetricNonceLength } from "../config";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts";
 import { aes256cbc, aes256gcm } from "./compat";
 
-export function aesEncrypt(key: Uint8Array, plainText: Uint8Array): Uint8Array {
-  // TODO: Rename to symEncrypt
-  return _exec(true, key, plainText);
-}
+export const symEncrypt = (key: Uint8Array, plainText: Uint8Array): Uint8Array =>
+  _exec(true, key, plainText);
 
-export function aesDecrypt(key: Uint8Array, cipherText: Uint8Array): Uint8Array {
-  // TODO: Rename to symDecrypt
-  return _exec(false, key, cipherText);
-}
+export const symDecrypt = (key: Uint8Array, cipherText: Uint8Array): Uint8Array =>
+  _exec(false, key, cipherText);
 
-export function deriveKey(master: Uint8Array): Uint8Array {
+/** @deprecated - use `symEncrypt` instead. */
+export const aesEncrypt = symEncrypt; // TODO: delete
+
+/** @deprecated - use `symDecrypt` instead. */
+export const aesDecrypt = symDecrypt; // TODO: delete
+
+export const deriveKey = (master: Uint8Array): Uint8Array =>
   // 32 bytes shared secret for aes256 and xchacha20 derived from HKDF-SHA256
-  return hkdf(sha256, master, undefined, undefined, 32);
-}
+  hkdf(sha256, master, undefined, undefined, 32);
 
 function _exec(is_encryption: boolean, key: Uint8Array, data: Uint8Array): Uint8Array {
   const algorithm = symmetricAlgorithm();
@@ -47,7 +48,7 @@ function _encrypt(
 ): Uint8Array {
   const nonce = randomBytes(nonceLength);
   const cipher = func(key, nonce);
-  const ciphered = cipher.encrypt(plainText); // TAG + encrypted
+  const ciphered = cipher.encrypt(plainText); // encrypted || tag
 
   const encrypted = ciphered.subarray(0, ciphered.length - tagLength);
   const tag = ciphered.subarray(ciphered.length - tagLength);
