@@ -20,8 +20,9 @@
 - Bump dependencies
 - Drop Node 14 support
 
-## 0.3.1 ~ 0.3.17
+## 0.3.1 ~ 0.3.18
 
+- Revamp tests
 - Support Node 18, 20
 - Drop Node 10, 12 support
 - Bump dependencies
