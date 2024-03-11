@@ -1,5 +1,5 @@
 import { concatBytes } from "@noble/ciphers/utils";
-import { randomBytes } from "@noble/ciphers/webcrypto/utils";
+import { randomBytes } from "@noble/ciphers/webcrypto";
 
 import { ECIES_CONFIG, utils } from "../../src/index";
 import { deriveKey } from "../../src/utils";
