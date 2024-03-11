@@ -2,10 +2,10 @@ name: Build
 
 on:
   push:
-    branches: [master]
+    branches: [v0.3.x]
 
   pull_request:
-    branches: [master]
+    branches: [v0.3.x]
 
 jobs:
   build:
@@ -13,27 +13,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [14, 16, 18, 20]
+        node: [18, 20]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            **/node_modules
-          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          cache: yarn
+          cache-dependency-path: yarn.lock
 
       - run: yarn install && npm test -- --bail --ci
 
       - uses: codecov/codecov-action@v3
 
-      - run: npm run build && npm publish --dry-run
+      - run: npm run build && npm publish --dry-run --tag v0.3-latest
