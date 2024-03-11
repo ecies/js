@@ -91,7 +91,7 @@ readonly compressed: Buffer;
 
 ## Release Notes
 
-### 0.3.1 ~ 0.3.18
+### 0.3.1 ~ 0.3.19
 
 - Revamp tests
 - Support Node 18, 20
