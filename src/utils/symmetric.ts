@@ -1,6 +1,6 @@
 import { xchacha20poly1305 as xchacha20 } from "@noble/ciphers/chacha";
 import { Cipher, concatBytes } from "@noble/ciphers/utils";
-import { randomBytes } from "@noble/ciphers/webcrypto/utils";
+import { randomBytes } from "@noble/ciphers/webcrypto";
 import { hkdf } from "@noble/hashes/hkdf";
 import { sha256 } from "@noble/hashes/sha256";
 
