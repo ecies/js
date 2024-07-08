@@ -5,7 +5,7 @@ import { PrivateKey, decrypt, encrypt, utils } from "../src/index";
 
 const decodeHex = utils.decodeHex;
 
-const PYTHON_BACKEND = "https://eciespydemo-1-d5397785.deta.app/";
+const PYTHON_BACKEND = "https://demo.ecies.org/";
 const TEXT = "helloworld🌍";
 
 describe("test encrypt and decrypt against python version", () => {
