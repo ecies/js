@@ -13,19 +13,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [18, 20]
+        node: [18, 20, 22]
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: "latest"
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - run: pnpm install
-      - run: npm test -- --bail --ci
-      - uses: codecov/codecov-action@v3
-      - run: npm run build && npm publish --dry-run
+      - run: pnpm install && pnpm test -- --bail --ci
+
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - run: pnpm run build && npm publish --dry-run
