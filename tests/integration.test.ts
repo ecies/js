@@ -1,11 +1,10 @@
-import { HttpsProxyAgent } from "https-proxy-agent";
-import fetch, { RequestInit } from "node-fetch";
+import { fetch, ProxyAgent, RequestInit } from 'undici';
 
-import { PrivateKey, decrypt, encrypt, utils } from "../src/index";
+import { decrypt, encrypt, PrivateKey, utils } from "../src/index";
 
 const decodeHex = utils.decodeHex;
 
-const PYTHON_BACKEND = "https://eciespydemo-1-d5397785.deta.app/";
+const PYTHON_BACKEND = "https://demo.ecies.org/";
 const TEXT = "helloworld🌍";
 
 describe("test encrypt and decrypt against python version", () => {
@@ -41,7 +40,7 @@ async function eciesApi(
     },
   };
   if (process.env.http_proxy !== undefined) {
-    config.agent = new HttpsProxyAgent(`${process.env.http_proxy}`);
+    config.dispatcher = new ProxyAgent(`${process.env.http_proxy}`);
   }
 
   return await fetch(url, {
