@@ -1,7 +1,6 @@
-import { HttpsProxyAgent } from "https-proxy-agent";
-import fetch, { RequestInit } from "node-fetch";
+import { fetch, ProxyAgent, RequestInit } from 'undici';
 
-import { PrivateKey, decrypt, encrypt, utils } from "../src/index";
+import { decrypt, encrypt, PrivateKey, utils } from "../src/index";
 
 const decodeHex = utils.decodeHex;
 
@@ -41,7 +40,7 @@ async function eciesApi(
     },
   };
   if (process.env.http_proxy !== undefined) {
-    config.agent = new HttpsProxyAgent(`${process.env.http_proxy}`);
+    config.dispatcher = new ProxyAgent(`${process.env.http_proxy}`);
   }
 
   return await fetch(url, {
