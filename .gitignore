@@ -116,4 +116,9 @@ dist
 .pnp.*
 
 .DS_Store
-*.html
+
+# example
+bun.lockb
+deno.lock
+example/browser/pnpm-lock.yaml
+example/runtime/pnpm-lock.yaml

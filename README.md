@@ -10,29 +10,39 @@ Elliptic Curve Integrated Encryption Scheme for secp256k1/curve25519 in TypeScri
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/py) with a built-in class-like secp256k1/curve25519 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
-If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
-
 ## Install
 
 ```bash
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions.
+We recommend using the latest Node runtime although it's still possible to install on old versions (as long as 16+).
 
 ## Quick Start
 
-Run the code below with `npx ts-node`.
-
 ```typescript
-> import { encrypt, decrypt, PrivateKey } from 'eciesjs'
-> const sk = new PrivateKey()
-> const data = Buffer.from('hello world🌍')
-> decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data)).toString()
-'hello world🌍'
+import { PrivateKey, decrypt, encrypt } from "eciesjs";
+
+const sk = new PrivateKey()
+const data = Buffer.from("hello world🌍")
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.compressed, data))
+console.log(Buffer.from(decrypted).toString())
+```
+
+Or run the example code:
+
+```bash
+$ pnpm install && pnpm build && cd example/runtime && pnpm install && node main.js
+hello world🌍
 ```
 
 See [Configuration](#configuration) to control with more granularity.
+
+## Browser Support
+
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
+
+If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
 ## API
 
@@ -40,7 +50,7 @@ See [Configuration](#configuration) to control with more granularity.
 
 Parameters:
 
-- **receiverRawPK** - Receiver's public key, hex string or buffer
+- **receiverRawPK** - Receiver's public key, hex string or Uint8Array
 - **msg** - Data to encrypt
 
 Returns: **Buffer**
@@ -49,7 +59,7 @@ Returns: **Buffer**
 
 Parameters:
 
-- **receiverRawSK** - Receiver's private key, hex string or buffer
+- **receiverRawSK** - Receiver's private key, hex string or Uint8Array
 - **msg** - Data to decrypt
 
 Returns: **Buffer**
@@ -130,6 +140,8 @@ On `ellipticCurve = "x25519"` or `ellipticCurve = "ed25519"`, x25519 (key exchan
 In this case, the payload would always be: `32 Bytes + Ciphered` regardless of `isEphemeralKeyCompressed`.
 
 > If you don't know how to choose between x25519 and ed25519, just use the dedicated key exchange function x25519 for efficiency.
+>
+> Because any 32-byte data is a valid curve25519 public key, the payload would seem random. This property is excellent for circumventing censorship by adversaries.
 
 ### Secp256k1-specific configuration
 
@@ -142,6 +154,14 @@ On `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral p
 On `symmetricAlgorithm = "xchacha20"`, plaintext data would be encrypted with XChaCha20-Poly1305.
 
 On `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes regardless of `symmetricNonceLength`.
+
+### Which configuration should I choose?
+
+For compatibility with other [ecies libraries](https://github.com/orgs/ecies/repositories), start with the default (secp256k1 with AES-256-GCM).
+
+For speed and security, pick x25519 with XChaCha20-Poly1305.
+
+If you know exactly what you are doing, configure as you wish or build your own ecies logic with this library.
 
 ## Security Audit
 

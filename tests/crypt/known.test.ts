@@ -13,7 +13,7 @@ const TEXT = "helloworld🌍";
 
 describe("test known encrypt and decrypt", () => {
   function testDecrypt(sk: PrivateKey, msg: string, data: Uint8Array) {
-    expect(decrypt(sk.secret, data).toString()).toBe(msg);
+    expect(Buffer.from(decrypt(sk.secret, data)).toString()).toBe(msg);
   }
 
   function testEncrypt(sk: PrivateKey, pk: PublicKey, msg: string) {

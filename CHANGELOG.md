@@ -1,6 +1,20 @@
 
 # Changelog
 
+## 0.5.0
+
+- API change: Remove deprecated functions: `aesEncrypt` and `aesDecrypt`
+- API change: Replace `Buffer` with `Uint8Array`
+- Drop Node 18 support
+- Update documentation
+
+## 0.4.9
+
+- Use pure JS aes to improve browser compatibility. Now you don't have to polyfill `node:crypto` in browsers
+- Revamp dependencies
+- Revamp exports so that almost all functions can be imported
+- Update documentation
+
 ## 0.4.1 ~ 0.4.8
 
 - Revamp util functions

@@ -14,12 +14,6 @@ export const symEncrypt = (key: Uint8Array, plainText: Uint8Array): Uint8Array =
 export const symDecrypt = (key: Uint8Array, cipherText: Uint8Array): Uint8Array =>
   _exec(false, key, cipherText);
 
-/** @deprecated - use `symEncrypt` instead. */
-export const aesEncrypt = symEncrypt; // TODO: delete
-
-/** @deprecated - use `symDecrypt` instead. */
-export const aesDecrypt = symDecrypt; // TODO: delete
-
 export const deriveKey = (master: Uint8Array): Uint8Array =>
   // 32 bytes shared secret for aes256 and xchacha20 derived from HKDF-SHA256
   hkdf(sha256, master, undefined, undefined, 32);

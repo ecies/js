@@ -11,14 +11,12 @@ export class PublicKey {
 
   private readonly data: Uint8Array; // always compressed if secp256k1
 
-  get uncompressed(): Buffer {
-    // TODO: Uint8Array
-    return Buffer.from(convertPublicKeyFormat(this.data, false));
+  get uncompressed(): Uint8Array {
+    return convertPublicKeyFormat(this.data, false);
   }
 
-  get compressed(): Buffer {
-    // TODO: Uint8Array
-    return Buffer.from(this.data);
+  get compressed(): Uint8Array {
+    return this.data;
   }
 
   constructor(data: Uint8Array) {

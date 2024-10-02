@@ -1,4 +1,4 @@
-import { fetch, ProxyAgent, RequestInit } from 'undici';
+import { fetch, ProxyAgent, RequestInit } from "undici";
 
 import { decrypt, encrypt, PrivateKey, utils } from "../src/index";
 
@@ -14,13 +14,13 @@ describe("test encrypt and decrypt against python version", () => {
       data: TEXT,
       pub: sk.publicKey.toHex(),
     });
-    const decrypted = decrypt(sk.toHex(), decodeHex(await res.text()));
+    const decrypted = Buffer.from(decrypt(sk.toHex(), decodeHex(await res.text())));
     expect(decrypted.toString()).toEqual(TEXT);
   });
 
   it("tests decrypt", async () => {
     const sk = new PrivateKey();
-    const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
+    const encrypted = Buffer.from(encrypt(sk.publicKey.toHex(), Buffer.from(TEXT)));
     const res = await eciesApi(PYTHON_BACKEND, {
       data: encrypted.toString("hex"),
       prv: sk.toHex(),
@@ -39,8 +39,9 @@ async function eciesApi(
       "Content-Type": "application/x-www-form-urlencoded",
     },
   };
-  if (process.env.http_proxy !== undefined) {
-    config.dispatcher = new ProxyAgent(`${process.env.http_proxy}`);
+  const proxy = process.env.https_proxy || process.env.http_proxy;
+  if (proxy) {
+    config.dispatcher = new ProxyAgent(`${proxy}`);
   }
 
   return await fetch(url, {
