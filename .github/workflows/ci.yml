@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [18, 20, 22]
+        node: [20, 22]
     steps:
       - uses: actions/checkout@v4
 
@@ -30,4 +30,10 @@ jobs:
       - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
       - run: pnpm run build && npm publish --dry-run
+
+      # check example
+      - run: cd example && pnpm install
+      - run: node index.js
+      - run: node import.js

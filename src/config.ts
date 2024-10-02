@@ -1,7 +1,7 @@
 import {
-  COMPRESSED_PUBLIC_KEY_SIZE,
   CURVE25519_PUBLIC_KEY_SIZE,
-  UNCOMPRESSED_PUBLIC_KEY_SIZE,
+  SECP256K1_COMPRESSED_PUBLIC_KEY_SIZE,
+  SECP256K1_UNCOMPRESSED_PUBLIC_KEY_SIZE,
 } from "./consts";
 
 export type EllipticCurve = "secp256k1" | "x25519" | "ed25519";
@@ -30,8 +30,8 @@ export const symmetricNonceLength = () => ECIES_CONFIG.symmetricNonceLength;
 export const ephemeralKeySize = () => {
   const mapping = {
     secp256k1: ECIES_CONFIG.isEphemeralKeyCompressed
-      ? COMPRESSED_PUBLIC_KEY_SIZE
-      : UNCOMPRESSED_PUBLIC_KEY_SIZE,
+      ? SECP256K1_COMPRESSED_PUBLIC_KEY_SIZE
+      : SECP256K1_UNCOMPRESSED_PUBLIC_KEY_SIZE,
     x25519: CURVE25519_PUBLIC_KEY_SIZE,
     ed25519: CURVE25519_PUBLIC_KEY_SIZE,
   };

@@ -10,49 +10,55 @@ Elliptic Curve Integrated Encryption Scheme for secp256k1/curve25519 in TypeScri
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/py) with a built-in class-like secp256k1/curve25519 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
-If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
-
 ## Install
 
 ```bash
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions.
+We recommend using the latest Node runtime although it's still possible to install on old versions (node>=16 is required).
 
 ## Quick Start
 
-Run the code below with `npx ts-node`.
+Run `cd example && pnpm install` first, then `node index.js`.
 
 ```typescript
-> import { encrypt, decrypt, PrivateKey } from 'eciesjs'
-> const sk = new PrivateKey()
-> const data = Buffer.from('hello world🌍')
-> decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data)).toString()
-'hello world🌍'
+import { PrivateKey, decrypt, encrypt } from "eciesjs";
+
+const sk = new PrivateKey()
+const data = Buffer.from('hello world🌍')
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data))
+console.log(Buffer.from(decrypted).toString())
+// hello world🌍
 ```
 
 See [Configuration](#configuration) to control with more granularity.
 
+## Browser Support
+
+This library is browser-ready, check the [`example/browser`](./example/browser) directory for details.
+
+If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+
 ## API
 
-### `encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Buffer`
+### `encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Uint8Array`
 
 Parameters:
 
-- **receiverRawPK** - Receiver's public key, hex string or buffer
+- **receiverRawPK** - Receiver's public key, hex string or Uint8Array
 - **msg** - Data to encrypt
 
-Returns: **Buffer**
+Returns: **Uint8Array**
 
-### `decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Buffer`
+### `decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Uint8Array`
 
 Parameters:
 
-- **receiverRawSK** - Receiver's private key, hex string or buffer
+- **receiverRawSK** - Receiver's private key, hex string or Uint8Array
 - **msg** - Data to decrypt
 
-Returns: **Buffer**
+Returns: **Uint8Array**
 
 ### `PrivateKey`
 
@@ -70,7 +76,7 @@ equals(other: PrivateKey): boolean;
 - Properties
 
 ```typescript
-get secret(): Buffer;
+get secret(): Uint8Array;
 readonly publicKey: PublicKey;
 private readonly data;
 ```
@@ -90,8 +96,8 @@ equals(other: PublicKey): boolean;
 - Properties
 
 ```typescript
-get uncompressed(): Buffer;
-get compressed(): Buffer;
+get uncompressed(): Uint8Array;
+get compressed(): Uint8Array;
 private readonly data;
 ```
 

@@ -1,6 +1,12 @@
-import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src/index";
+import {
+  ECIES_CONFIG,
+  PrivateKey,
+  decrypt as _decrypt,
+  encrypt,
+} from "../../src/index";
 
 const TEXT = "helloworld🌍";
+const decrypt = (key: Uint8Array, msg: Uint8Array) => Buffer.from(_decrypt(key, msg));
 
 describe("test random encrypt and decrypt", () => {
   function check(sk: PrivateKey, compressed: boolean = false) {

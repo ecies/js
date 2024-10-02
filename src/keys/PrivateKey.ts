@@ -19,9 +19,8 @@ export class PrivateKey {
   private readonly data: Uint8Array;
   public readonly publicKey: PublicKey;
 
-  get secret(): Buffer {
-    // TODO: Uint8Array
-    return Buffer.from(this.data);
+  get secret(): Uint8Array {
+    return this.data;
   }
 
   constructor(secret?: Uint8Array) {

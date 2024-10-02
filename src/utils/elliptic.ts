@@ -53,10 +53,7 @@ export const getSharedPoint = (
     }
   );
 
-export const convertPublicKeyFormat = (
-  pk: Uint8Array,
-  compressed: boolean
-): Uint8Array =>
+export const convertPublicKeyFormat = (pk: Uint8Array, compressed: boolean): Uint8Array =>
   // only for secp256k1
   _exec(
     (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
