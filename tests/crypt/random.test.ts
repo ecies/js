@@ -1,35 +1,60 @@
-import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src/index";
+import { bytesToHex } from "@noble/ciphers/utils";
+import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src";
 
 const TEXT = "helloworld🌍";
+const encoder = new TextEncoder();
 
 describe("test random encrypt and decrypt", () => {
-  function check(sk: PrivateKey, compressed: boolean = false) {
-    if (compressed) {
-      const encrypted = encrypt(sk.publicKey.compressed, Buffer.from(TEXT));
-      expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
-    } else {
-      const encrypted = encrypt(sk.publicKey.uncompressed, Buffer.from(TEXT));
-      expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
-    }
+  function checkCompressed(sk: PrivateKey) {
+    const encrypted = encrypt(sk.publicKey.compressed, encoder.encode(TEXT));
+    expect(decrypt(sk.secret, encrypted).toString()).toStrictEqual(TEXT);
+  }
+
+  function checkUncompressed(sk: PrivateKey) {
+    const encrypted = encrypt(sk.publicKey.uncompressed, encoder.encode(TEXT));
+    expect(decrypt(sk.secret, encrypted).toString()).toStrictEqual(TEXT);
   }
 
   function checkHex(sk: PrivateKey) {
-    const encrypted = encrypt(sk.publicKey.toHex(), Buffer.from(TEXT));
-    expect(decrypt(sk.secret, encrypted).toString()).toBe(TEXT);
+    const encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(TEXT));
+    expect(decrypt(bytesToHex(sk.secret), encrypted).toString()).toStrictEqual(TEXT);
   }
 
   function testRandom() {
     const sk1 = new PrivateKey();
-    check(sk1);
-    checkHex(sk1);
-
     const sk2 = new PrivateKey();
-    check(sk2, true);
-    checkHex(sk2);
+
+    checkCompressed(sk1);
+    checkUncompressed(sk2);
+    checkHex(sk1);
   }
 
   it("tests default", () => {
     testRandom();
+  });
+
+  it("tests compressed ephemeral key", () => {
+    ECIES_CONFIG.isEphemeralKeyCompressed = true;
+
+    testRandom();
+
+    ECIES_CONFIG.isEphemeralKeyCompressed = false;
+  });
+
+  it("tests compressed hkdf key", () => {
+    ECIES_CONFIG.isHkdfKeyCompressed = true;
+
+    testRandom();
+
+    ECIES_CONFIG.isHkdfKeyCompressed = false;
+  });
+
+  it("tests 12 bytes nonce", () => {
+    ECIES_CONFIG.symmetricNonceLength = 12;
+
+    testRandom();
+
+    ECIES_CONFIG.symmetricNonceLength = 16;
   });
 
   it("tests compressed ephemeral and hkdf key with 12 bytes nonce", () => {

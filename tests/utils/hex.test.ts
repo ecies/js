@@ -1,6 +1,4 @@
-import { utils } from "../../src/index";
-
-const { decodeHex, remove0x } = utils;
+import { decodeHex, remove0x } from "../../src/utils";
 
 describe("test hex", () => {
   it("removes 0x", () => {
