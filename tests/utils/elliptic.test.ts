@@ -1,7 +1,10 @@
-import { ECIES_CONFIG, utils } from "../../src/index";
-import { decodeHex, getSharedPoint, isValidPrivateKey } from "../../src/utils/";
-
-const { getValidSecret } = utils;
+import { ECIES_CONFIG } from "../../src";
+import {
+  decodeHex,
+  getSharedPoint,
+  getValidSecret,
+  isValidPrivateKey,
+} from "../../src/utils/";
 
 describe("test random elliptic", () => {
   it("generates valid secret", () => {
@@ -12,9 +15,7 @@ describe("test random elliptic", () => {
 
 describe("test known elliptic", () => {
   function testKnown(sk: string, pk: string, shared: string) {
-    expect(getSharedPoint(decodeHex(sk), decodeHex(pk))).toStrictEqual(
-      decodeHex(shared)
-    );
+    expect(getSharedPoint(decodeHex(sk), decodeHex(pk))).toStrictEqual(decodeHex(shared));
   }
 
   it("tests x25519", () => {

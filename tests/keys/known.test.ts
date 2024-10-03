@@ -1,6 +1,5 @@
-import { ECIES_CONFIG, PrivateKey, PublicKey, utils } from "../../src/index";
-
-const decodeHex = utils.decodeHex;
+import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src";
+import { decodeHex } from "../../src/utils/";
 
 describe("test known keys", () => {
   function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
@@ -39,19 +38,11 @@ describe("test known keys", () => {
     const k1 = new PrivateKey(two);
     const k2 = new PrivateKey(three);
 
-    checkHkdf(
-      k1,
-      k2,
-      "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82"
-    );
+    checkHkdf(k1, k2, "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82");
 
     ECIES_CONFIG.isHkdfKeyCompressed = true;
 
-    checkHkdf(
-      k1,
-      k2,
-      "b192b226edb3f02da11ef9c6ce4afe1c7e40be304e05ae3b988f4834b1cb6c69"
-    );
+    checkHkdf(k1, k2, "b192b226edb3f02da11ef9c6ce4afe1c7e40be304e05ae3b988f4834b1cb6c69");
 
     ECIES_CONFIG.isHkdfKeyCompressed = false;
   });

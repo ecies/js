@@ -1,17 +1,25 @@
-import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src/index";
+import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src";
 
 describe("test random keys", () => {
-  function testRandom() {
-    const k1 = new PrivateKey();
-    const k2 = new PrivateKey();
+  function check(k1: PrivateKey, k2: PrivateKey) {
     expect(k1.multiply(k2.publicKey)).toStrictEqual(k2.multiply(k1.publicKey));
+  }
 
-    const sk = new PrivateKey();
+  function checkHex(sk: PrivateKey) {
     const skFromHex = PrivateKey.fromHex(sk.toHex());
     const pkFromHex = PublicKey.fromHex(sk.publicKey.toHex(false));
 
     expect(skFromHex).toStrictEqual(sk);
     expect(pkFromHex).toStrictEqual(sk.publicKey);
+  }
+
+  function testRandom() {
+    const k1 = new PrivateKey();
+    const k2 = new PrivateKey();
+    check(k1, k2);
+
+    const sk = new PrivateKey();
+    checkHex(sk);
   }
 
   it("tests secp256k1", () => {

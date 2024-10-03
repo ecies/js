@@ -1,10 +1,8 @@
 import { concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
 
-import { ECIES_CONFIG, utils } from "../../src/index";
-import { deriveKey } from "../../src/utils";
-
-const { symDecrypt, symEncrypt, decodeHex } = utils;
+import { ECIES_CONFIG } from "../../src";
+import { decodeHex, deriveKey, symDecrypt, symEncrypt } from "../../src/utils";
 
 const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();

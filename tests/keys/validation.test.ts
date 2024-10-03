@@ -1,4 +1,4 @@
-import { PrivateKey, PublicKey } from "../../src/index";
+import { PrivateKey, PublicKey } from "../../src";
 
 describe("test validation", () => {
   it("tests invalid secp256k1", () => {
