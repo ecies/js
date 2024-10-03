@@ -10,29 +10,39 @@ Elliptic Curve Integrated Encryption Scheme for secp256k1/curve25519 in TypeScri
 
 This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/py) with a built-in class-like secp256k1/curve25519 [API](#privatekey), you may go there for detailed documentation and learn the mechanism under the hood.
 
-If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
-
 ## Install
 
 ```bash
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions.
+We recommend using the latest Node runtime although it's still possible to install on old versions (but at least node 16).
 
 ## Quick Start
 
-Run the code below with `npx ts-node`.
-
 ```typescript
-> import { encrypt, decrypt, PrivateKey } from 'eciesjs'
-> const sk = new PrivateKey()
-> const data = Buffer.from('hello world🌍')
-> decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data)).toString()
-'hello world🌍'
+import { PrivateKey, decrypt, encrypt } from "eciesjs";
+
+const sk = new PrivateKey()
+const data = Buffer.from('hello world🌍')
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data))
+console.log(Buffer.from(decrypted).toString())
+```
+
+Run the example code above:
+
+```bash
+$ pnpm build && cd example && pnpm install && node index.js
+hello world🌍
 ```
 
 See [Configuration](#configuration) to control with more granularity.
+
+## Browser Support
+
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill some node modules (like `node:crypto`, `Buffer`). From v0.5.0, it can run in browsers without polyfill.
+
+If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
 ## API
 
