@@ -1,5 +1,7 @@
+import { describe, expect, it } from "vitest";
+
 import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src";
-import { decodeHex } from "../../src/utils/";
+import { decodeHex } from "../../src/utils";
 
 describe("test known keys", () => {
   function checkHkdf(k1: PrivateKey, k2: PrivateKey, knownHex: string) {
@@ -19,6 +21,7 @@ describe("test known keys", () => {
         "a4e28911fcf83ab1f457a30b4959efc4b9306f514a4c3711a16a80e3b47eb58b"
     );
     expect(pkEth).toEqual(skEth.publicKey);
+    expect(pkEth.equals(skEth.publicKey)).toBe(true);
 
     expect(pkEth.toHex(true)).toEqual(
       "0398afe4f150642cd05cc9d2fa36458ce0a58567daeaf5fde7333ba9b403011140"
@@ -37,6 +40,10 @@ describe("test known keys", () => {
 
     const k1 = new PrivateKey(two);
     const k2 = new PrivateKey(three);
+    expect(k1.secret).toEqual(Buffer.from(two));
+    expect(k2.secret).toEqual(Buffer.from(three));
+    expect(k1.equals(k1)).toBe(true);
+    expect(k1.equals(k2)).toBe(false);
 
     checkHkdf(k1, k2, "6f982d63e8590c9d9b5b4c1959ff80315d772edd8f60287c9361d548d5200f82");
 

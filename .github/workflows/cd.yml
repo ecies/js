@@ -17,7 +17,7 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
 
-      - run: pnpm install && pnpm test -- --bail --ci
+      - run: pnpm install && pnpm test -- --bail 1
 
       - run: pnpm run build && npm publish
         env:

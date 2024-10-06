@@ -1,23 +1,25 @@
+import { describe, expect, it } from "vitest";
+
 import { bytesToHex } from "@noble/ciphers/utils";
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src";
 
-const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();
+const TEXT = Buffer.from(encoder.encode("helloworld🌍"));
 
 describe("test random encrypt and decrypt", () => {
   function checkCompressed(sk: PrivateKey) {
-    const encrypted = encrypt(sk.publicKey.compressed, encoder.encode(TEXT));
-    expect(decrypt(sk.secret, encrypted).toString()).toStrictEqual(TEXT);
+    const encrypted = encrypt(sk.publicKey.compressed, TEXT);
+    expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
   }
 
   function checkUncompressed(sk: PrivateKey) {
-    const encrypted = encrypt(sk.publicKey.uncompressed, encoder.encode(TEXT));
-    expect(decrypt(sk.secret, encrypted).toString()).toStrictEqual(TEXT);
+    const encrypted = encrypt(sk.publicKey.uncompressed, TEXT);
+    expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
   }
 
   function checkHex(sk: PrivateKey) {
-    const encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(TEXT));
-    expect(decrypt(bytesToHex(sk.secret), encrypted).toString()).toStrictEqual(TEXT);
+    const encrypted = encrypt(sk.publicKey.toHex(), TEXT);
+    expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(TEXT);
   }
 
   function testRandom() {

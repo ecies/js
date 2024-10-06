@@ -1,8 +1,10 @@
+import { describe, expect, it } from "vitest";
+
 import { bytesToHex } from "@noble/ciphers/utils";
 import { fetch, ProxyAgent, RequestInit } from "undici";
 
 import { decrypt, encrypt, PrivateKey } from "../src";
-import { decodeHex } from "../src/utils/";
+import { decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://demo.ecies.org/";
 const TEXT = "helloworld🌍";

@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { decodeHex, remove0x } from "../../src/utils";
 
 describe("test hex", () => {

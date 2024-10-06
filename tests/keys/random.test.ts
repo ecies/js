@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src";
 
 describe("test random keys", () => {
