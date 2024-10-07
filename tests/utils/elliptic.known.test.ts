@@ -1,22 +1,29 @@
-import { ECIES_CONFIG } from "../../src";
-import {
-  decodeHex,
-  getSharedPoint,
-  getValidSecret,
-  isValidPrivateKey,
-} from "../../src/utils/";
+import { describe, expect, it } from "vitest";
 
-describe("test random elliptic", () => {
-  it("generates valid secret", () => {
-    const key = getValidSecret();
-    expect(isValidPrivateKey(key)).toBe(true);
-  });
-});
+import { hexToBytes } from "@noble/hashes/utils";
+import { ECIES_CONFIG } from "../../src";
+import { decodeHex, getSharedPoint, hexToPublicKey } from "../../src/utils";
 
 describe("test known elliptic", () => {
   function testKnown(sk: string, pk: string, shared: string) {
-    expect(getSharedPoint(decodeHex(sk), decodeHex(pk))).toStrictEqual(decodeHex(shared));
+    expect(getSharedPoint(decodeHex(sk), hexToPublicKey(pk))).toStrictEqual(
+      decodeHex(shared)
+    );
   }
+  const pkOfTwo =
+    "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a";
+
+  it("tests hexToPublicKey", () => {
+    expect(hexToPublicKey(pkOfTwo)).toStrictEqual(hexToBytes("04" + pkOfTwo));
+  });
+
+  it("tests secp256k1", () => {
+    testKnown(
+      "0000000000000000000000000000000000000000000000000000000000000003",
+      pkOfTwo,
+      "03fff97bd5755eeea420453a14355235d382f6472f8568a18b2f057a1460297556" //6's pk
+    );
+  });
 
   it("tests x25519", () => {
     ECIES_CONFIG.ellipticCurve = "x25519";

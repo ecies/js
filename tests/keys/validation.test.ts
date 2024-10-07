@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { PrivateKey, PublicKey } from "../../src";
 
 describe("test validation", () => {

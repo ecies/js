@@ -53,10 +53,7 @@ export const getSharedPoint = (
     }
   );
 
-export const convertPublicKeyFormat = (
-  pk: Uint8Array,
-  compressed: boolean
-): Uint8Array =>
+export const convertPublicKeyFormat = (pk: Uint8Array, compressed: boolean): Uint8Array =>
   // only for secp256k1
   _exec(
     (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
@@ -94,6 +91,7 @@ function _exec<T>(
   } else if (curve === "ed25519") {
     return ed25519Callback(ed25519);
   } else {
+    /* v8 ignore next 2 */
     throw new Error("Not implemented");
   }
 }
