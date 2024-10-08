@@ -5,8 +5,8 @@ import { secp256k1 } from "@noble/curves/secp256k1";
 
 import { ellipticCurve } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
+import { deriveKey } from "./hash";
 import { decodeHex } from "./hex";
-import { deriveKey } from "./symmetric";
 
 export const isValidPrivateKey = (secret: Uint8Array): boolean =>
   // on secp256k1: only key ∈ (0, group order) is valid

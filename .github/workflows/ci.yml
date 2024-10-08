@@ -34,3 +34,4 @@ jobs:
 
       - run: cd example && pnpm install
       - run: node example/index.js
+      - run: node example/import.js

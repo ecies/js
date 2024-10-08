@@ -48,6 +48,7 @@ export function decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Bu
 export { ECIES_CONFIG } from "./config";
 export { PrivateKey, PublicKey } from "./keys";
 
+/** @deprecated - use `import utils from "eciesjs/utils"` instead. */
 export const utils = {
   // TODO: review these before 0.5.0
   aesEncrypt,

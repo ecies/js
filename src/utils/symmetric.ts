@@ -1,8 +1,6 @@
 import { xchacha20poly1305 as xchacha20 } from "@noble/ciphers/chacha";
 import { Cipher, concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
-import { hkdf } from "@noble/hashes/hkdf";
-import { sha256 } from "@noble/hashes/sha256";
 
 import { symmetricAlgorithm, symmetricNonceLength } from "../config";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts";
@@ -19,10 +17,6 @@ export const aesEncrypt = symEncrypt; // TODO: delete
 
 /** @deprecated - use `symDecrypt` instead. */
 export const aesDecrypt = symDecrypt; // TODO: delete
-
-export const deriveKey = (master: Uint8Array): Uint8Array =>
-  // 32 bytes shared secret for aes256 and xchacha20 derived from HKDF-SHA256
-  hkdf(sha256, master, undefined, undefined, 32);
 
 function _exec(is_encryption: boolean, key: Uint8Array, data: Uint8Array): Uint8Array {
   const algorithm = symmetricAlgorithm();
