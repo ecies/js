@@ -4,7 +4,7 @@ import { PrivateKey, decrypt, encrypt } from "eciesjs";
 
 import "./style.css";
 
-globalThis.Buffer = Buffer
+globalThis.Buffer = Buffer // polyfill
 
 const sk = new PrivateKey();
 const encoder = new TextEncoder();

@@ -1,7 +1,5 @@
 # eciesjs-example
 
-Run `pnpm install` first
-
 ## Basic usage
 
 Run `node index.js`
@@ -12,4 +10,4 @@ Run `node import.js`
 
 ## Browser
 
-Run `pnpm dev`
+Run `cd browser && pnpm install && pnpm dev`

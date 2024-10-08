@@ -7,6 +7,7 @@
 - Update documentation
 - Migrate to vitest
 - Export all modules to allow full customization
+- Use [noble-ciphers](https://github.com/paulmillr/noble-ciphers)'s pure JS aes if it's in browser
 
 ## 0.4.1 ~ 0.4.8
 

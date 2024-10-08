@@ -16,7 +16,7 @@ This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions (but at least node 16).
+We recommend using the latest Node runtime although it's still possible to install on old versions (>=16 is required).
 
 ## Quick Start
 
@@ -40,7 +40,7 @@ See [Configuration](#configuration) to control with more granularity.
 
 ## Browser Support
 
-This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill some node modules (like `node:crypto`, `Buffer`). From v0.5.0, it can run in browsers without polyfill.
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From version 0.5.0, `Buffer` will be removed and there's no need to polyfill.
 
 If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
