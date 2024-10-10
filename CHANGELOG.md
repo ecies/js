@@ -1,6 +1,13 @@
 
 # Changelog
 
+## 0.4.9
+
+- Add examples
+- Update documentation
+- Migrate to vitest
+- Export all modules to allow full customization
+
 ## 0.4.1 ~ 0.4.8
 
 - Revamp util functions
