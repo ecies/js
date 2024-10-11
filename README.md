@@ -50,7 +50,7 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 
 Parameters:
 
-- **receiverRawPK** - Receiver's public key, hex string or buffer
+- **receiverRawPK** - Receiver's public key, hex string or Uint8Array
 - **msg** - Data to encrypt
 
 Returns: **Buffer**
@@ -59,7 +59,7 @@ Returns: **Buffer**
 
 Parameters:
 
-- **receiverRawSK** - Receiver's private key, hex string or buffer
+- **receiverRawSK** - Receiver's private key, hex string or Uint8Array
 - **msg** - Data to decrypt
 
 Returns: **Buffer**

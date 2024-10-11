@@ -90,8 +90,7 @@ function _exec<T>(
     return x25519Callback(x25519);
   } else if (curve === "ed25519") {
     return ed25519Callback(ed25519);
-  } else {
-    /* v8 ignore next 2 */
+  } /* v8 ignore next 2 */ else {
     throw new Error("Not implemented");
   }
 }
