@@ -13,10 +13,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "buffer": "^6.0.3",
     "eciesjs": "file:.."
   },
   "devDependencies": {
     "vite": "^5.4.8",
-    "vite-plugin-node-polyfills": "^0.22.0"
+    "vite-bundle-visualizer": "^1.2.1"
   }
 }

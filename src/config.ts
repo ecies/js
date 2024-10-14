@@ -38,8 +38,7 @@ export const ephemeralKeySize = () => {
 
   if (ECIES_CONFIG.ellipticCurve in mapping) {
     return mapping[ECIES_CONFIG.ellipticCurve];
-  } else {
-    /* v8 ignore next 2 */
+  } /* v8 ignore next 2 */ else {
     throw new Error("Not implemented");
   }
 };

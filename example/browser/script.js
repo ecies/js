@@ -1,7 +1,10 @@
 import { bytesToHex } from "@noble/ciphers/utils";
+import { Buffer } from "buffer";
 import { PrivateKey, decrypt, encrypt } from "eciesjs";
-import './style.css';
 
+import "./style.css";
+
+globalThis.Buffer = Buffer
 
 const sk = new PrivateKey();
 const encoder = new TextEncoder();
