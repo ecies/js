@@ -120,4 +120,5 @@ dist
 # example
 bun.lockb
 deno.lock
+example/browser/pnpm-lock.yaml
 example/runtime/pnpm-lock.yaml
