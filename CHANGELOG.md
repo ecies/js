@@ -5,8 +5,9 @@
 
 - Add examples
 - Update documentation
-- Migrate to vitest
+- Migrate to [vitest](https://vitest.dev/)
 - Export all modules to allow full customization
+- Use `@noble/ciphers`'s pure AES implementation if it runs in browsers
 
 ## 0.4.1 ~ 0.4.8
 

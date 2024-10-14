@@ -29,7 +29,8 @@ function _exec(
   } else if (algorithm === "xchacha20") {
     return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH, AEAD_TAG_LENGTH);
   } else if (algorithm === "aes-256-cbc") {
-    // aes-256-cbc is always 16 bytes iv and there is no AEAD tag
+    // NOT RECOMMENDED. There is neither AAD nor AEAD tag in cbc mode
+    // aes-256-cbc always uses 16 bytes iv
     return callback(aes256cbc, key, data, 16, 0);
   } else {
     throw new Error("Not implemented");

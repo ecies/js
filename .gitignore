@@ -116,4 +116,7 @@ dist
 .pnp.*
 
 .DS_Store
-*.html
+
+# example
+bun.lockb
+deno.lock
