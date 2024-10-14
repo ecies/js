@@ -15,7 +15,7 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 ## Install
 
 ```bash
-npm install eciesjs
+npm install eciesjs@v0.3-latest
 ```
 
 ## Quick Start

@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import secp256k1 from "secp256k1";
 
 import { decodeHex, getValidSecret, remove0x } from "../src/utils";

@@ -1,4 +1,4 @@
-import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
+import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import secp256k1 from "secp256k1";
 
 import { AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH, SECRET_KEY_LENGTH } from "./consts";
