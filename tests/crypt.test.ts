@@ -1,4 +1,6 @@
-import { randomBytes } from "crypto";
+import { describe, expect, it } from "vitest";
+
+import { randomBytes } from "node:crypto";
 
 import { decrypt, encrypt } from "../src/index";
 import { PrivateKey, PublicKey } from "../src/keys";

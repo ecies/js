@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.1 ~ 0.3.20
+## 0.3.1 ~ 0.3.21
 
 - Revamp tests
 - Support Node 18, 20
@@ -9,6 +9,7 @@
 - Update documentation
 - Extract constant variables and rename some parameters
 - Revamp CI
+- Migrate to vitest
 
 ## 0.3.0
 

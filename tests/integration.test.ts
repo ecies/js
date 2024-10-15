@@ -1,4 +1,5 @@
-import { fetch, ProxyAgent, RequestInit } from 'undici';
+import { fetch, ProxyAgent, RequestInit } from "undici";
+import { describe, expect, it } from "vitest";
 
 import { decrypt, encrypt, PrivateKey, utils } from "../src/index";
 
@@ -29,10 +30,7 @@ describe("test encrypt and decrypt against python version", () => {
   });
 });
 
-async function eciesApi(
-  url: string,
-  body: { data: string; pub?: string; prv?: string }
-) {
+async function eciesApi(url: string, body: { data: string; pub?: string; prv?: string }) {
   const config: RequestInit = {
     method: "POST",
     headers: {
