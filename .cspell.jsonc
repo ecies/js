@@ -12,6 +12,7 @@
     "Codacy",
     "Codecov",
     "consts",
+    "deno",
     "ecies",
     "eciesjs",
     "eciespy",
@@ -39,7 +40,6 @@
     ".gitignore",
     ".cspell.jsonc",
     "LICENSE",
-    "package.json",
-    "yarn.lock"
+    "package.json"
   ]
 }

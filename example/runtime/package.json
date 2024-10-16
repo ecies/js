@@ -1,0 +1,14 @@
+{
+  "name": "runtime-example",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "eciesjs": "file:../.."
+  }
+}
