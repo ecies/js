@@ -16,7 +16,7 @@ This is the JavaScript/TypeScript version of [eciespy](https://github.com/ecies/
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions (but at least node 16).
+We recommend using the latest Node runtime although it's still possible to install on old versions (as long as 16+).
 
 ## Quick Start
 
@@ -25,14 +25,14 @@ import { PrivateKey, decrypt, encrypt } from "eciesjs";
 
 const sk = new PrivateKey()
 const data = Buffer.from("hello world🌍")
-const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toHex(), data))
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.compressed, data))
 console.log(Buffer.from(decrypted).toString())
 ```
 
-Run the example code above:
+Or run the example code:
 
 ```bash
-$ pnpm build && cd example && pnpm install && node index.js
+$ pnpm install && pnpm build && cd example/runtime && pnpm install && node main.js
 hello world🌍
 ```
 
@@ -40,7 +40,7 @@ See [Configuration](#configuration) to control with more granularity.
 
 ## Browser Support
 
-This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill some node modules (like `node:crypto`, `Buffer`). From v0.5.0, it can run in browsers without polyfill.
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
 If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
