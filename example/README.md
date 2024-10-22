@@ -10,7 +10,7 @@ For production, run `pnpm build && pnpm preview`
 
 ## Runtime example (Node/Bun/Deno)
 
-Run `cd runtime && bun install`
+Run `cd runtime && pnpm install`
 
 ### Basic usage
 

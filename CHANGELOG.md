@@ -5,8 +5,11 @@
 
 - Add examples
 - Update documentation
-- Migrate to vitest
+- Migrate to [vitest](https://vitest.dev/)
 - Export all modules to allow full customization
+- Introduce [`@ecies/ciphers`](https://github.com/ecies/js-ciphers) as symmetric cipher adapter for different platforms
+  - Use pure JS (`@noble/ciphers`) AES implementation if running in browsers to improve compatibility
+  - Use `node:crypto`'s chacha20 implementation on Node runtime to improve performance
 
 ## 0.4.1 ~ 0.4.8
 

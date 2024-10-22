@@ -1,8 +1,8 @@
-import { xchacha20poly1305 as xchacha20 } from "@noble/ciphers/chacha";
 import { Cipher, concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
 
-import { aes256cbc, aes256gcm } from "@ecies/ciphers";
+import { aes256cbc, aes256gcm } from "@ecies/ciphers/aes";
+import { xchacha20 } from "@ecies/ciphers/chacha";
 import { symmetricAlgorithm, symmetricNonceLength } from "../config";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts";
 
@@ -29,7 +29,8 @@ function _exec(
   } else if (algorithm === "xchacha20") {
     return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH, AEAD_TAG_LENGTH);
   } else if (algorithm === "aes-256-cbc") {
-    // aes-256-cbc is always 16 bytes iv and there is no AEAD tag
+    // NOT RECOMMENDED. There is neither AAD nor AEAD tag in cbc mode
+    // aes-256-cbc always uses 16 bytes iv
     return callback(aes256cbc, key, data, 16, 0);
   } else {
     throw new Error("Not implemented");
