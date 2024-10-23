@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 0.4.10
+
+- Fix commonjs build
+
 ## 0.4.9
 
 - Add examples
