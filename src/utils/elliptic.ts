@@ -1,12 +1,18 @@
-import { concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
 import { ed25519, x25519 } from "@noble/curves/ed25519";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
 import { ellipticCurve } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
-import { deriveKey } from "./hash";
 import { decodeHex } from "./hex";
+
+export const getValidSecret = (): Uint8Array => {
+  let key: Uint8Array;
+  do {
+    key = randomBytes(SECRET_KEY_LENGTH);
+  } while (!isValidPrivateKey(key));
+  return key;
+};
 
 export const isValidPrivateKey = (secret: Uint8Array): boolean =>
   // on secp256k1: only key ∈ (0, group order) is valid
@@ -17,25 +23,12 @@ export const isValidPrivateKey = (secret: Uint8Array): boolean =>
     () => true
   );
 
-export const getValidSecret = (): Uint8Array => {
-  let key: Uint8Array;
-  do {
-    key = randomBytes(SECRET_KEY_LENGTH);
-  } while (!isValidPrivateKey(key));
-  return key;
-};
-
 export const getPublicKey = (secret: Uint8Array): Uint8Array =>
   _exec(
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret)
   );
-
-export const getSharedKey = (
-  ephemeralPoint: Uint8Array,
-  sharedPoint: Uint8Array
-): Uint8Array => deriveKey(concatBytes(ephemeralPoint, sharedPoint));
 
 export const getSharedPoint = (
   sk: Uint8Array,
@@ -64,15 +57,7 @@ export const convertPublicKeyFormat = (pk: Uint8Array, compressed: boolean): Uin
 export const hexToPublicKey = (hex: string): Uint8Array => {
   const decoded = decodeHex(hex);
   return _exec(
-    () => {
-      if (decoded.length === ETH_PUBLIC_KEY_SIZE) {
-        const fixed = new Uint8Array(1 + decoded.length);
-        fixed.set([0x04]);
-        fixed.set(decoded, 1);
-        return fixed;
-      }
-      return decoded;
-    },
+    () => compatEthPublicKey(decoded),
     () => decoded,
     () => decoded
   );
@@ -94,3 +79,13 @@ function _exec<T>(
     throw new Error("Not implemented");
   }
 }
+
+const compatEthPublicKey = (pk: Uint8Array): Uint8Array => {
+  if (pk.length === ETH_PUBLIC_KEY_SIZE) {
+    const fixed = new Uint8Array(1 + pk.length);
+    fixed.set([0x04]);
+    fixed.set(pk, 1);
+    return fixed;
+  }
+  return pk;
+};

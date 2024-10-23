@@ -17,13 +17,10 @@
     "eciesjs",
     "eciespy",
     "eth",
-    "futoin-hkdf",
-    "helloworld",
     "hkdf",
     "js",
     "Npm",
     "Prv",
-    "querystring",
     "secp256k1",
     "xchacha",
     "xchacha20"

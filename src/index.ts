@@ -69,7 +69,7 @@ export { PrivateKey, PublicKey } from "./keys";
 
 /** @deprecated - use `import utils from "eciesjs/utils"` instead. */
 export const utils = {
-  // TODO: review these before 0.5.0
+  // TODO: remove these after 0.5.0
   aesEncrypt,
   aesDecrypt,
   symEncrypt,
