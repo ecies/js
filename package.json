@@ -31,23 +31,27 @@
     "dist"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./config": {
-      "types": "./dist/config.d.ts",
-      "import": "./dist/config.js"
-    },
-    "./consts": {
-      "types": "./dist/consts.d.ts",
-      "import": "./dist/consts.js"
-    },
-    "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js"
-    }
-  },
+		".": {
+			"types": "./dist/index.d.ts", 
+			"require": "./dist/index.js",
+			"import": "./dist/index.js"
+		},
+		"./config": {
+			"types": "./dist/config.d.ts",
+			"import": "./dist/config.js",
+			"require": "./dist/config.js"
+		},
+		"./consts": {
+			"types": "./dist/consts.d.ts",
+			"import": "./dist/consts.js",
+			"require": "./dist/consts.js"
+		},
+		"./utils": {
+			"types": "./dist/utils/index.d.ts",
+			"import": "./dist/utils/index.js",
+			"require": "./dist/utils/index.js"
+		}
+	},
   "scripts": {
     "build": "npx tsc",
     "test": "vitest"
