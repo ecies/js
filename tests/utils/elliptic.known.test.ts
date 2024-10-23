@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { hexToBytes } from "@noble/hashes/utils";
+
 import { ECIES_CONFIG } from "../../src";
 import { decodeHex, getSharedPoint, hexToPublicKey } from "../../src/utils";
 

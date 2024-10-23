@@ -42,7 +42,7 @@ See [Configuration](#configuration) to control with more granularity.
 
 This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
-If you want a WASM version to run directly in modern browsers or on some blockchains, check [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
 ## API
 
@@ -140,6 +140,8 @@ On `ellipticCurve = "x25519"` or `ellipticCurve = "ed25519"`, x25519 (key exchan
 In this case, the payload would always be: `32 Bytes + Ciphered` regardless of `isEphemeralKeyCompressed`.
 
 > If you don't know how to choose between x25519 and ed25519, just use the dedicated key exchange function x25519 for efficiency.
+>
+> Because any 32-byte data is a valid curve25519 public key, the payload would seem random. This property is excellent for circumventing censorship by adversaries.
 
 ### Secp256k1-specific configuration
 
@@ -152,6 +154,14 @@ On `isHkdfKeyCompressed = true`, the hkdf key would be derived from `ephemeral p
 On `symmetricAlgorithm = "xchacha20"`, plaintext data would be encrypted with XChaCha20-Poly1305.
 
 On `symmetricNonceLength = 12`, the nonce of AES-256-GCM would be 12 bytes. XChaCha20-Poly1305's nonce is always 24 bytes regardless of `symmetricNonceLength`.
+
+### Which configuration should I choose?
+
+For compatibility with other [ecies libraries](https://github.com/orgs/ecies/repositories), start with the default (secp256k1 with AES-256-GCM).
+
+For speed and security, pick x25519 with XChaCha20-Poly1305.
+
+If you know exactly what you are doing, configure as you wish or build your own ecies logic with this library.
 
 ## Security Audit
 

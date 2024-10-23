@@ -1,10 +1,12 @@
 import { bytesToHex } from "@noble/ciphers/utils";
 import { Buffer } from "buffer";
-import { PrivateKey, decrypt, encrypt } from "eciesjs";
-
+import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 import "./style.css";
 
 globalThis.Buffer = Buffer; // polyfill manually
+
+ECIES_CONFIG.ellipticCurve = "x25519";
+ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
 const sk = new PrivateKey();
 const encoder = new TextEncoder();
@@ -21,7 +23,7 @@ export function setup(encryptedElement, textElement, decryptedElement) {
   const _encrypt = () => {
     encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(text));
     encryptedElement.innerHTML = `encrypted:`;
-    textElement.innerHTML = `${bytesToHex(encrypted)}`;
+    textElement.innerHTML = `<code>${bytesToHex(encrypted)}</code>`;
     decryptedElement.innerHTML = `click me to decrypt`;
   };
   const _decrypt = () => {

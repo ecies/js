@@ -51,8 +51,21 @@ jobs:
           deno-version: v2.x
 
       - run: pnpm install && pnpm build && cd example/runtime && pnpm install
-      - run: bun run example/runtime/main.js
-      - run: deno run --allow-read example/runtime/main.js
-      - run: node example/runtime/main.js
-      - run: node example/runtime/import.js
-      - run: node example/runtime/require.cjs
+
+      - name: check main.js
+        run: |
+          bun run example/runtime/main.js
+          deno run --allow-read example/runtime/main.js
+          node example/runtime/main.js
+
+      - name: check import.js
+        run: |
+          bun run example/runtime/import.js
+          deno run --allow-read example/runtime/import.js
+          node example/runtime/import.js
+
+      - name: check require.cjs
+        run: |
+          bun run example/runtime/require.cjs
+          deno run --allow-read example/runtime/require.cjs
+          node example/runtime/require.cjs

@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 0.4.11
+
+- Revamp symmetric encryption/decryption
+
 ## 0.4.10
 
 - Fix commonjs build
