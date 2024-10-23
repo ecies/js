@@ -54,3 +54,5 @@ jobs:
       - run: bun run example/runtime/main.js
       - run: deno run --allow-read example/runtime/main.js
       - run: node example/runtime/main.js
+      - run: node example/runtime/import.js
+      - run: node example/runtime/require.cjs
