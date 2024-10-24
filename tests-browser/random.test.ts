@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { bytesToHex } from "@noble/ciphers/utils";
+import { Buffer } from "buffer";
+import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
+import { EllipticCurve } from "eciesjs/config";
 
-import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src";
-import { EllipticCurve } from "../../src/config";
+globalThis.Buffer = Buffer;
 
 const encoder = new TextEncoder();
 const TEXT = Buffer.from(encoder.encode("hello world🌍"));

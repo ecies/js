@@ -31,6 +31,20 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: Run browser tests (chromium, firefox)
+        working-directory: tests-browser
+        run: |
+          pnpm install && pnpm exec playwright install chromium firefox
+          pnpm test
+          pnpm test -- --browser=firefox
+
+      - name: Run browser tests (webkit)
+        working-directory: tests-browser
+        if: matrix.os == 'macos-latest'
+        run: |
+          pnpm exec playwright install webkit
+          pnpm test -- --browser=webkit
+
   check-runtimes:
     runs-on: ubuntu-latest
     steps:
