@@ -31,6 +31,25 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: Set up browser tests
+        working-directory: tests-browser
+        run: pnpm install && pnpm exec playwright install chromium firefox
+
+      - name: Install webkit browser on macos
+        working-directory: tests-browser
+        if: matrix.os == 'macos-latest'
+        run: pnpm exec playwright install
+
+      - name: Run browser tests (chromium, firefox)
+        run: |
+          pnpm test:browser
+          pnpm test:browser -- --browser=firefox
+
+      - name: Run browser tests (webkit)
+        if: matrix.os == 'macos-latest'
+        run: |
+          pnpm test:browser -- --browser=webkit
+
   check-runtimes:
     runs-on: ubuntu-latest
     steps:
@@ -54,18 +73,12 @@ jobs:
 
       - name: check main.js
         run: |
-          bun run example/runtime/main.js
-          deno run --allow-read example/runtime/main.js
-          node example/runtime/main.js
+          ./scripts/check-runtime.sh example/runtime/main.js
 
       - name: check import.js
         run: |
-          bun run example/runtime/import.js
-          deno run --allow-read example/runtime/import.js
-          node example/runtime/import.js
+          ./scripts/check-runtime.sh example/runtime/import.js
 
       - name: check require.cjs
         run: |
-          bun run example/runtime/require.cjs
-          deno run --allow-read example/runtime/require.cjs
-          node example/runtime/require.cjs
+          ./scripts/check-runtime.sh example/runtime/require.cjs
