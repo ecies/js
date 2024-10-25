@@ -7,7 +7,7 @@ import { decrypt, encrypt, PrivateKey } from "../src";
 import { decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://demo.ecies.org/";
-const TEXT = "helloworld🌍";
+const TEXT = "hello world🌍";
 const encoder = new TextEncoder();
 
 describe("test encrypt and decrypt against python version", () => {
@@ -18,7 +18,7 @@ describe("test encrypt and decrypt against python version", () => {
       pub: sk.publicKey.toHex(),
     });
     const decrypted = decrypt(sk.toHex(), decodeHex(await res.text()));
-    expect(decrypted.toString()).toEqual(TEXT);
+    expect(decrypted.toString()).toStrictEqual(TEXT);
   });
 
   it("tests decrypt", async () => {
@@ -28,7 +28,7 @@ describe("test encrypt and decrypt against python version", () => {
       data: bytesToHex(encrypted),
       prv: sk.toHex(),
     });
-    expect(TEXT).toEqual(await res.text());
+    expect(TEXT).toStrictEqual(await res.text());
   });
 });
 

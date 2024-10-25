@@ -13,7 +13,9 @@
   },
   "version": "0.4.10",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16",
+    "bun": ">=1",
+    "deno": ">=2"
   },
   "keywords": [
     "secp256k1",
@@ -33,23 +35,19 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./config": {
       "types": "./dist/config.d.ts",
-      "import": "./dist/config.js",
-      "require": "./dist/config.js"
+      "default": "./dist/config.js"
     },
     "./consts": {
       "types": "./dist/consts.d.ts",
-      "import": "./dist/consts.js",
-      "require": "./dist/consts.js"
+      "default": "./dist/consts.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.js"
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
@@ -63,7 +61,7 @@
     "@noble/hashes": "^1.5.0"
   },
   "devDependencies": {
-    "@types/node": "^22.7.9",
+    "@types/node": "^22.8.0",
     "@vitest/coverage-v8": "^2.1.3",
     "typescript": "^5.6.3",
     "undici": "^6.20.1",

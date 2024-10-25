@@ -1,6 +1,5 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
-import { isHkdfKeyCompressed } from "../config";
 import {
   decodeHex,
   getPublicKey,
@@ -25,28 +24,40 @@ export class PrivateKey {
   }
 
   constructor(secret?: Uint8Array) {
-    const sk = secret === undefined ? getValidSecret() : secret;
-    if (!isValidPrivateKey(sk)) {
+    if (secret === undefined) {
+      this.data = getValidSecret();
+    } else if (isValidPrivateKey(secret)) {
+      this.data = secret;
+    } else {
       throw new Error("Invalid private key");
     }
-    this.data = sk;
-    this.publicKey = new PublicKey(getPublicKey(sk));
+    this.publicKey = new PublicKey(getPublicKey(this.data));
   }
 
   public toHex(): string {
     return bytesToHex(this.data);
   }
 
-  public encapsulate(pk: PublicKey): Uint8Array {
-    let senderPoint: Uint8Array;
-    let sharedPoint: Uint8Array;
-    if (isHkdfKeyCompressed()) {
-      senderPoint = this.publicKey.compressed;
-      sharedPoint = this.multiply(pk, true);
-    } else {
-      senderPoint = this.publicKey.uncompressed;
-      sharedPoint = this.multiply(pk, false);
-    }
+  /**
+   * Derives a shared secret from ephemeral private key (this) and receiver's public key (pk).
+   * @description The shared key is 32 bytes, derived with `HKDF-SHA256(senderPoint || sharedPoint)`. See implementation for details.
+   *
+   * There are some variations in different ECIES implementations:
+   * which key derivation function to use, compressed or uncompressed `senderPoint`/`sharedPoint`, whether to include `senderPoint`, etc.
+   *
+   * Because the entropy of `senderPoint`, `sharedPoint` is enough high[1], we don't need salt to derive keys.
+   *
+   * [1]: Two reasons: the public keys are "random" bytes (albeit secp256k1 public keys are **not uniformly** random), and ephemeral keys are generated in every encryption.
+   *
+   * @param pk - Receiver's public key.
+   * @param compressed - Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
+   * @returns Shared secret, derived with HKDF-SHA256.
+   */
+  public encapsulate(pk: PublicKey, compressed: boolean = false): Uint8Array {
+    const senderPoint = compressed
+      ? this.publicKey.compressed
+      : this.publicKey.uncompressed;
+    const sharedPoint = this.multiply(pk, compressed);
     return getSharedKey(senderPoint, sharedPoint);
   }
 
