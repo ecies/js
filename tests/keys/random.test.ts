@@ -1,31 +1,39 @@
 import { describe, expect, it } from "vitest";
 
 import { ECIES_CONFIG, PrivateKey, PublicKey } from "../../src";
+import { decodeHex } from "../../src/utils";
 
 describe("test random keys", () => {
-  function check(k1: PrivateKey, k2: PrivateKey) {
-    expect(k1.multiply(k2.publicKey)).toStrictEqual(k2.multiply(k1.publicKey));
+  function checkMultiply(k1: PrivateKey, k2: PrivateKey, compressed: boolean) {
+    expect(k1.multiply(k2.publicKey, compressed)).toStrictEqual(
+      k2.multiply(k1.publicKey, compressed)
+    );
   }
 
-  function checkHex(sk: PrivateKey) {
-    const skFromHex = PrivateKey.fromHex(sk.toHex());
-    const pkFromHex = PublicKey.fromHex(sk.publicKey.toHex(false));
-
-    expect(skFromHex).toStrictEqual(sk);
-    expect(pkFromHex).toStrictEqual(sk.publicKey);
+  function checkEncapsulate(k1: PrivateKey, k2: PrivateKey, compressed: boolean) {
+    expect(k1.encapsulate(k2.publicKey, compressed)).toStrictEqual(
+      k1.publicKey.decapsulate(k2, compressed)
+    );
+    expect(k2.encapsulate(k1.publicKey, compressed)).toStrictEqual(
+      k2.publicKey.decapsulate(k1, compressed)
+    );
   }
 
-  function testRandom() {
-    const k1 = new PrivateKey();
-    const k2 = new PrivateKey();
-    check(k1, k2);
+  function checkHex(sk: PrivateKey, compressed: boolean) {
+    expect(Buffer.from(decodeHex(sk.toHex()))).toStrictEqual(sk.secret);
+    expect(PrivateKey.fromHex(sk.toHex())).toStrictEqual(sk);
+    expect(PublicKey.fromHex(sk.publicKey.toHex(compressed))).toStrictEqual(sk.publicKey);
+  }
 
-    const sk = new PrivateKey();
-    checkHex(sk);
+  function testRandom(compressed: boolean = false) {
+    checkMultiply(new PrivateKey(), new PrivateKey(), compressed);
+    checkEncapsulate(new PrivateKey(), new PrivateKey(), compressed);
+    checkHex(new PrivateKey(), compressed);
   }
 
   it("tests secp256k1", () => {
     testRandom();
+    testRandom(true);
   });
 
   it("tests x25519", () => {

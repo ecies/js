@@ -11,7 +11,7 @@ describe("test hex", () => {
   });
 
   it("converts hex to buffer", () => {
-    expect(decodeHex("0x0011")).toEqual(Uint8Array.from([0, 0x11]));
-    expect(decodeHex("0X0022")).toEqual(Uint8Array.from([0, 0x22]));
+    expect(decodeHex("0x0011")).toStrictEqual(Uint8Array.from([0, 0x11]));
+    expect(decodeHex("0X0022")).toStrictEqual(Uint8Array.from([0, 0x22]));
   });
 });

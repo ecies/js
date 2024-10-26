@@ -1,8 +1,7 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
-import { isHkdfKeyCompressed } from "../config";
 import { convertPublicKeyFormat, getSharedKey, hexToPublicKey } from "../utils";
-import { PrivateKey } from "./PrivateKey";
+import type { PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
   public static fromHex(hex: string): PublicKey {
@@ -33,16 +32,18 @@ export class PublicKey {
     }
   }
 
-  public decapsulate(sk: PrivateKey): Uint8Array {
-    let senderPoint: Uint8Array;
-    let sharedPoint: Uint8Array;
-    if (isHkdfKeyCompressed()) {
-      senderPoint = this.data;
-      sharedPoint = sk.multiply(this, true);
-    } else {
-      senderPoint = this.uncompressed;
-      sharedPoint = sk.multiply(this, false);
-    }
+  /**
+   * Derives a shared secret from receiver's private key (sk) and ephemeral public key (this).
+   * Opposite of `encapsulate`.
+   * @see PrivateKey.encapsulate
+   *
+   * @param sk - Receiver's private key.
+   * @param compressed - Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
+   * @returns Shared secret, derived with HKDF-SHA256.
+   */
+  public decapsulate(sk: PrivateKey, compressed: boolean = false): Uint8Array {
+    const senderPoint = compressed ? this.data : this.uncompressed;
+    const sharedPoint = sk.multiply(this, compressed);
     return getSharedKey(senderPoint, sharedPoint);
   }
 
