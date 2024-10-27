@@ -1,6 +1,11 @@
 
 # Changelog
 
+## 0.4.11
+
+- Revamp encapsulate/decapsulate
+- Revamp symmetric encryption/decryption
+
 ## 0.4.10
 
 - Fix commonjs build

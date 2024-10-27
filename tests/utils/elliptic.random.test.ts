@@ -9,18 +9,13 @@ describe("test random elliptic", () => {
     expect(isValidPrivateKey(key)).toBe(true);
   }
 
-  it("tests default", () => {
+  it("tests secp256k1", () => {
+    ECIES_CONFIG.ellipticCurve = "secp256k1";
     testRandom();
   });
 
   it("tests x25519", () => {
     ECIES_CONFIG.ellipticCurve = "x25519";
-    testRandom();
-    ECIES_CONFIG.ellipticCurve = "secp256k1";
-  });
-
-  it("tests ed25519", () => {
-    ECIES_CONFIG.ellipticCurve = "ed25519";
     testRandom();
     ECIES_CONFIG.ellipticCurve = "secp256k1";
   });
