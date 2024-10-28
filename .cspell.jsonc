@@ -7,7 +7,6 @@
   "words": [
     "aes",
     "aes-256-gcm",
-    "axios",
     "chacha",
     "Codacy",
     "Codecov",
@@ -20,7 +19,6 @@
     "hkdf",
     "js",
     "Npm",
-    "Prv",
     "secp256k1",
     "xchacha",
     "xchacha20"
