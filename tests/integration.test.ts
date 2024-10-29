@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { bytesToHex } from "@noble/ciphers/utils";
+import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils";
 import { fetch, ProxyAgent, RequestInit } from "undici";
 
 import { decrypt, encrypt, PrivateKey } from "../src";
@@ -17,8 +17,8 @@ describe("test encrypt and decrypt against python version", () => {
       data: TEXT,
       pub: sk.publicKey.toHex(),
     });
-    const decrypted = decrypt(sk.toHex(), decodeHex(await res.text()));
-    expect(decrypted.toString()).toStrictEqual(TEXT);
+    const decrypted = bytesToUtf8(decrypt(sk.toHex(), decodeHex(await res.text())));
+    expect(decrypted).toStrictEqual(TEXT);
   });
 
   it("tests decrypt", async () => {

@@ -29,7 +29,8 @@ export function setup(encryptedElement, textElement, decryptedElement) {
   const _decrypt = () => {
     encryptedElement.innerHTML = `click me to encrypt`;
     if (encrypted) {
-      textElement.innerHTML = `${decoder.decode(decrypt(sk.secret, encrypted))}`;
+      const decrypted = decoder.decode(decrypt(sk.secret, encrypted));
+      textElement.innerHTML = `${decrypted}`;
       decryptedElement.innerHTML = `decrypted:`;
       encrypted = undefined;
     } else {

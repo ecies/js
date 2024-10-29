@@ -5,6 +5,7 @@
 
 - Revamp encapsulate/decapsulate
 - Revamp symmetric encryption/decryption
+- Revamp elliptic utils
 
 ## 0.4.10
 

@@ -10,7 +10,7 @@ describe("test hex", () => {
     expect(remove0x("0X0022")).toBe("0022");
   });
 
-  it("converts hex to buffer", () => {
+  it("converts hex string to Uint8Array", () => {
     expect(decodeHex("0x0011")).toStrictEqual(Uint8Array.from([0, 0x11]));
     expect(decodeHex("0X0022")).toStrictEqual(Uint8Array.from([0, 0x22]));
   });

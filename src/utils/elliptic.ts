@@ -2,7 +2,7 @@ import { randomBytes } from "@noble/ciphers/webcrypto";
 import { ed25519, x25519 } from "@noble/curves/ed25519";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
-import { ellipticCurve } from "../config";
+import { ellipticCurve, EllipticCurve } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
 import { decodeHex } from "./hex";
 
@@ -18,6 +18,7 @@ export const isValidPrivateKey = (secret: Uint8Array): boolean =>
   // on secp256k1: only key ∈ (0, group order) is valid
   // on curve25519: any 32-byte key is valid
   _exec(
+    ellipticCurve(),
     (curve) => curve.utils.isValidPrivateKey(secret),
     () => true,
     () => true
@@ -25,6 +26,7 @@ export const isValidPrivateKey = (secret: Uint8Array): boolean =>
 
 export const getPublicKey = (secret: Uint8Array): Uint8Array =>
   _exec(
+    ellipticCurve(),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret)
@@ -36,19 +38,16 @@ export const getSharedPoint = (
   compressed?: boolean
 ): Uint8Array =>
   _exec(
+    ellipticCurve(),
     (curve) => curve.getSharedSecret(sk, pk, compressed),
     (curve) => curve.getSharedSecret(sk, pk),
-    (curve) => {
-      // Note: scalar is hashed from sk
-      const { scalar } = curve.utils.getExtendedPublicKey(sk);
-      const point = curve.ExtendedPoint.fromHex(pk).multiply(scalar);
-      return point.toRawBytes();
-    }
+    (curve) => getSharedPointOnEd25519(curve, sk, pk)
   );
 
 export const convertPublicKeyFormat = (pk: Uint8Array, compressed: boolean): Uint8Array =>
   // only for secp256k1
   _exec(
+    ellipticCurve(),
     (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
     () => pk,
     () => pk
@@ -57,6 +56,7 @@ export const convertPublicKeyFormat = (pk: Uint8Array, compressed: boolean): Uin
 export const hexToPublicKey = (hex: string): Uint8Array => {
   const decoded = decodeHex(hex);
   return _exec(
+    ellipticCurve(),
     () => compatEthPublicKey(decoded),
     () => decoded,
     () => decoded
@@ -64,11 +64,11 @@ export const hexToPublicKey = (hex: string): Uint8Array => {
 };
 
 function _exec<T>(
-  secp256k1Callback: (curve: typeof secp256k1) => T,
-  x25519Callback: (curve: typeof x25519) => T,
-  ed25519Callback: (curve: typeof ed25519) => T
+  curve: EllipticCurve,
+  secp256k1Callback: (curveFn: typeof secp256k1) => T,
+  x25519Callback: (curveFn: typeof x25519) => T,
+  ed25519Callback: (curveFn: typeof ed25519) => T
 ): T {
-  const curve = ellipticCurve();
   if (curve === "secp256k1") {
     return secp256k1Callback(secp256k1);
   } else if (curve === "x25519") {
@@ -88,4 +88,15 @@ const compatEthPublicKey = (pk: Uint8Array): Uint8Array => {
     return fixed;
   }
   return pk;
+};
+
+const getSharedPointOnEd25519 = (
+  curve: typeof ed25519,
+  sk: Uint8Array,
+  pk: Uint8Array
+): Uint8Array => {
+  // Note: scalar is hashed from sk
+  const { scalar } = curve.utils.getExtendedPublicKey(sk);
+  const point = curve.ExtendedPoint.fromHex(pk).multiply(scalar);
+  return point.toRawBytes();
 };
