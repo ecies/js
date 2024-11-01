@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@ecies/ciphers':
         specifier: ^0.2.0
-        version: 0.2.0(@noble/ciphers@1.0.0)
+        version: 0.2.1(@noble/ciphers@1.0.0)
       '@noble/ciphers':
         specifier: ^1.0.0
         version: 1.0.0
@@ -63,8 +63,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@ecies/ciphers@0.2.0':
-    resolution: {integrity: sha512-dqQk3HbyuXSdflgRMrXjEcCohKeBZQl2rm0lOcYnEC4Oue90irVMwVJ0GiM/nhjP0zzGimH8mVFF/pOzQcv+Lg==}
+  '@ecies/ciphers@0.2.1':
+    resolution: {integrity: sha512-ezMihhjW24VNK/2qQR7lH8xCQY24nk0XHF/kwJ1OuiiY5iEwQXOcKVSy47fSoHPRG8gVGXcK5SgtONDk5xMwtQ==}
     engines: {bun: '>=1', deno: '>=2', node: '>=16'}
     peerDependencies:
       '@noble/ciphers': ^1.0.0
@@ -759,7 +759,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@ecies/ciphers@0.2.0(@noble/ciphers@1.0.0)':
+  '@ecies/ciphers@0.2.1(@noble/ciphers@1.0.0)':
     dependencies:
       '@noble/ciphers': 1.0.0
 
