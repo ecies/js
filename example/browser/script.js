@@ -1,6 +1,7 @@
 import { bytesToHex } from "@noble/ciphers/utils";
 import { Buffer } from "buffer";
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
+
 import "./style.css";
 
 globalThis.Buffer = Buffer; // polyfill manually

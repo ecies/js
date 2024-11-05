@@ -2,10 +2,11 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    coverage: {
-      include: ["src/**"],
+    browser: {
       enabled: true,
-      provider: "v8",
+      name: "chromium",
+      provider: "playwright",
+      providerOptions: {},
     },
   },
 });

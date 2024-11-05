@@ -38,11 +38,24 @@ hello world🌍
 
 See [Configuration](#configuration) to control with more granularity.
 
-## Browser Support
+## Multi-platform Support
+
+### Browser
 
 This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
 If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+
+### Bun/Deno
+
+For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently:
+
+- `xchacha20` does not work on bun
+- Only `aes-256-gcm` with 12 bytes nonce works on deno
+
+### React Native
+
+See the [React Native demo](https://github.com/ecies/js-rn-demo).
 
 ## API
 

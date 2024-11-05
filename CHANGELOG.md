@@ -6,6 +6,7 @@
 - Revamp encapsulate/decapsulate
 - Revamp symmetric encryption/decryption
 - Revamp elliptic utils
+- Add browser tests
 
 ## 0.4.10
 
@@ -40,7 +41,7 @@
 - Bump dependencies
 - Drop Node 14 support
 
-## 0.3.1 ~ 0.3.18
+## 0.3.1 ~ 0.3.21
 
 - Revamp tests
 - Support Node 18, 20
@@ -48,6 +49,8 @@
 - Bump dependencies
 - Update documentation
 - Extract constant variables and rename some parameters
+- Revamp CI
+- Migrate to vitest
 
 ## 0.3.0
 

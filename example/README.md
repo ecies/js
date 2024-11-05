@@ -6,6 +6,10 @@ Make sure `pnpm build` under the parent directory is run before.
 
 Run `cd browser && pnpm install && pnpm dev`
 
+> [!NOTE]
+>
+> You need to copy `.npmrc.windows` to `example/browser/.npmrc` on Windows before the command above
+
 For production, run `pnpm build && pnpm preview`
 
 ## Runtime example (Node/Bun/Deno)

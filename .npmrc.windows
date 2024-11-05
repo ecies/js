@@ -1,0 +1,3 @@
+# symlink does not work on windows for vite in browsers
+# see: https://github.com/vitejs/vite/issues/10802
+node-linker=hoisted
