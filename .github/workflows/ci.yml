@@ -31,6 +31,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: Set .npmrc for windows
+        run: cp .npmrc.windows ./tests-browser/.npmrc
+        if: matrix.os == 'windows-latest'
+
       - name: Set up browser tests
         working-directory: tests-browser
         run: pnpm install && pnpm exec playwright install chromium firefox
