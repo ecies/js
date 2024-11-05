@@ -3,7 +3,7 @@ import secp256k1 from "secp256k1";
 
 import { UNCOMPRESSED_PUBLIC_KEY_SIZE } from "../consts";
 import { decodeHex } from "../utils";
-import { PrivateKey } from "./PrivateKey";
+import type { PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
   public static fromHex(hex: string): PublicKey {
