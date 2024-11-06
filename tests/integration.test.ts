@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils";
-import { fetch, ProxyAgent, RequestInit } from "undici";
+import { ProxyAgent, request } from "undici";
 
 import { decrypt, encrypt, PrivateKey } from "../src";
 import { decodeHex } from "../src/utils";
@@ -32,20 +32,19 @@ describe("test encrypt and decrypt against python version", () => {
   });
 });
 
-async function eciesApi(url: string, body: { data: string; pub?: string; prv?: string }) {
-  const config: RequestInit = {
+async function eciesApi(
+  url: string,
+  params: { data: string; pub?: string; prv?: string }
+) {
+  const proxy = process.env.https_proxy || process.env.http_proxy;
+
+  const { body } = await request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-  };
-  const proxy = process.env.https_proxy || process.env.http_proxy;
-  if (proxy) {
-    config.dispatcher = new ProxyAgent(`${proxy}`);
-  }
-
-  return await fetch(url, {
-    ...config,
-    body: new URLSearchParams(body),
+    body: new URLSearchParams(params).toString(),
+    dispatcher: proxy !== undefined ? new ProxyAgent(proxy) : undefined,
   });
+  return body;
 }

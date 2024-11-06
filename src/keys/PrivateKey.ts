@@ -18,6 +18,7 @@ export class PrivateKey {
   private readonly data: Uint8Array;
   public readonly publicKey: PublicKey;
 
+  /** @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`. */
   get secret(): Buffer {
     // TODO: Uint8Array
     return Buffer.from(this.data);
@@ -50,19 +51,17 @@ export class PrivateKey {
    * [1]: Two reasons: the public keys are "random" bytes (albeit secp256k1 public keys are **not uniformly** random), and ephemeral keys are generated in every encryption.
    *
    * @param pk - Receiver's public key.
-   * @param compressed - Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
+   * @param compressed - (default: `false`) Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
    * @returns Shared secret, derived with HKDF-SHA256.
    */
   public encapsulate(pk: PublicKey, compressed: boolean = false): Uint8Array {
-    const senderPoint = compressed
-      ? this.publicKey.compressed
-      : this.publicKey.uncompressed;
+    const senderPoint = this.publicKey.toBytes(compressed);
     const sharedPoint = this.multiply(pk, compressed);
     return getSharedKey(senderPoint, sharedPoint);
   }
 
   public multiply(pk: PublicKey, compressed: boolean = false): Uint8Array {
-    return getSharedPoint(this.data, pk.compressed, compressed);
+    return getSharedPoint(this.data, pk.toBytes(true), compressed);
   }
 
   public equals(other: PrivateKey): boolean {

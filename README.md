@@ -25,7 +25,7 @@ import { PrivateKey, decrypt, encrypt } from "eciesjs";
 
 const sk = new PrivateKey()
 const data = Buffer.from("hello world🌍")
-const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.compressed, data))
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toBytes(), data))
 console.log(Buffer.from(decrypted).toString())
 ```
 
@@ -42,16 +42,18 @@ See [Configuration](#configuration) to control with more granularity.
 
 ### Browser
 
-This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. The online demo is hosted [here](https://js-demo.ecies.org/).
+
+Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
 If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 
 ### Bun/Deno
 
-For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently:
+For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
 
-- `xchacha20` does not work on bun
-- Only `aes-256-gcm` with 12 bytes nonce works on deno
+- `node:crypto`'s `xchacha20` does not work on bun (pure JS implementation is used instead)
+- `aes-256-gcm` only works with 12 bytes nonce on deno (deno is not handling package exports correctly)
 
 ### React Native
 
@@ -85,7 +87,7 @@ Returns: **Buffer**
 static fromHex(hex: string): PrivateKey;
 constructor(secret?: Uint8Array);
 toHex(): string;
-encapsulate(pk: PublicKey): Uint8Array;
+encapsulate(pk: PublicKey, compressed?: boolean): Uint8Array;
 multiply(pk: PublicKey, compressed?: boolean): Uint8Array;
 equals(other: PrivateKey): boolean;
 ```
@@ -95,7 +97,6 @@ equals(other: PrivateKey): boolean;
 ```typescript
 get secret(): Buffer;
 readonly publicKey: PublicKey;
-private readonly data;
 ```
 
 ### `PublicKey`
@@ -105,17 +106,19 @@ private readonly data;
 ```typescript
 static fromHex(hex: string): PublicKey;
 constructor(data: Uint8Array);
+toBytes(compressed?: boolean): Uint8Array;
 toHex(compressed?: boolean): string;
-decapsulate(sk: PrivateKey): Uint8Array;
+decapsulate(sk: PrivateKey, compressed?: boolean): Uint8Array;
 equals(other: PublicKey): boolean;
 ```
 
 - Properties
 
 ```typescript
+/** @deprecated - use `PublicKey.toBytes(false)` instead. You may also need `Buffer.from`. */
 get uncompressed(): Buffer;
+/** @deprecated - use `PublicKey.toBytes()` instead. You may also need `Buffer.from`. */
 get compressed(): Buffer;
-private readonly data;
 ```
 
 ## Configuration
