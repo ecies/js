@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es6", "es7"],
+    "lib": [
+      "es6",
+      "es7"
+    ],
     "declaration": true,
     "sourceMap": false,
     "strict": true,
     "outDir": "dist",
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
