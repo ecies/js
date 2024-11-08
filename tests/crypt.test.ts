@@ -12,7 +12,7 @@ describe("test encrypt and decrypt", () => {
   it("tests aes with random key", () => {
     const key = randomBytes(32);
     const data = Buffer.from("this is a test");
-    expect(data.equals(aesDecrypt(key, aesEncrypt(key, data)))).toEqual(true);
+    expect(data).toStrictEqual(aesDecrypt(key, aesEncrypt(key, data)));
   });
 
   it("tests aes decrypt with known key and TEXT", () => {
@@ -25,27 +25,27 @@ describe("test encrypt and decrypt", () => {
 
     const data = Buffer.concat([nonce, tag, encrypted]);
     const decrypted = aesDecrypt(key, data);
-    expect(decrypted.toString()).toEqual(TEXT);
+    expect(decrypted.toString()).toStrictEqual(TEXT);
   });
 
   it("tests encrypt/decrypt buffer", () => {
     const prv1 = new PrivateKey();
     const encrypted1 = encrypt(prv1.publicKey.uncompressed, Buffer.from(TEXT));
-    expect(decrypt(prv1.secret, encrypted1).toString()).toEqual(TEXT);
+    expect(decrypt(prv1.secret, encrypted1).toString()).toStrictEqual(TEXT);
 
     const prv2 = new PrivateKey();
     const encrypted2 = encrypt(prv2.publicKey.compressed, Buffer.from(TEXT));
-    expect(decrypt(prv2.secret, encrypted2).toString()).toEqual(TEXT);
+    expect(decrypt(prv2.secret, encrypted2).toString()).toStrictEqual(TEXT);
   });
 
   it("tests encrypt/decrypt hex", () => {
     const prv1 = new PrivateKey();
     const encrypted1 = encrypt(prv1.publicKey.toHex(), Buffer.from(TEXT));
-    expect(decrypt(prv1.toHex(), encrypted1).toString()).toEqual(TEXT);
+    expect(decrypt(prv1.toHex(), encrypted1).toString()).toStrictEqual(TEXT);
 
     const prv2 = new PrivateKey();
     const encrypted2 = encrypt(prv2.publicKey.toHex(), Buffer.from(TEXT));
-    expect(decrypt(prv2.toHex(), encrypted2).toString()).toEqual(TEXT);
+    expect(decrypt(prv2.toHex(), encrypted2).toString()).toStrictEqual(TEXT);
   });
 
   it("tests sk pk", () => {
@@ -56,6 +56,6 @@ describe("test encrypt and decrypt", () => {
       "048e41409f2e109f2d704f0afd15d1ab53935fd443729913a7e8536b4cef8cf5773d4db7bbd99e9ed64595e24a251c9836f35d4c9842132443c17f6d501b3410d2"
     );
     const enc = encrypt(pk.toHex(), Buffer.from(TEXT));
-    expect(decrypt(sk.toHex(), enc).toString()).toEqual(TEXT);
+    expect(decrypt(sk.toHex(), enc).toString()).toStrictEqual(TEXT);
   });
 });

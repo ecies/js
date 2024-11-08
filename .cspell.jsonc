@@ -16,18 +16,17 @@
     "eciespy",
     "eth",
     "futoin-hkdf",
-    "helloworld",
     "hkdf",
     "js",
     "Npm",
-    "Prv",
-    "querystring",
     "secp256k1"
   ],
   // flagWords - list of words to be always considered incorrect
   // This is useful for offensive words and common spelling errors.
   // For example "hte" should be "the"
-  "flagWords": ["hte"],
+  "flagWords": [
+    "hte"
+  ],
   "ignorePaths": [
     ".git",
     ".github",

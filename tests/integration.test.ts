@@ -6,7 +6,7 @@ import { decrypt, encrypt, PrivateKey, utils } from "../src/index";
 const decodeHex = utils.decodeHex;
 
 const PYTHON_BACKEND = "https://demo.ecies.org/";
-const TEXT = "helloworld🌍";
+const TEXT = "hello world🌍";
 
 describe("test encrypt and decrypt against python version", () => {
   it("tests encrypt", async () => {
@@ -16,7 +16,7 @@ describe("test encrypt and decrypt against python version", () => {
       pub: sk.publicKey.toHex(),
     });
     const decrypted = decrypt(sk.toHex(), decodeHex(await res.text()));
-    expect(decrypted.toString()).toEqual(TEXT);
+    expect(decrypted.toString()).toStrictEqual(TEXT);
   });
 
   it("tests decrypt", async () => {
@@ -26,7 +26,7 @@ describe("test encrypt and decrypt against python version", () => {
       data: encrypted.toString("hex"),
       prv: sk.toHex(),
     });
-    expect(TEXT).toEqual(await res.text());
+    expect(TEXT).toStrictEqual(await res.text());
   });
 });
 
@@ -37,8 +37,9 @@ async function eciesApi(url: string, body: { data: string; pub?: string; prv?: s
       "Content-Type": "application/x-www-form-urlencoded",
     },
   };
-  if (process.env.http_proxy !== undefined) {
-    config.dispatcher = new ProxyAgent(`${process.env.http_proxy}`);
+  const proxy = process.env.https_proxy || process.env.http_proxy;
+  if (proxy) {
+    config.dispatcher = new ProxyAgent(`${proxy}`);
   }
 
   return await fetch(url, {
