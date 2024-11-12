@@ -1,6 +1,11 @@
 
 # Changelog
 
+## 0.4.12
+
+- Add `PublicKey.toBytes` and deprecate `PublicKey.compressed` and `PublicKey.uncompressed`
+- Save uncompressed public key data for secp256k1
+
 ## 0.4.11
 
 - Revamp encapsulate/decapsulate

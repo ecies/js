@@ -14,5 +14,5 @@ ECIES_CONFIG.symmetricNonceLength = 12;
 
 const sk = new PrivateKey();
 const data = Buffer.from("hello world🌍");
-const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.compressed, data));
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toBytes(), data));
 console.log(Buffer.from(decrypted).toString());

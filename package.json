@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/ecies/js.git"
   },
-  "version": "0.4.11",
+  "version": "0.4.12",
   "engines": {
     "node": ">=16",
     "bun": ">=1",

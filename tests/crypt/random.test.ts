@@ -6,7 +6,7 @@ import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src";
 import { EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
-const TEXT = Buffer.from(encoder.encode("hello world🌍"));
+const TEXT = encoder.encode("hello world🌍");
 
 interface TestParameter {
   curve: EllipticCurve;
@@ -60,18 +60,18 @@ describe.each(params)(
 );
 
 function checkCompressed(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.compressed, TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
+  const encrypted = encrypt(sk.publicKey.toBytes(), TEXT);
+  expect(decrypt(sk.secret, encrypted)).toStrictEqual(Buffer.from(TEXT));
 }
 
 function checkUncompressed(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.uncompressed, TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
+  const encrypted = encrypt(sk.publicKey.toBytes(false), TEXT);
+  expect(decrypt(sk.secret, encrypted)).toStrictEqual(Buffer.from(TEXT));
 }
 
 function checkHex(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toHex(), TEXT);
-  expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(TEXT);
+  expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(Buffer.from(TEXT));
 }
 
 function testRandom() {

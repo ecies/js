@@ -34,9 +34,7 @@ export function encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Bu
       : PublicKey.fromHex(receiverRawPK);
 
   const sharedKey = ephemeralSK.encapsulate(receiverPK, isHkdfKeyCompressed());
-  const ephemeralPK = isEphemeralKeyCompressed()
-    ? ephemeralSK.publicKey.compressed
-    : ephemeralSK.publicKey.uncompressed;
+  const ephemeralPK = ephemeralSK.publicKey.toBytes(isEphemeralKeyCompressed());
 
   const encrypted = symEncrypt(sharedKey, msg);
   return Buffer.from(concatBytes(ephemeralPK, encrypted));

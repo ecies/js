@@ -9,27 +9,37 @@ export class PublicKey {
   }
 
   private readonly data: Uint8Array; // always compressed if secp256k1
+  private readonly dataUncompressed: Uint8Array | null;
 
-  get uncompressed(): Buffer {
-    // TODO: Uint8Array
-    return Buffer.from(convertPublicKeyFormat(this.data, false));
+  private get _uncompressed(): Uint8Array {
+    return this.dataUncompressed !== null ? this.dataUncompressed : this.data;
   }
 
+  /** @deprecated - use `PublicKey.toBytes(false)` instead. You may also need `Buffer.from`. */
+  get uncompressed(): Buffer {
+    return Buffer.from(this._uncompressed); // TODO: Uint8Array
+  }
+
+  /** @deprecated - use `PublicKey.toBytes()` instead. You may also need `Buffer.from`. */
   get compressed(): Buffer {
-    // TODO: Uint8Array
-    return Buffer.from(this.data);
+    return Buffer.from(this.data); // TODO: Uint8Array
   }
 
   constructor(data: Uint8Array) {
-    this.data = convertPublicKeyFormat(data, true);
+    // data can be either compressed or uncompressed if secp256k1
+    const compressed = convertPublicKeyFormat(data, true);
+    const uncompressed = convertPublicKeyFormat(data, false);
+    this.data = compressed;
+    this.dataUncompressed =
+      compressed.length !== uncompressed.length ? uncompressed : null;
+  }
+
+  public toBytes(compressed: boolean = true): Uint8Array {
+    return compressed ? this.data : this._uncompressed;
   }
 
   public toHex(compressed: boolean = true): string {
-    if (compressed) {
-      return bytesToHex(this.data);
-    } else {
-      return bytesToHex(this.uncompressed);
-    }
+    return bytesToHex(this.toBytes(compressed));
   }
 
   /**
@@ -38,11 +48,11 @@ export class PublicKey {
    * @see PrivateKey.encapsulate
    *
    * @param sk - Receiver's private key.
-   * @param compressed - Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
+   * @param compressed - (default: `false`) Whether to use compressed or uncompressed public keys in the key derivation (secp256k1 only).
    * @returns Shared secret, derived with HKDF-SHA256.
    */
   public decapsulate(sk: PrivateKey, compressed: boolean = false): Uint8Array {
-    const senderPoint = compressed ? this.data : this.uncompressed;
+    const senderPoint = this.toBytes(compressed);
     const sharedPoint = sk.multiply(this, compressed);
     return getSharedKey(senderPoint, sharedPoint);
   }
