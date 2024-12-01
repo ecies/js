@@ -17,12 +17,12 @@ export class PublicKey {
 
   /** @deprecated - use `PublicKey.toBytes(false)` instead. You may also need `Buffer.from`. */
   get uncompressed(): Buffer {
-    return Buffer.from(this._uncompressed); // TODO: Uint8Array
+    return Buffer.from(this._uncompressed); // TODO: delete
   }
 
   /** @deprecated - use `PublicKey.toBytes()` instead. You may also need `Buffer.from`. */
   get compressed(): Buffer {
-    return Buffer.from(this.data); // TODO: Uint8Array
+    return Buffer.from(this.data); // TODO: delete
   }
 
   constructor(data: Uint8Array) {

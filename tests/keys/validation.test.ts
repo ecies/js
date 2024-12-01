@@ -16,8 +16,8 @@ describe("test validation", () => {
 
     const groupOrderIntMinus1 =
       "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140";
-    expect(PrivateKey.fromHex(groupOrderIntMinus1).secret).toStrictEqual(
-      Buffer.from(decodeHex(groupOrderIntMinus1))
+    expect(PrivateKey.fromHex(groupOrderIntMinus1)).toStrictEqual(
+      new PrivateKey(decodeHex(groupOrderIntMinus1))
     );
 
     const groupOrderIntAdd1 =

@@ -20,7 +20,7 @@ describe("test random keys", () => {
   }
 
   function checkHex(sk: PrivateKey, compressed: boolean) {
-    expect(Buffer.from(decodeHex(sk.toHex()))).toStrictEqual(sk.secret);
+    expect(new PrivateKey(decodeHex(sk.toHex()))).toStrictEqual(sk);
     expect(PrivateKey.fromHex(sk.toHex())).toStrictEqual(sk);
     expect(PublicKey.fromHex(sk.publicKey.toHex(compressed))).toStrictEqual(sk.publicKey);
   }

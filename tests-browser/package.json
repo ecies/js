@@ -11,8 +11,8 @@
     "eciesjs": "file:.."
   },
   "devDependencies": {
-    "@vitest/browser": "^2.1.4",
-    "playwright": "^1.48.2",
-    "vitest": "^2.1.4"
+    "@vitest/browser": "^2.1.8",
+    "playwright": "^1.49.0",
+    "vitest": "^2.1.8"
   }
 }

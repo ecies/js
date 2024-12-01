@@ -2,7 +2,9 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/app/ecies/js)
 [![License](https://img.shields.io/github/license/ecies/js.svg)](https://github.com/ecies/js)
-[![Npm Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
+[![NPM Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
+![NPM Downloads](https://img.shields.io/npm/dm/eciesjs)
+[![Bundle size](https://badgen.net/bundlephobia/minzip/eciesjs)](https://bundlephobia.com/package/eciesjs@latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/ecies/js/ci.yml)](https://github.com/ecies/js/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ecies/js.svg)](https://codecov.io/gh/ecies/js)
 
