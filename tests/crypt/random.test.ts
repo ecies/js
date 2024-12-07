@@ -2,11 +2,20 @@ import { describe, expect, it } from "vitest";
 
 import { bytesToHex } from "@noble/ciphers/utils";
 
-import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "../../src";
+import {
+  ECIES_CONFIG,
+  PrivateKey,
+  decrypt as _decrypt,
+  encrypt as _encrypt,
+} from "../../src";
 import { EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
 const TEXT = encoder.encode("hello world🌍");
+const decrypt = (sk: Buffer | string, msg: Uint8Array) =>
+  Uint8Array.from(_decrypt(sk, msg));
+const encrypt = (pk: Uint8Array | string, msg: Uint8Array) =>
+  Uint8Array.from(_encrypt(pk, msg));
 
 interface TestParameter {
   curve: EllipticCurve;
@@ -61,17 +70,17 @@ describe.each(params)(
 
 function checkCompressed(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toBytes(), TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(Buffer.from(TEXT));
+  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
 }
 
 function checkUncompressed(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toBytes(false), TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(Buffer.from(TEXT));
+  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
 }
 
 function checkHex(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toHex(), TEXT);
-  expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(Buffer.from(TEXT));
+  expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(TEXT);
 }
 
 function testRandom() {

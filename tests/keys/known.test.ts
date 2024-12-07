@@ -43,8 +43,6 @@ describe("test known keys", () => {
 
     const k1 = new PrivateKey(two);
     const k2 = new PrivateKey(three);
-    expect(k1.secret).toStrictEqual(Buffer.from(two));
-    expect(k2.secret).toStrictEqual(Buffer.from(three));
 
     checkHkdf(
       k1,

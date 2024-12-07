@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 0.4.13
+
+- Bump dependencies
+
 ## 0.4.12
 
 - Add `PublicKey.toBytes` and deprecate `PublicKey.compressed` and `PublicKey.uncompressed`
