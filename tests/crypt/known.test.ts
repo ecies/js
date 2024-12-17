@@ -7,21 +7,21 @@ const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();
 
 describe("test known encrypt and decrypt", () => {
-  function testDecrypt(sk: string, msg: string, data: Uint8Array) {
-    expect(decrypt(sk, data).toString()).toBe(msg);
+  function testDecrypt(sk: string, data: string, expected: Uint8Array) {
+    expect(decrypt(sk, expected).toString()).toBe(data);
   }
 
-  function testEncrypt(sk: string, pk: string, msg: string) {
-    testDecrypt(sk, msg, encrypt(pk, encoder.encode(msg)));
+  function testEncrypt(sk: string, pk: string, data: string) {
+    testDecrypt(sk, data, encrypt(pk, encoder.encode(data)));
   }
 
-  function testKnown(sk: string, pk: string, msg: string, enc?: Uint8Array) {
+  function testKnown(sk: string, pk: string, data: string, enc?: Uint8Array) {
     if (enc === undefined) {
-      testEncrypt(sk, pk, msg);
+      testEncrypt(sk, pk, data);
     } else {
       // it should not be equal due to ephemeral key
-      expect(enc).not.toStrictEqual(encrypt(pk, encoder.encode(msg)));
-      testDecrypt(sk, msg, enc);
+      expect(enc).not.toStrictEqual(encrypt(pk, encoder.encode(data)));
+      testDecrypt(sk, data, enc);
     }
   }
 

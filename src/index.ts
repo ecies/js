@@ -17,15 +17,19 @@ import {
 } from "./utils";
 
 /**
- * Encrypts a message.
+ * Encrypts data with a receiver's public key.
  * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
  * To keep the same behavior, use `Buffer.from(encrypt(...))`.
  *
  * @param receiverRawPK - Raw public key of the receiver, either as a hex string or a Uint8Array.
- * @param msg - Message to encrypt.
+ * @param data - Data to encrypt.
  * @returns Encrypted payload, format: `public key || encrypted`.
  */
-export function encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Buffer {
+export function encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Buffer {
+  return Buffer.from(_encrypt(receiverRawPK, data));
+}
+
+function _encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Array {
   const ephemeralSK = new PrivateKey();
 
   const receiverPK =
@@ -36,30 +40,34 @@ export function encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Bu
   const sharedKey = ephemeralSK.encapsulate(receiverPK, isHkdfKeyCompressed());
   const ephemeralPK = ephemeralSK.publicKey.toBytes(isEphemeralKeyCompressed());
 
-  const encrypted = symEncrypt(sharedKey, msg);
-  return Buffer.from(concatBytes(ephemeralPK, encrypted));
+  const encrypted = symEncrypt(sharedKey, data);
+  return concatBytes(ephemeralPK, encrypted);
 }
 
 /**
- * Decrypts a message.
+ * Decrypts data with a receiver's private key.
  * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
  * To keep the same behavior, use `Buffer.from(decrypt(...))`.
  *
  * @param receiverRawSK - Raw private key of the receiver, either as a hex string or a Uint8Array.
- * @param msg - Message to decrypt.
+ * @param data - Data to decrypt.
  * @returns Decrypted plain text.
  */
-export function decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Buffer {
+export function decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Buffer {
+  return Buffer.from(_decrypt(receiverRawSK, data));
+}
+
+function _decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Uint8Array {
   const receiverSK =
     receiverRawSK instanceof Uint8Array
       ? new PrivateKey(receiverRawSK)
       : PrivateKey.fromHex(receiverRawSK);
 
   const keySize = ephemeralKeySize();
-  const ephemeralPK = new PublicKey(msg.subarray(0, keySize));
-  const encrypted = msg.subarray(keySize);
+  const ephemeralPK = new PublicKey(data.subarray(0, keySize));
+  const encrypted = data.subarray(keySize);
   const sharedKey = ephemeralPK.decapsulate(receiverSK, isHkdfKeyCompressed());
-  return Buffer.from(symDecrypt(sharedKey, encrypted));
+  return symDecrypt(sharedKey, encrypted);
 }
 
 export { ECIES_CONFIG } from "./config";

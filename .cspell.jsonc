@@ -35,6 +35,7 @@
     ".gitignore",
     ".cspell.jsonc",
     "LICENSE",
-    "package.json"
+    "package.json",
+    "pnpm-lock.yaml"
   ]
 }
