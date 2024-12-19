@@ -1,8 +1,6 @@
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 import { Buffer } from "node:buffer";
 
-globalThis.Buffer = Buffer;
-
 // because deno does not support indirect conditional exports
 // it falls to node:crypto's implementation
 // despite that @ecies/ciphers exports @noble/ciphers implementation to deno

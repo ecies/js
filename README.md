@@ -3,7 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/app/ecies/js)
 [![License](https://img.shields.io/github/license/ecies/js.svg)](https://github.com/ecies/js)
 [![NPM Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
-![NPM Downloads](https://img.shields.io/npm/dm/eciesjs)
+[![NPM Downloads](https://img.shields.io/npm/dm/eciesjs)](https://npm-stat.link/eciesjs)
 [![Bundle size](https://badgen.net/bundlephobia/minzip/eciesjs)](https://bundlephobia.com/package/eciesjs@latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/ecies/js/ci.yml)](https://github.com/ecies/js/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ecies/js.svg)](https://codecov.io/gh/ecies/js)
@@ -54,7 +54,7 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 
 For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
 
-- `node:crypto`'s `xchacha20` does not work on bun (pure JS implementation is used instead)
+- `node:crypto`'s `chacha20-poly1305` does not work on bun (pure JS implementation is used instead)
 - `aes-256-gcm` only works with 12 bytes nonce on deno (deno is not handling package exports correctly)
 
 ### React Native
@@ -63,21 +63,21 @@ See the [React Native demo](https://github.com/ecies/js-rn-demo).
 
 ## API
 
-### `encrypt(receiverRawPK: string | Uint8Array, msg: Uint8Array): Buffer`
+### `encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Buffer`
 
 Parameters:
 
 - **receiverRawPK** - Receiver's public key, hex string or Uint8Array
-- **msg** - Data to encrypt
+- **data** - Data to encrypt
 
 Returns: **Buffer**
 
-### `decrypt(receiverRawSK: string | Uint8Array, msg: Uint8Array): Buffer`
+### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Buffer`
 
 Parameters:
 
 - **receiverRawSK** - Receiver's private key, hex string or Uint8Array
-- **msg** - Data to decrypt
+- **data** - Data to decrypt
 
 Returns: **Buffer**
 

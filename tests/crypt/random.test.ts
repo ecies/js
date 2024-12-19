@@ -12,10 +12,10 @@ import { EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
 const TEXT = encoder.encode("hello world🌍");
-const decrypt = (sk: Buffer | string, msg: Uint8Array) =>
-  Uint8Array.from(_decrypt(sk, msg));
-const encrypt = (pk: Uint8Array | string, msg: Uint8Array) =>
-  Uint8Array.from(_encrypt(pk, msg));
+const decrypt = (sk: Buffer | string, data: Uint8Array) =>
+  Uint8Array.from(_decrypt(sk, data));
+const encrypt = (pk: Uint8Array | string, data: Uint8Array) =>
+  Uint8Array.from(_encrypt(pk, data));
 
 interface TestParameter {
   curve: EllipticCurve;
