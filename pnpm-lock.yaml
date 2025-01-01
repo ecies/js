@@ -32,7 +32,7 @@ importers:
         version: 5.7.2
       undici:
         specifier: ^7.1.1
-        version: 7.1.1
+        version: 7.2.0
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)
@@ -661,8 +661,8 @@ packages:
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
-  undici@7.1.1:
-    resolution: {integrity: sha512-WZkQ6eH9f5ZT93gaIffsbUaDpBwjbpvmMbfaEhOnbdUneurTESeRxwPGwjI28mRFESH3W3e8Togijh37ptOQqA==}
+  undici@7.2.0:
+    resolution: {integrity: sha512-klt+0S55GBViA9nsq48/NSCo4YX5mjydjypxD7UmHh/brMu8h/Mhd/F7qAeoH2NOO8SDTk6kjnTFc4WpzmfYpQ==}
     engines: {node: '>=20.18.1'}
 
   vite-node@2.1.8:
@@ -1273,7 +1273,7 @@ snapshots:
 
   undici-types@6.20.0: {}
 
-  undici@7.1.1: {}
+  undici@7.2.0: {}
 
   vite-node@2.1.8(@types/node@22.10.2):
     dependencies:
