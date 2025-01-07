@@ -40,6 +40,10 @@ hello world🌍
 
 See [Configuration](#configuration) to control with more granularity.
 
+## Sponsors
+
+<a href="https://dotenvx.com"><img alt="dotenvx" src="https://dotenvx.com/logo.png" width="200" height="200"/></a>
+
 ## Multi-platform Support
 
 ### Browser
