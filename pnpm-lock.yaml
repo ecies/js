@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@ecies/ciphers':
         specifier: ^0.2.2
-        version: 0.2.2(@noble/ciphers@1.2.0)
+        version: 0.2.2(@noble/ciphers@1.2.1)
       '@noble/ciphers':
         specifier: ^1.0.0
-        version: 1.2.0
+        version: 1.2.1
       '@noble/curves':
         specifier: ^1.6.0
         version: 1.8.0
@@ -233,8 +233,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@noble/ciphers@1.2.0':
-    resolution: {integrity: sha512-YGdEUzYEd+82jeaVbSKKVp1jFZb8LwaNMIIzHFkihGvYdd/KKAr7KaJHdEdSYGredE3ssSravXIa0Jxg28Sv5w==}
+  '@noble/ciphers@1.2.1':
+    resolution: {integrity: sha512-rONPWMC7PeExE077uLE4oqWrZ1IvAfz3oH9LibVAcVCopJiA9R62uavnbEzdkVmJYI6M6Zgkbeb07+tWjlq2XA==}
     engines: {node: ^14.21.3 || >=16}
 
   '@noble/curves@1.8.0':
@@ -762,9 +762,9 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@ecies/ciphers@0.2.2(@noble/ciphers@1.2.0)':
+  '@ecies/ciphers@0.2.2(@noble/ciphers@1.2.1)':
     dependencies:
-      '@noble/ciphers': 1.2.0
+      '@noble/ciphers': 1.2.1
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -863,7 +863,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@noble/ciphers@1.2.0': {}
+  '@noble/ciphers@1.2.1': {}
 
   '@noble/curves@1.8.0':
     dependencies:
