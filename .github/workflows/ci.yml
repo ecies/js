@@ -46,13 +46,13 @@ jobs:
 
       - name: Run browser tests (chromium, firefox)
         run: |
-          pnpm test:browser
-          pnpm test:browser -- --browser=firefox
+          pnpm test:browser --browser=chromium
+          pnpm test:browser --browser=firefox
 
       - name: Run browser tests (webkit)
         if: matrix.os == 'macos-latest'
         run: |
-          pnpm test:browser -- --browser=webkit
+          pnpm test:browser --browser=webkit
 
   check-runtimes:
     runs-on: ubuntu-latest
