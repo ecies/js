@@ -1,10 +1,16 @@
 
 # Changelog
 
+## 0.4.15
+
+- Bump `@ecies/ciphers` to support 16 bytes nonce aes-256-gcm on deno
+- Revamp documentation
+
 ## 0.4.14
 
 - Bump dependencies
 - Add details
+- Revamp documentation
 
 ## 0.4.13
 
