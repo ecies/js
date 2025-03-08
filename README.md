@@ -27,10 +27,10 @@ We recommend using the latest Node runtime although it's still possible to insta
 ```typescript
 import { PrivateKey, decrypt, encrypt } from "eciesjs";
 
-const sk = new PrivateKey()
-const data = Buffer.from("hello world🌍")
-const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toBytes(), data))
-console.log(Buffer.from(decrypted).toString())
+const sk = new PrivateKey();
+const data = Buffer.from("hello world🌍");
+const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toBytes(), data));
+console.log(Buffer.from(decrypted).toString());
 ```
 
 Or run the example code:
@@ -60,8 +60,8 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 
 For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
 
-- `node:crypto`'s `chacha20-poly1305` does not work on bun (pure JS implementation is used instead)
-- `aes-256-gcm` only works with 12 bytes nonce on deno (deno is not handling package exports correctly)
+- `chacha20-poly1305`'s pure JS implementation is used on bun (`node:crypto`'s `chacha20-poly1305` is not available due to lack of implementation);
+- `chacha20-poly1305` does not work on deno. If you found such a problem, try to upgrade deno to the latest version (no guarantee whether it works though).
 
 ### React Native
 
@@ -73,7 +73,7 @@ See the [React Native demo](https://github.com/ecies/js-rn-demo).
 
 Parameters:
 
-- **receiverRawPK** - Receiver's public key, hex string or Uint8Array
+- **receiverRawPK** - Receiver's public key, hex `string` or `Uint8Array`
 - **data** - Data to encrypt
 
 Returns: **Buffer**
@@ -82,7 +82,7 @@ Returns: **Buffer**
 
 Parameters:
 
-- **receiverRawSK** - Receiver's private key, hex string or Uint8Array
+- **receiverRawSK** - Receiver's private key, hex `string` or `Uint8Array`
 - **data** - Data to decrypt
 
 Returns: **Buffer**
@@ -187,12 +187,17 @@ For speed and security, pick x25519 with XChaCha20-Poly1305.
 
 If you know exactly what you are doing, configure as you wish or build your own ecies logic with this library.
 
-## Security Audit
+## Security
 
-Following dependencies are audited:
+All external dependencies are audited:
 
-- [noble-curves](https://github.com/paulmillr/noble-curves/tree/main/audit)
+- [noble-curves](https://github.com/paulmillr/noble-curves#security)
 - [noble-hashes](https://github.com/paulmillr/noble-hashes#security)
+- [noble-ciphers](https://github.com/paulmillr/noble-ciphers#security)
+
+This library is fully auditable as well. We're seeking funding for a professional third-party security audit to verify implementation and identify potential vulnerabilities.
+
+If you rely on this library or value secure open-source cryptography, please consider [donating](https://github.com/sponsors/kigawas) to help fund this audit.
 
 ## Changelog
 

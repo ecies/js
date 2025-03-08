@@ -44,15 +44,17 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: pnpm exec playwright install
 
-      - name: Run browser tests (chromium, firefox)
-        run: |
-          pnpm test:browser --browser=chromium
-          pnpm test:browser --browser=firefox
+      - name: Run browser tests (chromium)
+        run: pnpm test:browser --browser=chromium
+
+      # due to vitest bug, disable firefox if not macos
+      - name: Run browser tests (firefox)
+        run: pnpm test:browser --browser=firefox
+        if: matrix.os == 'macos-latest'
 
       - name: Run browser tests (webkit)
         if: matrix.os == 'macos-latest'
-        run: |
-          pnpm test:browser --browser=webkit
+        run: pnpm test:browser --browser=webkit
 
   check-runtimes:
     runs-on: ubuntu-latest

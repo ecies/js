@@ -21,7 +21,7 @@ import {
  * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
  * To keep the same behavior, use `Buffer.from(encrypt(...))`.
  *
- * @param receiverRawPK - Raw public key of the receiver, either as a hex string or a Uint8Array.
+ * @param receiverRawPK - Raw public key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to encrypt.
  * @returns Encrypted payload, format: `public key || encrypted`.
  */
@@ -49,7 +49,7 @@ function _encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Ar
  * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
  * To keep the same behavior, use `Buffer.from(decrypt(...))`.
  *
- * @param receiverRawSK - Raw private key of the receiver, either as a hex string or a Uint8Array.
+ * @param receiverRawSK - Raw private key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to decrypt.
  * @returns Decrypted plain text.
  */
