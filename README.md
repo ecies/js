@@ -22,6 +22,8 @@ npm install eciesjs
 
 We recommend using the latest Node runtime although it's still possible to install on old versions (as long as 16+).
 
+For security, see [Security](#security).
+
 ## Quick Start
 
 ```typescript
@@ -42,30 +44,11 @@ hello world🌍
 
 See [Configuration](#configuration) to control with more granularity.
 
+This library also supports multiple platforms (browser, node, bun/deno, react native), see [Multi-platform Support](#multi-platform-support).
+
 ## Sponsors
 
 <a href="https://dotenvx.com"><img alt="dotenvx" src="https://dotenvx.com/logo.png" width="200" height="200"/></a>
-
-## Multi-platform Support
-
-### Browser
-
-This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. The online demo is hosted [here](https://js-demo.ecies.org/).
-
-Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
-
-If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
-
-### Bun/Deno
-
-For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
-
-- `chacha20-poly1305`'s pure JS implementation is used on bun (`node:crypto`'s `chacha20-poly1305` is not available due to lack of implementation);
-- `chacha20-poly1305` does not work on deno. If you found such a problem, try to upgrade deno to the latest version (no guarantee whether it works though).
-
-### React Native
-
-See the [React Native demo](https://github.com/ecies/js-rn-demo).
 
 ## API
 
@@ -187,13 +170,46 @@ For speed and security, pick x25519 with XChaCha20-Poly1305.
 
 If you know exactly what you are doing, configure as you wish or build your own ecies logic with this library.
 
+## Multi-platform Support
+
+|              | Fully Supported |
+| ------------ | --------------- |
+| Node         | ✅              |
+| Bun          | ✅              |
+| Deno         | ⚠️ (only aes)   |
+| Browser      | ✅              |
+| React Native | ✅              |
+
+Via [`@ecies/ciphers`](https://github.com/ecies/js-ciphers), `node:crypto`'s native implementation of AES-256-GCM and XChaCha20-Poly1305 is chosen if available.
+
+### Browser
+
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. The online demo is hosted [here](https://js-demo.ecies.org/).
+
+Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
+
+If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
+
+### Bun/Deno
+
+For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
+
+- `chacha20-poly1305`'s pure JS implementation is used on bun (`node:crypto`'s `chacha20-poly1305` is not available due to lack of implementation);
+- `chacha20-poly1305` does not work on deno. If you found such a problem, try to upgrade deno to the latest version (no guarantee whether it works though).
+
+### React Native
+
+See the [React Native demo](https://github.com/ecies/js-rn-demo).
+
 ## Security
 
-All external dependencies are audited:
+To mitigate security risks, such as [supply chain attacks](https://slowmist.medium.com/supply-chain-attack-on-ledger-connect-kit-analyzing-the-impact-and-preventive-measures-1005e39422fd) and zero-day [vulnerabilities](https://github.com/advisories/GHSA-vjh7-7g9h-fjfh), we only use `node:crypto` and these audited dependencies:
 
 - [noble-curves](https://github.com/paulmillr/noble-curves#security)
 - [noble-hashes](https://github.com/paulmillr/noble-hashes#security)
 - [noble-ciphers](https://github.com/paulmillr/noble-ciphers#security)
+
+Every release is built on GitHub Actions with [provenance](https://www.npmjs.com/package/eciesjs#provenance).
 
 This library is fully auditable as well. We're seeking funding for a professional third-party security audit to verify implementation and identify potential vulnerabilities.
 
