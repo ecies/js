@@ -64,12 +64,12 @@
     "@noble/hashes": "^1.5.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.13.9",
-    "@vitest/coverage-v8": "^3.0.8",
-    "typescript": "^5.8.2",
-    "undici": "^7.4.0",
-    "vitest": "^3.0.8"
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.14.0",
+    "@vitest/coverage-v8": "^3.1.1",
+    "typescript": "^5.8.3",
+    "undici": "^7.7.0",
+    "vitest": "^3.1.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -77,5 +77,5 @@
       "esbuild"
     ]
   },
-  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }

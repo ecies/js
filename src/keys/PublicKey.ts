@@ -1,11 +1,12 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
+import type { EllipticCurve } from "../config";
 import { convertPublicKeyFormat, getSharedKey, hexToPublicKey } from "../utils";
 import type { PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
-  public static fromHex(hex: string): PublicKey {
-    return new PublicKey(hexToPublicKey(hex));
+  public static fromHex(hex: string, curve?: EllipticCurve): PublicKey {
+    return new PublicKey(hexToPublicKey(hex, curve), curve);
   }
 
   private readonly data: Uint8Array; // always compressed if secp256k1
@@ -25,10 +26,10 @@ export class PublicKey {
     return Buffer.from(this.data); // TODO: delete
   }
 
-  constructor(data: Uint8Array) {
+  constructor(data: Uint8Array, curve?: EllipticCurve) {
     // data can be either compressed or uncompressed if secp256k1
-    const compressed = convertPublicKeyFormat(data, true);
-    const uncompressed = convertPublicKeyFormat(data, false);
+    const compressed = convertPublicKeyFormat(data, true, curve);
+    const uncompressed = convertPublicKeyFormat(data, false, curve);
     this.data = compressed;
     this.dataUncompressed =
       compressed.length !== uncompressed.length ? uncompressed : null;
