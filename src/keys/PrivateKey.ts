@@ -1,5 +1,6 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
+import type { EllipticCurve } from "../config";
 import {
   decodeHex,
   getPublicKey,
@@ -11,10 +12,11 @@ import {
 import { PublicKey } from "./PublicKey";
 
 export class PrivateKey {
-  public static fromHex(hex: string): PrivateKey {
-    return new PrivateKey(decodeHex(hex));
+  public static fromHex(hex: string, curve?: EllipticCurve): PrivateKey {
+    return new PrivateKey(decodeHex(hex), curve);
   }
 
+  private readonly curve?: EllipticCurve;
   private readonly data: Uint8Array;
   public readonly publicKey: PublicKey;
 
@@ -24,15 +26,16 @@ export class PrivateKey {
     return Buffer.from(this.data);
   }
 
-  constructor(secret?: Uint8Array) {
+  constructor(secret?: Uint8Array, curve?: EllipticCurve) {
+    this.curve = curve;
     if (secret === undefined) {
-      this.data = getValidSecret();
-    } else if (isValidPrivateKey(secret)) {
+      this.data = getValidSecret(curve);
+    } else if (isValidPrivateKey(secret, curve)) {
       this.data = secret;
     } else {
       throw new Error("Invalid private key");
     }
-    this.publicKey = new PublicKey(getPublicKey(this.data));
+    this.publicKey = new PublicKey(getPublicKey(this.data, curve), curve);
   }
 
   public toHex(): string {
@@ -61,7 +64,7 @@ export class PrivateKey {
   }
 
   public multiply(pk: PublicKey, compressed: boolean = false): Uint8Array {
-    return getSharedPoint(this.data, pk.toBytes(true), compressed);
+    return getSharedPoint(this.data, pk.toBytes(true), compressed, this.curve);
   }
 
   public equals(other: PrivateKey): boolean {

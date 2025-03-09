@@ -3,8 +3,9 @@
 
 ## 0.4.15
 
-- Bump `@ecies/ciphers` to support 16 bytes nonce aes-256-gcm on deno
+- Bump dependencies
 - Revamp documentation
+- Make `curve` configurable in `keys` and `utils` via argument
 
 ## 0.4.14
 
