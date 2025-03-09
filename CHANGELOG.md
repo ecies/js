@@ -5,6 +5,7 @@
 
 - Bump dependencies
 - Revamp documentation
+- Make `curve` configurable in `keys` and `utils` via argument
 
 ## 0.4.14
 
