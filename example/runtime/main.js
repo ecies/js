@@ -1,5 +1,5 @@
-import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 import { Buffer } from "node:buffer";
+import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 
 // because deno does not support indirect conditional exports
 // it falls to node:crypto's implementation

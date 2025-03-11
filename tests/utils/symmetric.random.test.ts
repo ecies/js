@@ -40,7 +40,8 @@ describe("test random symmetric", () => {
   });
 
   it("tests not implemented", () => {
-    ECIES_CONFIG.symmetricAlgorithm = "" as any;
+    // @ts-expect-error
+    ECIES_CONFIG.symmetricAlgorithm = "";
     expect(testRandomKey).toThrow("Not implemented");
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
