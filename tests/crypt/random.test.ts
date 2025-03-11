@@ -8,7 +8,7 @@ import {
   decrypt as _decrypt,
   encrypt as _encrypt,
 } from "../../src";
-import { EllipticCurve } from "../../src/config";
+import type { EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
 const TEXT = encoder.encode("hello world🌍");

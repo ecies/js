@@ -1,4 +1,4 @@
-import { Cipher, concatBytes } from "@noble/ciphers/utils";
+import { type Cipher, concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
 
 import { aes256cbc, aes256gcm } from "@ecies/ciphers/aes";

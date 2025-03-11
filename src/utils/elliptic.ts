@@ -2,7 +2,7 @@ import { randomBytes } from "@noble/ciphers/webcrypto";
 import { ed25519, x25519 } from "@noble/curves/ed25519";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
-import { ellipticCurve, EllipticCurve } from "../config";
+import { type EllipticCurve, ellipticCurve } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
 import { decodeHex } from "./hex";
 

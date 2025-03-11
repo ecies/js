@@ -1,5 +1,5 @@
-import { bytesToHex } from "@noble/ciphers/utils";
 import { Buffer } from "buffer";
+import { bytesToHex } from "@noble/ciphers/utils";
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 
 import "./style.css";
@@ -17,22 +17,22 @@ export function setup(encryptedElement, textElement, decryptedElement) {
   const text = "hello eciesjs🔒";
   let encrypted;
 
-  encryptedElement.innerHTML = `click me to encrypt`;
+  encryptedElement.innerHTML = "click me to encrypt";
   textElement.innerHTML = text;
-  decryptedElement.innerHTML = `click me to decrypt`;
+  decryptedElement.innerHTML = "click me to decrypt";
 
   const _encrypt = () => {
     encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(text));
-    encryptedElement.innerHTML = `encrypted:`;
+    encryptedElement.innerHTML = "encrypted:";
     textElement.innerHTML = `<code>${bytesToHex(encrypted)}</code>`;
-    decryptedElement.innerHTML = `click me to decrypt`;
+    decryptedElement.innerHTML = "click me to decrypt";
   };
   const _decrypt = () => {
-    encryptedElement.innerHTML = `click me to encrypt`;
+    encryptedElement.innerHTML = "click me to encrypt";
     if (encrypted) {
       const decrypted = decoder.decode(decrypt(sk.secret, encrypted));
       textElement.innerHTML = `${decrypted}`;
-      decryptedElement.innerHTML = `decrypted:`;
+      decryptedElement.innerHTML = "decrypted:";
       encrypted = undefined;
     } else {
       textElement.innerHTML = "click encrypt button first";

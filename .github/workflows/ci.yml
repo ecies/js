@@ -24,6 +24,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - run: pnpm install && pnpm test -- --bail 1
+      - run: pnpm check
       - run: pnpm run build && npm publish --dry-run
 
       - uses: codecov/codecov-action@v4
