@@ -75,8 +75,8 @@ Returns: **Buffer**
 - Methods
 
 ```typescript
-static fromHex(hex: string): PrivateKey;
-constructor(secret?: Uint8Array);
+static fromHex(hex: string, curve?: EllipticCurve): PrivateKey;
+constructor(secret?: Uint8Array, curve?: EllipticCurve);
 toHex(): string;
 encapsulate(pk: PublicKey, compressed?: boolean): Uint8Array;
 multiply(pk: PublicKey, compressed?: boolean): Uint8Array;
@@ -95,8 +95,8 @@ readonly publicKey: PublicKey;
 - Methods
 
 ```typescript
-static fromHex(hex: string): PublicKey;
-constructor(data: Uint8Array);
+static fromHex(hex: string, curve?: EllipticCurve): PublicKey;
+constructor(data: Uint8Array, curve?: EllipticCurve);
 toBytes(compressed?: boolean): Uint8Array;
 toHex(compressed?: boolean): string;
 decapsulate(sk: PrivateKey, compressed?: boolean): Uint8Array;

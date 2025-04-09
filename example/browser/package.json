@@ -16,7 +16,7 @@
     "eciesjs": "file:../.."
   },
   "devDependencies": {
-    "vite": "^6.2.1",
+    "vite": "^6.2.5",
     "vite-bundle-visualizer": "^1.2.1"
   }
 }
