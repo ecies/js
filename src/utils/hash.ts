@@ -1,6 +1,6 @@
 import { concatBytes } from "@noble/ciphers/utils";
 import { hkdf } from "@noble/hashes/hkdf";
-import { sha256 } from "@noble/hashes/sha256";
+import { sha256 } from "@noble/hashes/sha2";
 
 export const deriveKey = (
   master: Uint8Array,

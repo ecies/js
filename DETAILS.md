@@ -113,7 +113,7 @@ Instead of using plain SHA256 for key derivation, we use HKDF-SHA256 which is mo
 
 ```typescript
 import { hkdf } from '@noble/hashes/hkdf';
-import { sha256 } from '@noble/hashes/sha256';
+import { sha256 } from '@noble/hashes/sha2';
 
 // Derive AES key from ECDH shared secret
 const ourPrivateKey = 3n;
