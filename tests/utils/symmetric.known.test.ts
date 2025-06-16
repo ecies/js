@@ -1,6 +1,5 @@
-import { describe, expect, it } from "vitest";
-
 import { concatBytes } from "@noble/ciphers/utils";
+import { describe, expect, it } from "vitest";
 
 import { ECIES_CONFIG } from "../../src";
 import { decodeHex, symDecrypt } from "../../src/utils";

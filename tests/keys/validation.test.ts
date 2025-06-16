@@ -27,6 +27,6 @@ describe("test validation", () => {
     const pk =
       "04307bac038efaa5bf8a0ac8db53fd4de8024a0c0baf37283a9e6671589eba18e" +
       "dc12b3915ff0df66e6ffad862440228a65ead99e3320e50aa90008961e3d68acc";
-    expect(() => PublicKey.fromHex(pk)).toThrow("bad point: equation left != right");
+    expect(() => PublicKey.fromHex(pk)).toThrow("bad point: is not on curve");
   });
 });

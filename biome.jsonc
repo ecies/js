@@ -1,14 +1,14 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.0-beta.6/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
     "useIgnoreFile": false
   },
   "files": {
-    "include": [
-      "src/**/*.ts",
-      "tests/**/*.ts"
+    "includes": [
+      "**/src/**/*.ts",
+      "**/tests/**/*.ts"
     ],
     "ignoreUnknown": false
   },
@@ -17,8 +17,12 @@
     "indentStyle": "space",
     "lineWidth": 90
   },
-  "organizeImports": {
-    "enabled": true
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "linter": {
     "enabled": true,
@@ -27,7 +31,15 @@
       "style": {
         "noUselessElse": "off",
         "noInferrableTypes": "off",
-        "useTemplate": "off"
+        "useTemplate": "off",
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error"
       }
     }
   },
@@ -39,8 +51,8 @@
   },
   "overrides": [
     {
-      "include": [
-        "biome.jsonc"
+      "includes": [
+        "**/biome.jsonc"
       ],
       "formatter": {
         "enabled": false

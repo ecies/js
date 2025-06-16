@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ECIES_CONFIG, decrypt, encrypt } from "../../src";
+import { decrypt, ECIES_CONFIG, encrypt } from "../../src";
 import { decodeHex } from "../../src/utils";
 
 const TEXT = "helloworld🌍";

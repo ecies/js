@@ -1,9 +1,8 @@
-import { describe, expect, it } from "vitest";
-
 import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils";
 import { ProxyAgent, request } from "undici";
+import { describe, expect, it } from "vitest";
 
-import { PrivateKey, decrypt, encrypt } from "../src";
+import { decrypt, encrypt, PrivateKey } from "../src";
 import { decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://demo.ecies.org/";
