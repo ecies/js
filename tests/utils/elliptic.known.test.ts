@@ -2,41 +2,43 @@ import { hexToBytes } from "@noble/hashes/utils";
 import { describe, expect, it } from "vitest";
 
 import type { EllipticCurve } from "../../src/config";
-import { decodeHex, getSharedPoint, hexToPublicKey } from "../../src/utils";
+import { decodeHex, getPublicKey, getSharedPoint, hexToPublicKey } from "../../src/utils";
 
-describe("test known elliptic", () => {
-  function testGetSharedPoint(
-    sk: string,
-    pk: string,
-    shared: string,
-    compressed: boolean = true,
-    curve?: EllipticCurve
-  ) {
-    expect(
-      getSharedPoint(decodeHex(sk), hexToPublicKey(pk, curve), compressed, curve)
-    ).toStrictEqual(decodeHex(shared));
-  }
-
-  const pkOfTwo =
+describe("test known secp256k1", () => {
+  const sk = "0000000000000000000000000000000000000000000000000000000000000002";
+  const pk = "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5";
+  const pkUncompressed =
     "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a";
 
-  it("tests hexToPublicKey: secp256k1", () => {
-    expect(hexToPublicKey(pkOfTwo, "secp256k1")).toStrictEqual(
-      hexToBytes("04" + pkOfTwo)
+  it("tests known pk", () => {
+    expect(getPublicKey(hexToBytes(sk), "secp256k1")).toStrictEqual(decodeHex(pk));
+  });
+
+  it("tests hexToPublicKey", () => {
+    expect(hexToPublicKey(pkUncompressed, "secp256k1")).toStrictEqual(
+      hexToBytes("04" + pkUncompressed)
     );
   });
 
-  it("tests getSharedPoint: secp256k1", () => {
+  it("tests getSharedPoint", () => {
     testGetSharedPoint(
       "0000000000000000000000000000000000000000000000000000000000000003",
-      pkOfTwo,
+      pkUncompressed,
       "03fff97bd5755eeea420453a14355235d382f6472f8568a18b2f057a1460297556", //6's pk
       true,
       "secp256k1"
     );
   });
+});
 
-  it("tests getSharedPoint: x25519", () => {
+describe("test known x25519", () => {
+  it("tests known pk", () => {
+    const sk = "a8abababababababababababababababababababababababababababababab6b";
+    const pk = "e3712d851a0e5d79b831c5e34ab22b41a198171de209b8b8faca23a11c624859";
+    expect(getPublicKey(hexToBytes(sk), "x25519")).toStrictEqual(decodeHex(pk));
+  });
+
+  it("tests getSharedPoint", () => {
     // https://datatracker.ietf.org/doc/html/rfc7748.html#section-6.1
     testGetSharedPoint(
       "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
@@ -46,8 +48,10 @@ describe("test known elliptic", () => {
       "x25519"
     );
   });
+});
 
-  it("tests getSharedPoint: ed25519", () => {
+describe("test known ed25519", () => {
+  it("tests getSharedPoint", () => {
     // scalar of sk: 3140620980319341722849076354004524857726602937622481303882784251885505225391
     // shared point:
     //   (10766034509508892393929108371050440292889843231095811528019173932139015419574,
@@ -70,3 +74,15 @@ describe("test known elliptic", () => {
     );
   });
 });
+
+function testGetSharedPoint(
+  sk: string,
+  pk: string,
+  shared: string,
+  compressed: boolean = true,
+  curve?: EllipticCurve
+) {
+  expect(
+    getSharedPoint(decodeHex(sk), hexToPublicKey(pk, curve), compressed, curve)
+  ).toStrictEqual(decodeHex(shared));
+}
