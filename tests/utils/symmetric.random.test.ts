@@ -1,6 +1,5 @@
-import { describe, expect, it } from "vitest";
-
 import { randomBytes } from "@noble/ciphers/webcrypto";
+import { describe, expect, it } from "vitest";
 import { ECIES_CONFIG } from "../../src";
 import { symDecrypt, symEncrypt } from "../../src/utils";
 

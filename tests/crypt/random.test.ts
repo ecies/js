@@ -1,12 +1,11 @@
+import { bytesToHex } from "@noble/ciphers/utils";
 import { describe, expect, it } from "vitest";
 
-import { bytesToHex } from "@noble/ciphers/utils";
-
 import {
-  ECIES_CONFIG,
-  PrivateKey,
   decrypt as _decrypt,
   encrypt as _encrypt,
+  ECIES_CONFIG,
+  PrivateKey,
 } from "../../src";
 import type { EllipticCurve } from "../../src/config";
 

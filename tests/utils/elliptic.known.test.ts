@@ -1,6 +1,5 @@
-import { describe, expect, it } from "vitest";
-
 import { hexToBytes } from "@noble/hashes/utils";
+import { describe, expect, it } from "vitest";
 
 import type { EllipticCurve } from "../../src/config";
 import { decodeHex, getSharedPoint, hexToPublicKey } from "../../src/utils";
