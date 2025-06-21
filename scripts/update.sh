@@ -1,4 +1,5 @@
 #!/bin/sh
-pnpm update --no-save
-cd tests-browser && pnpm update && cd ..
-cd example/browser && pnpm update && cd ..
+pnpm update
+cd tests-browser && pnpm update && cd ../example
+cd browser && pnpm update && cd ..
+cd runtime && pnpm update && cd ..

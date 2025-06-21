@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { decrypt, ECIES_CONFIG, encrypt } from "../../src";
 import { decodeHex } from "../../src/utils";
 
@@ -29,7 +28,7 @@ describe("test known encrypt and decrypt", () => {
     testEncryptDecrypt(sk, pk, TEXT);
   });
 
-  it("tests chacha", () => {
+  it("tests secp256k1 chacha", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
     const sk = "0000000000000000000000000000000000000000000000000000000000000002";
@@ -55,6 +54,25 @@ describe("test known encrypt and decrypt", () => {
     testEncryptDecrypt(sk, pk, TEXT);
 
     ECIES_CONFIG.ellipticCurve = "secp256k1";
+  });
+
+  it("tests x25519 chacha", () => {
+    ECIES_CONFIG.ellipticCurve = "x25519";
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
+
+    const sk = "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a";
+    const pk = "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a";
+    testEncryptDecrypt(sk, pk, TEXT);
+
+    const encrypted = decodeHex(
+      "cfff9c146116355d0e7ce81df984b4d64c5e5c9c055fbfda0ff8169e11d05e12ed" +
+        "f025069032adf3e16b763d886f3812bc8f1902fd29204ed3b6a2ea4e52a01dc440" +
+        "72ed1635aefbad1571bd5b972a7304ba25301f12"
+    );
+    testDecryptKnown(sk, pk, TEXT, encrypted);
+
+    ECIES_CONFIG.ellipticCurve = "secp256k1";
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 
   it("tests ed25519", () => {

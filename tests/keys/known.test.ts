@@ -58,4 +58,28 @@ describe("test known keys", () => {
       true
     );
   });
+
+  it("tests hkdf: x25519", () => {
+    const two = new Uint8Array(32);
+    two[31] = 2;
+    const three = new Uint8Array(32);
+    three[31] = 3;
+
+    const k1 = new PrivateKey(two, "x25519");
+    const k2 = new PrivateKey(three, "x25519");
+
+    checkHkdf(
+      k1,
+      k2,
+      "d8f3f4d3ed301a58dd1309c372cfd147ad881dc44f495948b3e47c4e07114d0c",
+      false
+    );
+
+    checkHkdf(
+      k1,
+      k2,
+      "d8f3f4d3ed301a58dd1309c372cfd147ad881dc44f495948b3e47c4e07114d0c",
+      true
+    );
+  });
 });
