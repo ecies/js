@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/ecies/js.git"
   },
-  "version": "0.4.15",
+  "version": "0.4.16",
   "engines": {
     "node": ">=16",
     "bun": ">=1",
@@ -64,11 +64,11 @@
     "@noble/hashes": "^1.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0-beta.6",
-    "@types/node": "^24.0.3",
+    "@biomejs/biome": "^2.0.6",
+    "@types/node": "^24.0.8",
     "@vitest/coverage-v8": "^3.2.4",
     "typescript": "^5.8.3",
-    "undici": "^7.10.0",
+    "undici": "^7.11.0",
     "vitest": "^3.2.4"
   },
   "pnpm": {
@@ -77,5 +77,5 @@
       "esbuild"
     ]
   },
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
 }

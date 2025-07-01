@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [18, 20, 22]
+        node: [18, 20, 22, 24]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -28,7 +28,7 @@ jobs:
       - run: pnpm run build && npm publish --dry-run
 
       - uses: codecov/codecov-action@v4
-        if: matrix.os == 'ubuntu-latest' && matrix.node == 22
+        if: matrix.os == 'ubuntu-latest' && matrix.node == 24
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -39,23 +39,24 @@ jobs:
       - name: Set up browser tests
         working-directory: tests-browser
         run: pnpm install && pnpm exec playwright install chromium firefox
+        if: matrix.node != 18
 
       - name: Install webkit browser on macos
         working-directory: tests-browser
-        if: matrix.os == 'macos-latest'
         run: pnpm exec playwright install
+        if: matrix.node != 18 && matrix.os == 'macos-latest'
 
       - name: Run browser tests (chromium)
         run: pnpm test:browser --browser=chromium
+        if: matrix.node != 18
 
-      # due to vitest bug, disable firefox if not macos
       - name: Run browser tests (firefox)
         run: pnpm test:browser --browser=firefox
-        if: matrix.os == 'macos-latest'
+        if: matrix.node != 18
 
       - name: Run browser tests (webkit)
-        if: matrix.os == 'macos-latest'
         run: pnpm test:browser --browser=webkit
+        if: matrix.node != 18 && matrix.os == 'macos-latest'
 
   check-runtimes:
     runs-on: ubuntu-latest
@@ -64,7 +65,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
