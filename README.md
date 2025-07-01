@@ -174,17 +174,17 @@ If you know exactly what you are doing, configure as you wish or build your own 
 
 |              | Fully Supported |
 | ------------ | --------------- |
-| Node         | ✅              |
-| Bun          | ✅              |
-| Deno         | ⚠️ (only aes)   |
-| Browser      | ✅              |
-| React Native | ✅              |
+| Node         | ✅               |
+| Bun          | ✅               |
+| Deno         | ✅ (see below)   |
+| Browser      | ✅               |
+| React Native | ✅               |
 
 Via [`@ecies/ciphers`](https://github.com/ecies/js-ciphers), `node:crypto`'s native implementation of AES-256-GCM and XChaCha20-Poly1305 is chosen if available.
 
 ### Browser
 
-This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. The online demo is hosted [here](https://js-demo.ecies.org/).
+This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. You can check [the online demo](https://js-demo.ecies.org/) as well.
 
 Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
@@ -195,7 +195,7 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
 
 - `chacha20-poly1305`'s pure JS implementation is used on bun (`node:crypto`'s `chacha20-poly1305` is not available due to lack of implementation);
-- `chacha20-poly1305` does not work on deno. If you found such a problem, try to upgrade deno to the latest version (no guarantee whether it works though).
+- `chacha20-poly1305` does not work on deno by default. You need to upgrade deno and run with `--conditions deno` (>=2.4.0) or `--unstable-node-conditions deno`(>=2.3.6,<2.4.0).
 
 ### React Native
 
