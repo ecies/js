@@ -64,8 +64,8 @@
     "@noble/hashes": "^1.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.6",
-    "@types/node": "^24.0.10",
+    "@biomejs/biome": "^2.1.1",
+    "@types/node": "^24.0.13",
     "@vitest/coverage-v8": "^3.2.4",
     "typescript": "^5.8.3",
     "undici": "^7.11.0",

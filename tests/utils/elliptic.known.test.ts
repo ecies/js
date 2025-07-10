@@ -79,8 +79,8 @@ function testGetSharedPoint(
   sk: string,
   pk: string,
   shared: string,
-  compressed: boolean = true,
-  curve?: EllipticCurve
+  compressed: boolean,
+  curve: EllipticCurve
 ) {
   expect(
     getSharedPoint(decodeHex(sk), hexToPublicKey(pk, curve), compressed, curve)

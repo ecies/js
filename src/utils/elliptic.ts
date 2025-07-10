@@ -6,8 +6,6 @@ import { type EllipticCurve, ellipticCurve } from "../config";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
 import { decodeHex } from "./hex";
 
-// TODO: remove `ellipticCurve` after 0.5.0
-
 export const getValidSecret = (curve?: EllipticCurve): Uint8Array => {
   let key: Uint8Array;
   do {
@@ -20,7 +18,7 @@ export const isValidPrivateKey = (secret: Uint8Array, curve?: EllipticCurve): bo
   // on secp256k1: only key ∈ (0, group order) is valid
   // on curve25519: any 32-byte key is valid
   _exec(
-    curve || ellipticCurve(),
+    curve,
     (curve) => curve.utils.isValidPrivateKey(secret),
     () => true,
     () => true
@@ -28,7 +26,7 @@ export const isValidPrivateKey = (secret: Uint8Array, curve?: EllipticCurve): bo
 
 export const getPublicKey = (secret: Uint8Array, curve?: EllipticCurve): Uint8Array =>
   _exec(
-    curve || ellipticCurve(),
+    curve,
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret)
@@ -41,7 +39,7 @@ export const getSharedPoint = (
   curve?: EllipticCurve
 ): Uint8Array =>
   _exec(
-    curve || ellipticCurve(),
+    curve,
     (curve) => curve.getSharedSecret(sk, pk, compressed),
     (curve) => curve.getSharedSecret(sk, pk),
     (curve) => getSharedPointOnEd25519(curve, sk, pk)
@@ -54,7 +52,7 @@ export const convertPublicKeyFormat = (
 ): Uint8Array =>
   // only for secp256k1
   _exec(
-    curve || ellipticCurve(),
+    curve,
     (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
     () => pk,
     () => pk
@@ -63,7 +61,7 @@ export const convertPublicKeyFormat = (
 export const hexToPublicKey = (hex: string, curve?: EllipticCurve): Uint8Array => {
   const decoded = decodeHex(hex);
   return _exec(
-    curve || ellipticCurve(),
+    curve,
     () => compatEthPublicKey(decoded),
     () => decoded,
     () => decoded
@@ -71,16 +69,17 @@ export const hexToPublicKey = (hex: string, curve?: EllipticCurve): Uint8Array =
 };
 
 function _exec<T>(
-  curve: EllipticCurve,
+  curve: EllipticCurve | undefined,
   secp256k1Callback: (curveFn: typeof secp256k1) => T,
   x25519Callback: (curveFn: typeof x25519) => T,
   ed25519Callback: (curveFn: typeof ed25519) => T
 ): T {
-  if (curve === "secp256k1") {
+  const _curve = curve || ellipticCurve(); // TODO: remove after 0.5.0
+  if (_curve === "secp256k1") {
     return secp256k1Callback(secp256k1);
-  } else if (curve === "x25519") {
+  } else if (_curve === "x25519") {
     return x25519Callback(x25519);
-  } else if (curve === "ed25519") {
+  } else if (_curve === "ed25519") {
     return ed25519Callback(ed25519);
   } /* v8 ignore next 2 */ else {
     throw new Error("Not implemented");
@@ -104,6 +103,6 @@ const getSharedPointOnEd25519 = (
 ): Uint8Array => {
   // Note: scalar is hashed from sk
   const { scalar } = curve.utils.getExtendedPublicKey(sk);
-  const point = curve.ExtendedPoint.fromHex(pk).multiply(scalar);
-  return point.toRawBytes(); // `compressed` in signature has no effect
+  const point = curve.Point.fromHex(pk).multiply(scalar);
+  return point.toBytes();
 };

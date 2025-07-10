@@ -20,7 +20,7 @@ describe("test known encrypt and decrypt", () => {
     testDecrypt(sk, data, encrypted);
   }
 
-  it("tests default", () => {
+  it("tests secp256k1: aes", () => {
     const sk = "5b5b1a0ff51e4350badd6f58d9e6fa6f57fbdbde6079d12901770dda3b803081";
     const pk =
       "048e41409f2e109f2d704f0afd15d1ab53935fd443729913a7e8536b4cef8cf5773d4db7bbd99e9ed64595e24a251c9836f35d4c9842132443c17f6d501b3410d2";
@@ -28,7 +28,7 @@ describe("test known encrypt and decrypt", () => {
     testEncryptDecrypt(sk, pk, TEXT);
   });
 
-  it("tests secp256k1 chacha", () => {
+  it("tests secp256k1: chacha", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
     const sk = "0000000000000000000000000000000000000000000000000000000000000002";
@@ -46,7 +46,7 @@ describe("test known encrypt and decrypt", () => {
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 
-  it("tests x25519", () => {
+  it("tests x25519: aes", () => {
     ECIES_CONFIG.ellipticCurve = "x25519";
 
     const sk = "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a";
@@ -56,7 +56,7 @@ describe("test known encrypt and decrypt", () => {
     ECIES_CONFIG.ellipticCurve = "secp256k1";
   });
 
-  it("tests x25519 chacha", () => {
+  it("tests x25519: chacha", () => {
     ECIES_CONFIG.ellipticCurve = "x25519";
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
@@ -75,7 +75,7 @@ describe("test known encrypt and decrypt", () => {
     ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 
-  it("tests ed25519", () => {
+  it("tests ed25519: aes", () => {
     ECIES_CONFIG.ellipticCurve = "ed25519";
 
     const sk = "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60";
@@ -83,5 +83,22 @@ describe("test known encrypt and decrypt", () => {
     testEncryptDecrypt(sk, pk, TEXT);
 
     ECIES_CONFIG.ellipticCurve = "secp256k1";
+  });
+
+  it("tests ed25519: chacha", () => {
+    ECIES_CONFIG.ellipticCurve = "ed25519";
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
+
+    const sk = "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60";
+    const pk = "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a";
+    const encrypted = decodeHex(
+      "329c94d4f7b282e885626302c1383a4f60a0d1ad34ca46b6c0d128404376afb5cf" +
+        "6d42a1f70997f4f2af4926e278259fb5b67ac9c30b5e50a311d4a890378926881d" +
+        "f1d3e0556c99ff7e0ed8b0d14f1e9536c83a282f"
+    );
+    testDecryptKnown(sk, pk, TEXT, encrypted);
+
+    ECIES_CONFIG.ellipticCurve = "secp256k1";
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 });
