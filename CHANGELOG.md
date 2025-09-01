@@ -1,6 +1,11 @@
 
 # Changelog
 
+## 0.4.16
+
+- Bump dependencies
+- Drop Node 18 support
+
 ## 0.4.15
 
 - Bump dependencies
