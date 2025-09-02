@@ -19,7 +19,7 @@ export const isValidPrivateKey = (secret: Uint8Array, curve?: EllipticCurve): bo
   // on curve25519: any 32-byte key is valid
   _exec(
     curve,
-    (curve) => curve.utils.isValidPrivateKey(secret),
+    (curve) => curve.utils.isValidSecretKey(secret),
     () => true,
     () => true
   );

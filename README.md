@@ -20,7 +20,9 @@ You can learn the details in [DETAILS.md](./DETAILS.md).
 npm install eciesjs
 ```
 
-We recommend using the latest Node runtime although it's still possible to install on old versions (as long as 16+).
+We recommend using the latest JavaScript/TypeScript runtime although it's still possible to install on some old versions.
+
+This library supports multiple platforms (browser, node, bun/deno, react native), see [Multi-platform Support](#multi-platform-support).
 
 For security, see [Security](#security).
 
@@ -43,8 +45,6 @@ hello world🌍
 ```
 
 See [Configuration](#configuration) to control with more granularity.
-
-This library also supports multiple platforms (browser, node, bun/deno, react native), see [Multi-platform Support](#multi-platform-support).
 
 ## Sponsors
 
