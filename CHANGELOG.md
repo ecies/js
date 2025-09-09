@@ -5,6 +5,7 @@
 
 - Bump dependencies
 - Drop Node 18 support
+- Remove deprecated `@noble/curves` usage
 
 ## 0.4.15
 
