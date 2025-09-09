@@ -29,10 +29,8 @@ describe("test known keys", () => {
   });
 
   it("tests encapsulate: secp256k1", () => {
-    const two = new Uint8Array(32);
-    two[31] = 2;
-    const three = new Uint8Array(32);
-    three[31] = 3;
+    const two = Uint8Array.from(Array(31).fill(0).concat([2]));
+    const three = Uint8Array.from(Array(31).fill(0).concat([3]));
 
     const k1 = new PrivateKey(two, "secp256k1");
     const k2 = new PrivateKey(three, "secp256k1");
@@ -53,10 +51,8 @@ describe("test known keys", () => {
   });
 
   it("tests encapsulate: x25519", () => {
-    const two = new Uint8Array(32);
-    two[31] = 2;
-    const three = new Uint8Array(32);
-    three[31] = 3;
+    const two = Uint8Array.from(Array(31).fill(0).concat([2]));
+    const three = Uint8Array.from(Array(31).fill(0).concat([3]));
 
     const k1 = new PrivateKey(two, "x25519");
     const k2 = new PrivateKey(three, "x25519");
@@ -77,10 +73,8 @@ describe("test known keys", () => {
   });
 
   it("tests encapsulate: ed25519", () => {
-    const two = new Uint8Array(32);
-    two[31] = 2;
-    const three = new Uint8Array(32);
-    three[31] = 3;
+    const two = Uint8Array.from(Array(31).fill(0).concat([2]));
+    const three = Uint8Array.from(Array(31).fill(0).concat([3]));
 
     const k1 = new PrivateKey(two, "ed25519");
     const k2 = new PrivateKey(three, "ed25519");
