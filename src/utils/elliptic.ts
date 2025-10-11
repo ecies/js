@@ -53,7 +53,12 @@ export const convertPublicKeyFormat = (
   // only for secp256k1
   _exec(
     curve,
-    (curve) => curve.getSharedSecret(BigInt(1), pk, compressed),
+    (curve) =>
+      curve.getSharedSecret(
+        Uint8Array.from(Array(31).fill(0).concat([1])), // 1 as private key
+        pk,
+        compressed
+      ),
     () => pk,
     () => pk
   );
@@ -103,6 +108,6 @@ const getSharedPointOnEd25519 = (
 ): Uint8Array => {
   // Note: scalar is hashed from sk
   const { scalar } = curve.utils.getExtendedPublicKey(sk);
-  const point = curve.Point.fromHex(pk).multiply(scalar);
+  const point = curve.Point.fromBytes(pk).multiply(scalar);
   return point.toBytes();
 };
