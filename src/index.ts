@@ -5,8 +5,8 @@ import {
   ephemeralKeySize,
   isEphemeralKeyCompressed,
   isHkdfKeyCompressed,
-} from "./config";
-import { PrivateKey, PublicKey } from "./keys";
+} from "./config.js";
+import { PrivateKey, PublicKey } from "./keys/index.js";
 import {
   aesDecrypt,
   aesEncrypt,
@@ -15,7 +15,7 @@ import {
   remove0x,
   symDecrypt,
   symEncrypt,
-} from "./utils";
+} from "./utils/index.js";
 
 /**
  * Encrypts data with a receiver's public key.
@@ -74,8 +74,8 @@ function _decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Uint8Ar
   return symDecrypt(sharedKey, encrypted);
 }
 
-export { ECIES_CONFIG } from "./config";
-export { PrivateKey, PublicKey } from "./keys";
+export { ECIES_CONFIG } from "./config.js";
+export { PrivateKey, PublicKey } from "./keys/index.js";
 
 /** @deprecated - use `import utils from "eciesjs/utils"` instead. */
 export const utils = {

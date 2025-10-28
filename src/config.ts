@@ -2,7 +2,7 @@ import {
   COMPRESSED_PUBLIC_KEY_SIZE,
   CURVE25519_PUBLIC_KEY_SIZE,
   UNCOMPRESSED_PUBLIC_KEY_SIZE,
-} from "./consts";
+} from "./consts.js";
 
 export type EllipticCurve = "secp256k1" | "x25519" | "ed25519";
 export type SymmetricAlgorithm =
@@ -36,9 +36,10 @@ export const ephemeralKeySize = () => {
     ed25519: CURVE25519_PUBLIC_KEY_SIZE,
   };
 
+  /* v8 ignore else -- @preserve */
   if (ECIES_CONFIG.ellipticCurve in mapping) {
     return mapping[ECIES_CONFIG.ellipticCurve];
-  } /* v8 ignore next 2 */ else {
+  } else {
     throw new Error("Not implemented");
   }
 };
