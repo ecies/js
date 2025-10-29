@@ -122,7 +122,11 @@ bun.lockb
 deno.lock
 example/browser/pnpm-lock.yaml
 example/runtime/pnpm-lock.yaml
+example/runtime/package-lock.json
 
 # browser tests
 tests-browser/pnpm-lock.yaml
 tests-browser/**/*.test.ts
+
+# npm lock files (project uses pnpm)
+package-lock.json
