@@ -1,6 +1,6 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
-import type { EllipticCurve } from "../config";
+import type { EllipticCurve } from "../config.js";
 import {
   decodeHex,
   getPublicKey,
@@ -8,8 +8,8 @@ import {
   getSharedPoint,
   getValidSecret,
   isValidPrivateKey,
-} from "../utils";
-import { PublicKey } from "./PublicKey";
+} from "../utils/index.js";
+import { PublicKey } from "./PublicKey.js";
 
 export class PrivateKey {
   public static fromHex(hex: string, curve?: EllipticCurve): PrivateKey {

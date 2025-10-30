@@ -2,9 +2,9 @@ import { randomBytes } from "@noble/ciphers/webcrypto";
 import { ed25519, x25519 } from "@noble/curves/ed25519";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
-import { type EllipticCurve, ellipticCurve } from "../config";
-import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts";
-import { decodeHex } from "./hex";
+import { type EllipticCurve, ellipticCurve } from "../config.js";
+import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts.js";
+import { decodeHex } from "./hex.js";
 
 export const getValidSecret = (curve?: EllipticCurve): Uint8Array => {
   let key: Uint8Array;
@@ -80,13 +80,15 @@ function _exec<T>(
   ed25519Callback: (curveFn: typeof ed25519) => T
 ): T {
   const _curve = curve || ellipticCurve(); // TODO: remove after 0.5.0
+
+  /* v8 ignore else -- @preserve */
   if (_curve === "secp256k1") {
     return secp256k1Callback(secp256k1);
   } else if (_curve === "x25519") {
     return x25519Callback(x25519);
   } else if (_curve === "ed25519") {
     return ed25519Callback(ed25519);
-  } /* v8 ignore next 2 */ else {
+  } else {
     throw new Error("Not implemented");
   }
 }
