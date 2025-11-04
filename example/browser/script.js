@@ -13,12 +13,11 @@ const sk = new PrivateKey();
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-export function setup(encryptedElement, textElement, decryptedElement) {
-  const text = "hello eciesjs🔒";
+export function setup(inputElement, textElement, encryptedElement, decryptedElement) {
   let encrypted;
-
-  encryptedElement.innerHTML = "click me to encrypt";
+  let text = inputElement.value;
   textElement.innerHTML = text;
+  encryptedElement.innerHTML = "click me to encrypt";
   decryptedElement.innerHTML = "click me to decrypt";
 
   const _encrypt = () => {
@@ -38,8 +37,20 @@ export function setup(encryptedElement, textElement, decryptedElement) {
       textElement.innerHTML = "click encrypt button first";
     }
   };
+  const _onTextInput = (e) => {
+    const target = e.target;
+    if (target) {
+      encrypted = undefined;
+      const value = target.value;
+      text = value;
+      textElement.innerHTML = value;
+      encryptedElement.innerHTML = "click me to encrypt";
+      decryptedElement.innerHTML = "click me to decrypt";
+    }
+  };
   encryptedElement.addEventListener("click", () => _encrypt());
   decryptedElement.addEventListener("click", () => _decrypt());
+  inputElement.addEventListener("input", _onTextInput);
 }
 
 document.querySelector("#app").innerHTML = `
@@ -49,12 +60,14 @@ document.querySelector("#app").innerHTML = `
       <button id="encrypted" type="button"></button>
       <button id="decrypted" type="button"></button>
     </div>
+    <input id="text-input" type="text" value="hello eciesjs🔒" />
     <p id="text"></p>
   </div>
 `;
 
 setup(
-  document.querySelector("#encrypted"),
+  document.querySelector("#text-input"),
   document.querySelector("#text"),
+  document.querySelector("#encrypted"),
   document.querySelector("#decrypted")
 );

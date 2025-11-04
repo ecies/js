@@ -1,6 +1,11 @@
 
 # Changelog
 
+## 0.4.17
+
+- Bump dependencies
+- Prepare for ESM
+
 ## 0.4.16
 
 - Bump dependencies

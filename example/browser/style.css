@@ -41,6 +41,15 @@ p {
   word-break: break-all;
 }
 
+input {
+  font-size: 1em;
+  padding: 0.5em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 80%;
+  max-width: 400px;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
