@@ -29,18 +29,22 @@ For security, see [Security](#security).
 ## Quick Start
 
 ```typescript
+// example/runtime/quick-start.js
 import { PrivateKey, decrypt, encrypt } from "eciesjs";
 
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+
 const sk = new PrivateKey();
-const data = Buffer.from("hello world🌍");
+const data = encoder.encode("hello world🌍");
 const decrypted = decrypt(sk.secret, encrypt(sk.publicKey.toBytes(), data));
-console.log(Buffer.from(decrypted).toString());
+console.log(decoder.decode(decrypted));
 ```
 
 Or run the example code:
 
 ```bash
-$ pnpm install && pnpm build && cd example/runtime && pnpm install && node main.js
+$ pnpm install && pnpm build && cd example/runtime && pnpm install && node quick-start.js
 hello world🌍
 ```
 
@@ -56,19 +60,19 @@ See [Configuration](#configuration) to control with more granularity.
 
 Parameters:
 
-- **receiverRawPK** - Receiver's public key, hex `string` or `Uint8Array`
-- **data** - Data to encrypt
+- `receiverRawPK` - Receiver's public key, hex `string` or `Uint8Array`
+- `data` - Data to encrypt
 
-Returns: **Buffer**
+Returns: `Buffer`
 
 ### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Buffer`
 
 Parameters:
 
-- **receiverRawSK** - Receiver's private key, hex `string` or `Uint8Array`
-- **data** - Data to decrypt
+- `receiverRawSK` - Receiver's private key, hex `string` or `Uint8Array`
+- `data` - Data to decrypt
 
-Returns: **Buffer**
+Returns: `Buffer`
 
 ### `PrivateKey`
 
