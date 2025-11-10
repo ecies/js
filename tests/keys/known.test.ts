@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { PrivateKey, PublicKey } from "../../src";
 import { decodeHex } from "../../src/utils";
 

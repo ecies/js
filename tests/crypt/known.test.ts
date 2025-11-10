@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { decrypt, ECIES_CONFIG, encrypt } from "../../src";
 import { decodeHex } from "../../src/utils";
 
