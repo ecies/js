@@ -133,7 +133,7 @@ export type EllipticCurve = "secp256k1" | "x25519" | "ed25519";
 export type SymmetricAlgorithm = "aes-256-gcm" | "xchacha20";
 export type NonceLength = 12 | 16;
 
-class Config {
+export class Config {
   ellipticCurve: EllipticCurve = "secp256k1";
   isEphemeralKeyCompressed: boolean = false;
   isHkdfKeyCompressed: boolean = false;
