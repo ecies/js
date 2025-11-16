@@ -2,7 +2,7 @@ import { randomBytes } from "@noble/ciphers/webcrypto";
 import { ed25519, x25519 } from "@noble/curves/ed25519";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
-import { type EllipticCurve, ellipticCurve } from "../config.js";
+import { ECIES_CONFIG, type EllipticCurve } from "../config.js";
 import { ETH_PUBLIC_KEY_SIZE, SECRET_KEY_LENGTH } from "../consts.js";
 import { decodeHex } from "./hex.js";
 
@@ -79,7 +79,7 @@ function _exec<T>(
   x25519Callback: (curveFn: typeof x25519) => T,
   ed25519Callback: (curveFn: typeof ed25519) => T
 ): T {
-  const _curve = curve || ellipticCurve(); // TODO: remove after 0.5.0
+  const _curve = curve || ECIES_CONFIG.ellipticCurve; // TODO: remove after 0.5.0
 
   /* v8 ignore else -- @preserve */
   if (_curve === "secp256k1") {

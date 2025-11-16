@@ -1,11 +1,6 @@
 import { concatBytes } from "@noble/ciphers/utils";
 
-import {
-  ellipticCurve,
-  ephemeralKeySize,
-  isEphemeralKeyCompressed,
-  isHkdfKeyCompressed,
-} from "./config.js";
+import { type Config, ECIES_CONFIG } from "./config.js";
 import { PrivateKey, PublicKey } from "./keys/index.js";
 import {
   aesDecrypt,
@@ -27,11 +22,15 @@ import {
  * @returns Encrypted payload, format: `public key || encrypted`.
  */
 export function encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Buffer {
-  return Buffer.from(_encrypt(receiverRawPK, data));
+  return Buffer.from(_encrypt(receiverRawPK, data, ECIES_CONFIG));
 }
 
-function _encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Array {
-  const curve = ellipticCurve();
+function _encrypt(
+  receiverRawPK: string | Uint8Array,
+  data: Uint8Array,
+  config: Config
+): Uint8Array {
+  const curve = config.ellipticCurve;
   const ephemeralSK = new PrivateKey(undefined, curve);
 
   const receiverPK =
@@ -39,8 +38,8 @@ function _encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Ar
       ? new PublicKey(receiverRawPK, curve)
       : PublicKey.fromHex(receiverRawPK, curve);
 
-  const sharedKey = ephemeralSK.encapsulate(receiverPK, isHkdfKeyCompressed());
-  const ephemeralPK = ephemeralSK.publicKey.toBytes(isEphemeralKeyCompressed());
+  const sharedKey = ephemeralSK.encapsulate(receiverPK, config.isHkdfKeyCompressed);
+  const ephemeralPK = ephemeralSK.publicKey.toBytes(config.isEphemeralKeyCompressed);
 
   const encrypted = symEncrypt(sharedKey, data);
   return concatBytes(ephemeralPK, encrypted);
@@ -59,18 +58,22 @@ export function decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): B
   return Buffer.from(_decrypt(receiverRawSK, data));
 }
 
-function _decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Uint8Array {
-  const curve = ellipticCurve();
+function _decrypt(
+  receiverRawSK: string | Uint8Array,
+  data: Uint8Array,
+  config: Config = ECIES_CONFIG
+): Uint8Array {
+  const curve = config.ellipticCurve;
 
   const receiverSK =
     receiverRawSK instanceof Uint8Array
       ? new PrivateKey(receiverRawSK, curve)
       : PrivateKey.fromHex(receiverRawSK, curve);
 
-  const keySize = ephemeralKeySize();
+  const keySize = config.ephemeralKeySize;
   const ephemeralPK = new PublicKey(data.subarray(0, keySize), curve);
   const encrypted = data.subarray(keySize);
-  const sharedKey = ephemeralPK.decapsulate(receiverSK, isHkdfKeyCompressed());
+  const sharedKey = ephemeralPK.decapsulate(receiverSK, config.isHkdfKeyCompressed);
   return symDecrypt(sharedKey, encrypted);
 }
 
