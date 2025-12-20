@@ -52,6 +52,16 @@
       "formatter": {
         "enabled": false
       }
+    },
+    {
+      "includes": ["**/src/ciphers/_hchacha.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
     }
   ]
 }
