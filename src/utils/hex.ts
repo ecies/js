@@ -1,4 +1,4 @@
-import { hexToBytes } from "@noble/ciphers/utils";
+import { hexToBytes } from "@noble/ciphers/utils.js";
 
 export const remove0x = (hex: string): string =>
   hex.startsWith("0x") || hex.startsWith("0X") ? hex.slice(2) : hex;

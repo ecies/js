@@ -1,4 +1,4 @@
-import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils";
+import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils.js";
 import { ProxyAgent, request } from "undici";
 import { describe, expect, it } from "vitest";
 

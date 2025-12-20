@@ -1,4 +1,4 @@
-import { hexToBytes } from "@noble/hashes/utils";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { describe, expect, it } from "vitest";
 
 import type { EllipticCurve } from "../../src/config";

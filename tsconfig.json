@@ -1,21 +1,41 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "ts-node": {
     "transpileOnly": true
   },
   "compilerOptions": {
-    "target": "es5",
-    "module": "node16",
-    "lib": [
-      "es6",
-      "es7"
-    ],
-    "declaration": true,
-    "sourceMap": false,
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+
     "strict": true,
-    "outDir": "dist",
-    "esModuleInterop": true
+    "alwaysStrict": true,
+    "noUncheckedIndexedAccess": true,
+
+    "types": ["node"],
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+
+    "removeComments": false,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "isolatedModules": true,
+
+    "pretty": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

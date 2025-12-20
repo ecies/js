@@ -1,10 +1,14 @@
-import { aes256cbc, aes256gcm } from "@ecies/ciphers/aes";
-import { xchacha20 } from "@ecies/ciphers/chacha";
-import { type Cipher, concatBytes } from "@noble/ciphers/utils";
-import { randomBytes } from "@noble/ciphers/webcrypto";
+import { cbc, gcm } from "@noble/ciphers/aes.js";
+import { xchacha20poly1305 } from "@noble/ciphers/chacha.js";
+import { type Cipher, concatBytes, randomBytes } from "@noble/ciphers/utils.js";
 
 import { ECIES_CONFIG, type NonceLength, type SymmetricAlgorithm } from "../config.js";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts.js";
+
+type CipherFactory = (key: Uint8Array, nonce: Uint8Array, AAD?: Uint8Array) => Cipher;
+
+// CBC wrapper to match the AEAD cipher interface (CBC doesn't support AAD)
+const cbcWrapper: CipherFactory = (key, nonce) => cbc(key, nonce);
 
 export const symEncrypt = (
   key: Uint8Array,
@@ -49,20 +53,27 @@ function _exec(
   AAD?: Uint8Array
 ): Uint8Array {
   if (algorithm === "aes-256-gcm") {
-    return callback(aes256gcm, key, data, nonceLength, AEAD_TAG_LENGTH, AAD);
+    return callback(gcm, key, data, nonceLength, AEAD_TAG_LENGTH, AAD);
   } else if (algorithm === "xchacha20") {
-    return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH, AEAD_TAG_LENGTH, AAD);
+    return callback(
+      xchacha20poly1305,
+      key,
+      data,
+      XCHACHA20_NONCE_LENGTH,
+      AEAD_TAG_LENGTH,
+      AAD
+    );
   } else if (algorithm === "aes-256-cbc") {
     // NOT RECOMMENDED. There is neither AAD nor AEAD tag in cbc mode
     // aes-256-cbc always uses 16 bytes iv
-    return callback(aes256cbc, key, data, 16, 0);
+    return callback(cbcWrapper, key, data, 16, 0);
   } else {
     throw new Error("Not implemented");
   }
 }
 
 function _encrypt(
-  func: (key: Uint8Array, nonce: Uint8Array, AAD?: Uint8Array) => Cipher,
+  func: CipherFactory,
   key: Uint8Array,
   data: Uint8Array,
   nonceLength: 12 | 16 | 24,
@@ -86,7 +97,7 @@ function _encrypt(
 }
 
 function _decrypt(
-  func: (key: Uint8Array, nonce: Uint8Array, AAD?: Uint8Array) => Cipher,
+  func: CipherFactory,
   key: Uint8Array,
   data: Uint8Array,
   nonceLength: 12 | 16 | 24,

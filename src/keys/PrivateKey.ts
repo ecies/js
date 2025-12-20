@@ -1,4 +1,4 @@
-import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+import { bytesToHex, equalBytes } from "@noble/ciphers/utils.js";
 
 import type { EllipticCurve } from "../config.js";
 import {
@@ -27,7 +27,7 @@ export class PrivateKey {
   }
 
   constructor(secret?: Uint8Array, curve?: EllipticCurve) {
-    this.curve = curve;
+    if (curve !== undefined) this.curve = curve;
     if (secret === undefined) {
       this.data = getValidSecret(curve);
     } else if (isValidPrivateKey(secret, curve)) {

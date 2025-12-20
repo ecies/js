@@ -1,15 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.5/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
     "useIgnoreFile": false
   },
   "files": {
-    "includes": [
-      "**/src/**/*.ts",
-      "**/tests/**/*.ts"
-    ],
+    "includes": ["**/src/**/*.ts", "**/tests/**/*.ts"],
     "ignoreUnknown": false
   },
   "formatter": {
@@ -51,9 +48,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "**/biome.jsonc"
-      ],
+      "includes": ["**/biome.jsonc"],
       "formatter": {
         "enabled": false
       }

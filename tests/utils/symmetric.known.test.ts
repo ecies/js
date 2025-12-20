@@ -1,4 +1,4 @@
-import { concatBytes } from "@noble/ciphers/utils";
+import { concatBytes } from "@noble/ciphers/utils.js";
 import { describe, expect, it } from "vitest";
 
 import { ECIES_CONFIG } from "../../src";

@@ -1,4 +1,4 @@
-import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+import { bytesToHex, equalBytes } from "@noble/ciphers/utils.js";
 
 import type { EllipticCurve } from "../config.js";
 import { convertPublicKeyFormat, getSharedKey, hexToPublicKey } from "../utils/index.js";

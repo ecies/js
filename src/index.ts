@@ -1,4 +1,4 @@
-import { concatBytes } from "@noble/ciphers/utils";
+import { concatBytes } from "@noble/ciphers/utils.js";
 
 import { type Config, ECIES_CONFIG } from "./config.js";
 import { PrivateKey, PublicKey } from "./keys/index.js";
