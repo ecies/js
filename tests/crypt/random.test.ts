@@ -31,41 +31,42 @@ const params: TestParameter[] = [
   { curve: "ed25519", isEphemeralKeyCompressed: false, isHkdfKeyCompressed: false },
 ];
 
-describe.each(params)(
-  "test random encrypt/decrypt on curve: $curve",
-  ({ curve, isEphemeralKeyCompressed, isHkdfKeyCompressed }) => {
-    ECIES_CONFIG.ellipticCurve = curve;
+describe.each(params)("test random encrypt/decrypt on curve: $curve", ({
+  curve,
+  isEphemeralKeyCompressed,
+  isHkdfKeyCompressed,
+}) => {
+  ECIES_CONFIG.ellipticCurve = curve;
 
-    let caseSuffix = "";
-    if (ECIES_CONFIG.ellipticCurve === "secp256k1") {
-      ECIES_CONFIG.isEphemeralKeyCompressed = isEphemeralKeyCompressed;
-      ECIES_CONFIG.isHkdfKeyCompressed = isHkdfKeyCompressed;
-      caseSuffix = ` isEphemeralKeyCompressed: ${isEphemeralKeyCompressed} isHkdfKeyCompressed: ${isHkdfKeyCompressed}`;
-    }
-
-    it("tests aes-256-gcm (16 bytes nonce)" + caseSuffix, () => {
-      testRandom();
-    });
-
-    it("tests aes-256-gcm (12 bytes nonce)" + caseSuffix, () => {
-      ECIES_CONFIG.symmetricNonceLength = 12;
-      testRandom();
-      ECIES_CONFIG.symmetricNonceLength = 16;
-    });
-
-    it("tests aes256cbc" + caseSuffix, () => {
-      ECIES_CONFIG.symmetricAlgorithm = "aes-256-cbc";
-      testRandom();
-      ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
-    });
-
-    it("tests xchacha20" + caseSuffix, () => {
-      ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
-      testRandom();
-      ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
-    });
+  let caseSuffix = "";
+  if (ECIES_CONFIG.ellipticCurve === "secp256k1") {
+    ECIES_CONFIG.isEphemeralKeyCompressed = isEphemeralKeyCompressed;
+    ECIES_CONFIG.isHkdfKeyCompressed = isHkdfKeyCompressed;
+    caseSuffix = ` isEphemeralKeyCompressed: ${isEphemeralKeyCompressed} isHkdfKeyCompressed: ${isHkdfKeyCompressed}`;
   }
-);
+
+  it("tests aes-256-gcm (16 bytes nonce)" + caseSuffix, () => {
+    testRandom();
+  });
+
+  it("tests aes-256-gcm (12 bytes nonce)" + caseSuffix, () => {
+    ECIES_CONFIG.symmetricNonceLength = 12;
+    testRandom();
+    ECIES_CONFIG.symmetricNonceLength = 16;
+  });
+
+  it("tests aes256cbc" + caseSuffix, () => {
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-cbc";
+    testRandom();
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
+  });
+
+  it("tests xchacha20" + caseSuffix, () => {
+    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
+    testRandom();
+    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
+  });
+});
 
 function checkCompressed(sk: PrivateKey) {
   const encrypted = encrypt(sk.publicKey.toBytes(), TEXT);
