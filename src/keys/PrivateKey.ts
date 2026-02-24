@@ -1,6 +1,8 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
 import type { EllipticCurve } from "../config.js";
+import type { Bytes } from "../types.js";
+import { IS_BUFFER_SUPPORTED } from "../types.js";
 import {
   decodeHex,
   getPublicKey,
@@ -21,9 +23,9 @@ export class PrivateKey {
   public readonly publicKey: PublicKey;
 
   /** @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`. */
-  get secret(): Buffer {
+  get secret(): Bytes {
     // TODO: Uint8Array
-    return Buffer.from(this.data);
+    return IS_BUFFER_SUPPORTED ? Buffer.from(this.data) : this.data;
   }
 
   constructor(secret?: Uint8Array, curve?: EllipticCurve) {

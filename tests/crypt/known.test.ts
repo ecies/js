@@ -5,10 +5,11 @@ import { decodeHex } from "../../src/utils";
 
 const TEXT = "helloworld🌍";
 const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 
 describe("test known encrypt and decrypt", () => {
   function testDecrypt(sk: string, data: string, expected: Uint8Array) {
-    expect(decrypt(sk, expected).toString()).toBe(data);
+    expect(decoder.decode(decrypt(sk, expected))).toBe(data);
   }
 
   function testEncryptDecrypt(sk: string, pk: string, data: string) {

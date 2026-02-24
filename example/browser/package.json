@@ -12,7 +12,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "buffer": "^6.0.3",
     "eciesjs": "file:../.."
   },
   "devDependencies": {

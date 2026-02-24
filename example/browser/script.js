@@ -1,10 +1,7 @@
-import { Buffer } from "buffer";
 import { bytesToHex } from "@noble/ciphers/utils";
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 
 import "./style.css";
-
-globalThis.Buffer = Buffer; // polyfill manually
 
 ECIES_CONFIG.ellipticCurve = "x25519";
 ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
@@ -69,5 +66,5 @@ setup(
   document.querySelector("#text-input"),
   document.querySelector("#text"),
   document.querySelector("#encrypted"),
-  document.querySelector("#decrypted")
+  document.querySelector("#decrypted"),
 );

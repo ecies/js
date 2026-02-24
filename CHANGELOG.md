@@ -4,6 +4,8 @@
 ## 0.4.18
 
 - Bump dependencies
+- Prepare for v0.5.0
+  - API change: Use `Buffer` only when it's available
 
 ## 0.4.17
 
