@@ -24,7 +24,6 @@ export class PrivateKey {
 
   /** @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`. */
   get secret(): Uint8Array {
-    // TODO: Uint8Array
     return IS_BUFFER_SUPPORTED ? Buffer.from(this.data) : this.data;
   }
 
