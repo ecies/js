@@ -2,7 +2,7 @@ import { concatBytes } from "@noble/ciphers/utils";
 
 import { type Config, ECIES_CONFIG } from "./config.js";
 import { PrivateKey, PublicKey } from "./keys/index.js";
-import type { Bytes } from "./types.js";
+
 import { IS_BUFFER_SUPPORTED } from "./types.js";
 import {
   aesDecrypt,
@@ -23,7 +23,10 @@ import {
  * @param data - Data to encrypt.
  * @returns Encrypted payload, format: `public key || encrypted`.
  */
-export function encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Bytes {
+export function encrypt(
+  receiverRawPK: string | Uint8Array,
+  data: Uint8Array
+): Uint8Array {
   const encrypted = _encrypt(receiverRawPK, data, ECIES_CONFIG);
   return IS_BUFFER_SUPPORTED ? Buffer.from(encrypted) : encrypted;
 }
@@ -57,7 +60,10 @@ function _encrypt(
  * @param data - Data to decrypt.
  * @returns Decrypted plain text.
  */
-export function decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Bytes {
+export function decrypt(
+  receiverRawSK: string | Uint8Array,
+  data: Uint8Array
+): Uint8Array {
   const decrypted = _decrypt(receiverRawSK, data);
   return IS_BUFFER_SUPPORTED ? Buffer.from(decrypted) : decrypted;
 }
