@@ -22,9 +22,13 @@ export class PrivateKey {
   private readonly data: Uint8Array;
   public readonly publicKey: PublicKey;
 
-  /** @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`. */
+  /**
+   * @description
+   * In version 0.4.18, `Buffer` is returned when available, otherwise `Uint8Array`.
+   * From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
+   */
   get secret(): Uint8Array {
-    // TODO: Uint8Array
+    // TODO: Uint8Array only
     return IS_BUFFER_SUPPORTED ? Buffer.from(this.data) : this.data;
   }
 
