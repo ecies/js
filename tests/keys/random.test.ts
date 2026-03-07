@@ -26,10 +26,8 @@ describe("test random keys", () => {
   }
 
   function checkBytes(sk: PrivateKey) {
-    expect(Buffer.from(sk.publicKey.toBytes())).toStrictEqual(sk.publicKey.compressed);
-    expect(Buffer.from(sk.publicKey.toBytes(false))).toStrictEqual(
-      sk.publicKey.uncompressed
-    );
+    expect(sk.publicKey.toBytes()).toStrictEqual(sk.publicKey.compressed);
+    expect(sk.publicKey.toBytes(false)).toStrictEqual(sk.publicKey.uncompressed);
   }
 
   function checkEquals(k1: PrivateKey, k2: PrivateKey) {

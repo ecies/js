@@ -3,7 +3,6 @@ import { concatBytes } from "@noble/ciphers/utils";
 import { type Config, ECIES_CONFIG } from "./config.js";
 import { PrivateKey, PublicKey } from "./keys/index.js";
 
-import { IS_BUFFER_SUPPORTED } from "./types.js";
 import {
   aesDecrypt,
   aesEncrypt,
@@ -16,8 +15,6 @@ import {
 
 /**
  * Encrypts data with a receiver's public key.
- * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
- * To keep the same behavior, use `Buffer.from(encrypt(...))`.
  *
  * @param receiverRawPK - Raw public key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to encrypt.
@@ -27,8 +24,7 @@ export function encrypt(
   receiverRawPK: string | Uint8Array,
   data: Uint8Array
 ): Uint8Array {
-  const encrypted = _encrypt(receiverRawPK, data, ECIES_CONFIG);
-  return IS_BUFFER_SUPPORTED ? Buffer.from(encrypted) : encrypted;
+  return _encrypt(receiverRawPK, data, ECIES_CONFIG);
 }
 
 function _encrypt(
@@ -53,8 +49,6 @@ function _encrypt(
 
 /**
  * Decrypts data with a receiver's private key.
- * @description From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
- * To keep the same behavior, use `Buffer.from(decrypt(...))`.
  *
  * @param receiverRawSK - Raw private key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to decrypt.
@@ -64,8 +58,7 @@ export function decrypt(
   receiverRawSK: string | Uint8Array,
   data: Uint8Array
 ): Uint8Array {
-  const decrypted = _decrypt(receiverRawSK, data);
-  return IS_BUFFER_SUPPORTED ? Buffer.from(decrypted) : decrypted;
+  return _decrypt(receiverRawSK, data);
 }
 
 function _decrypt(
