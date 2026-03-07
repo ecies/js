@@ -18,8 +18,8 @@ import {
  * Encrypts data with a receiver's public key.
  * @description
  * In version 0.4.18, `Buffer` is returned when available, otherwise `Uint8Array`.
- * From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
- * To keep the same behavior, use `Buffer.from(encrypt(...))`.
+ * From version 0.5.0, this function will always return `Uint8Array`.
+ * To preserve the pre-0.5.0 behavior of returning a `Buffer`, wrap the result with `Buffer.from(encrypt(...))`.
  *
  * @param receiverRawPK - Raw public key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to encrypt.
@@ -57,8 +57,8 @@ function _encrypt(
  * Decrypts data with a receiver's private key.
  * @description
  * In version 0.4.18, `Buffer` is returned when available, otherwise `Uint8Array`.
- * From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
- * To keep the same behavior, use `Buffer.from(decrypt(...))`.
+ * From version 0.5.0, this function will always return `Uint8Array`.
+ * To preserve the pre-0.5.0 behavior of returning a `Buffer`, wrap the result with `Buffer.from(decrypt(...))`.
  *
  * @param receiverRawSK - Raw private key of the receiver, either as a hex `string` or a `Uint8Array`.
  * @param data - Data to decrypt.
