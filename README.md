@@ -56,23 +56,23 @@ See [Configuration](#configuration) to control with more granularity.
 
 ## API
 
-### `encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Buffer`
+### `encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Array`
 
 Parameters:
 
 - `receiverRawPK` - Receiver's public key, hex `string` or `Uint8Array`
 - `data` - Data to encrypt
 
-Returns: `Buffer`
+Returns: `Uint8Array`
 
-### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Buffer`
+### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Uint8Array`
 
 Parameters:
 
 - `receiverRawSK` - Receiver's private key, hex `string` or `Uint8Array`
 - `data` - Data to decrypt
 
-Returns: `Buffer`
+Returns: `Uint8Array`
 
 ### `PrivateKey`
 
@@ -90,7 +90,7 @@ equals(other: PrivateKey): boolean;
 - Properties
 
 ```typescript
-get secret(): Buffer;
+get secret(): Uint8Array;
 readonly publicKey: PublicKey;
 ```
 
@@ -105,15 +105,6 @@ toBytes(compressed?: boolean): Uint8Array;
 toHex(compressed?: boolean): string;
 decapsulate(sk: PrivateKey, compressed?: boolean): Uint8Array;
 equals(other: PublicKey): boolean;
-```
-
-- Properties
-
-```typescript
-/** @deprecated - use `PublicKey.toBytes(false)` instead. You may also need `Buffer.from`. */
-get uncompressed(): Buffer;
-/** @deprecated - use `PublicKey.toBytes()` instead. You may also need `Buffer.from`. */
-get compressed(): Buffer;
 ```
 
 ## Configuration
@@ -189,8 +180,6 @@ Via [`@ecies/ciphers`](https://github.com/ecies/js-ciphers), `node:crypto`'s nat
 ### Browser
 
 This library is browser-friendly, check the [`example/browser`](./example/browser) directory for details. You can check [the online demo](https://js-demo.ecies.org/) as well.
-
-Currently it's necessary to polyfill `Buffer` for backward compatibility. From v0.5.0, it can run in browsers as is.
 
 If you want a WASM version to run directly in modern browsers or on some blockchains, you can also try [`ecies-wasm`](https://github.com/ecies/rs-wasm).
 

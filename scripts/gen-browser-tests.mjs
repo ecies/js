@@ -13,11 +13,7 @@ const handleFile = (srcPath, dstPath, ...pipelines) => {
   fs.writeFileSync(dstPath, data);
 };
 
-const polyfill = `import { Buffer } from "buffer";
-globalThis.Buffer = Buffer;
-
-`;
-
+const polyfill = "";
 const pipelines = [
   (data) => polyfill + data,
   (data) => data.replaceAll("../../src", "eciesjs"),
@@ -26,10 +22,10 @@ const pipelines = [
 handleFile(
   "./tests/crypt/random.test.ts",
   "./tests-browser/crypt/random.test.ts",
-  ...pipelines
+  ...pipelines,
 );
 handleFile(
   "./tests/crypt/known.test.ts",
   "./tests-browser/crypt/known.test.ts",
-  ...pipelines
+  ...pipelines,
 );

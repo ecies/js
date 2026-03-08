@@ -11,8 +11,6 @@ export default defineConfig({
             return "noble-ciphers";
           } else if (id.includes("@noble/hashes")) {
             return "noble-hashes";
-          } else if (id.includes("buffer")) {
-            return "buffer";
           }
         },
       },

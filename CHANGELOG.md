@@ -4,6 +4,8 @@
 ## 0.4.18
 
 - Bump dependencies
+- Prepare for v0.5.0
+  - API change: Return a Node.js `Buffer` only when available (otherwise a `Uint8Array`)
 
 ## 0.4.17
 
