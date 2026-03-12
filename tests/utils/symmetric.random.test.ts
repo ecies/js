@@ -28,11 +28,6 @@ describe("test random symmetric", () => {
     ECIES_CONFIG.symmetricNonceLength = 16;
   });
 
-  it("tests aes cbc", () => {
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-cbc";
-    testRandomKey();
-  });
-
   it("tests xchacha20", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
     testRandomKey();

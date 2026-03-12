@@ -5,10 +5,7 @@ import {
 } from "./consts.js";
 
 export type EllipticCurve = "secp256k1" | "x25519" | "ed25519";
-export type SymmetricAlgorithm =
-  | "aes-256-gcm"
-  | "xchacha20"
-  | "aes-256-cbc" /* NOT RECOMMENDED, only for compatibility */;
+export type SymmetricAlgorithm = "aes-256-gcm" | "xchacha20";
 export type NonceLength = 12 | 16; // aes-256-gcm only
 
 export class Config {
@@ -37,17 +34,3 @@ export class Config {
 }
 
 export const ECIES_CONFIG = new Config();
-
-// TODO: remove these after 0.5.0
-/** @deprecated - use individual attribute instead */
-export const ellipticCurve = () => ECIES_CONFIG.ellipticCurve;
-/** @deprecated - use individual attribute instead */
-export const isEphemeralKeyCompressed = () => ECIES_CONFIG.isEphemeralKeyCompressed;
-/** @deprecated - use individual attribute instead */
-export const isHkdfKeyCompressed = () => ECIES_CONFIG.isHkdfKeyCompressed;
-/** @deprecated - use individual attribute instead */
-export const symmetricAlgorithm = () => ECIES_CONFIG.symmetricAlgorithm;
-/** @deprecated - use individual attribute instead */
-export const symmetricNonceLength = () => ECIES_CONFIG.symmetricNonceLength;
-/** @deprecated - use individual attribute instead */
-export const ephemeralKeySize = () => ECIES_CONFIG.ephemeralKeySize;

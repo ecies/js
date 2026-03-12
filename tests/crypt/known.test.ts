@@ -13,12 +13,12 @@ describe("test known encrypt and decrypt", () => {
   }
 
   function testEncryptDecrypt(sk: string, pk: string, data: string) {
-    testDecrypt(sk, data, encrypt(pk, encoder.encode(data)));
+    testDecrypt(sk, data, encrypt(pk, encoder.encode(data), ECIES_CONFIG));
   }
 
   function testDecryptKnown(sk: string, pk: string, data: string, encrypted: Uint8Array) {
     // it should not be equal due to ephemeral key
-    expect(encrypted).not.toStrictEqual(encrypt(pk, encoder.encode(data)));
+    expect(encrypted).not.toStrictEqual(encrypt(pk, encoder.encode(data), ECIES_CONFIG));
     testDecrypt(sk, data, encrypted);
   }
 

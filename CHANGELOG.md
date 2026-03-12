@@ -1,5 +1,10 @@
-
 # Changelog
+
+## 0.5.0
+
+- API change: `encrypt/decrypt` now always returns a `Uint8Array` instead of a `Buffer`
+- Remove deprecated APIs and `utils` re-exports
+- Bump dependencies
 
 ## 0.4.18
 

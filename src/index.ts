@@ -3,16 +3,7 @@ import { concatBytes } from "@noble/ciphers/utils";
 import { type Config, ECIES_CONFIG } from "./config.js";
 import { PrivateKey, PublicKey } from "./keys/index.js";
 
-import { IS_BUFFER_SUPPORTED } from "./types.js";
-import {
-  aesDecrypt,
-  aesEncrypt,
-  decodeHex,
-  getValidSecret,
-  remove0x,
-  symDecrypt,
-  symEncrypt,
-} from "./utils/index.js";
+import { symDecrypt, symEncrypt } from "./utils/index.js";
 
 /**
  * Encrypts data with a receiver's public key.
@@ -27,16 +18,8 @@ import {
  */
 export function encrypt(
   receiverRawPK: string | Uint8Array,
-  data: Uint8Array
-): Uint8Array {
-  const encrypted = _encrypt(receiverRawPK, data, ECIES_CONFIG);
-  return IS_BUFFER_SUPPORTED ? Buffer.from(encrypted) : encrypted;
-}
-
-function _encrypt(
-  receiverRawPK: string | Uint8Array,
   data: Uint8Array,
-  config: Config
+  config: Config = ECIES_CONFIG
 ): Uint8Array {
   const curve = config.ellipticCurve;
   const ephemeralSK = new PrivateKey(undefined, curve);
@@ -66,14 +49,6 @@ function _encrypt(
  */
 export function decrypt(
   receiverRawSK: string | Uint8Array,
-  data: Uint8Array
-): Uint8Array {
-  const decrypted = _decrypt(receiverRawSK, data);
-  return IS_BUFFER_SUPPORTED ? Buffer.from(decrypted) : decrypted;
-}
-
-function _decrypt(
-  receiverRawSK: string | Uint8Array,
   data: Uint8Array,
   config: Config = ECIES_CONFIG
 ): Uint8Array {
@@ -93,15 +68,3 @@ function _decrypt(
 
 export { ECIES_CONFIG } from "./config.js";
 export { PrivateKey, PublicKey } from "./keys/index.js";
-
-/** @deprecated - use `import * as utils from "eciesjs/utils"` instead. */
-export const utils = {
-  // TODO: remove these after 0.5.0
-  aesEncrypt,
-  aesDecrypt,
-  symEncrypt,
-  symDecrypt,
-  decodeHex,
-  getValidSecret,
-  remove0x,
-};
