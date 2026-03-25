@@ -2,7 +2,7 @@ import { bytesToHex, bytesToUtf8 } from "@noble/ciphers/utils";
 import { ProxyAgent, request } from "undici";
 import { describe, expect, it } from "vitest";
 
-import { decrypt, encrypt, PrivateKey } from "../src";
+import { decrypt, ECIES_CONFIG, encrypt, PrivateKey } from "../src";
 import { decodeHex } from "../src/utils";
 
 const PYTHON_BACKEND = "https://demo.ecies.org/";
@@ -22,7 +22,7 @@ describe("test encrypt and decrypt against python version", () => {
 
   it("tests decrypt", async () => {
     const sk = new PrivateKey();
-    const encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(TEXT));
+    const encrypted = encrypt(sk.publicKey.toHex(), encoder.encode(TEXT), ECIES_CONFIG);
     const res = await eciesApi(PYTHON_BACKEND, {
       data: bytesToHex(encrypted),
       prv: sk.toHex(),

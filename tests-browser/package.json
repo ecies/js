@@ -10,9 +10,9 @@
     "eciesjs": "file:.."
   },
   "devDependencies": {
-    "@vitest/browser": "^4.0.18",
-    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/browser": "^4.1.1",
+    "@vitest/browser-playwright": "^4.1.1",
     "playwright": "^1.58.2",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.1"
   }
 }

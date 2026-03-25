@@ -18,7 +18,7 @@ export const isValidPrivateKey = (secret: Uint8Array, curve?: EllipticCurve): bo
   // on secp256k1: only key ∈ (0, group order) is valid
   // on curve25519: any 32-byte key is valid
   _exec(
-    curve,
+    curve || ECIES_CONFIG.ellipticCurve,
     (curve) => curve.utils.isValidSecretKey(secret),
     () => true,
     () => true
@@ -26,7 +26,7 @@ export const isValidPrivateKey = (secret: Uint8Array, curve?: EllipticCurve): bo
 
 export const getPublicKey = (secret: Uint8Array, curve?: EllipticCurve): Uint8Array =>
   _exec(
-    curve,
+    curve || ECIES_CONFIG.ellipticCurve,
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret)
@@ -39,7 +39,7 @@ export const getSharedPoint = (
   curve?: EllipticCurve
 ): Uint8Array =>
   _exec(
-    curve,
+    curve || ECIES_CONFIG.ellipticCurve,
     (curve) => curve.getSharedSecret(sk, pk, compressed),
     (curve) => curve.getSharedSecret(sk, pk),
     (curve) => getSharedPointOnEd25519(curve, sk, pk)
@@ -52,7 +52,7 @@ export const convertPublicKeyFormat = (
 ): Uint8Array =>
   // only for secp256k1
   _exec(
-    curve,
+    curve || ECIES_CONFIG.ellipticCurve,
     (curve) =>
       curve.getSharedSecret(
         Uint8Array.from(Array(31).fill(0).concat([1])), // 1 as private key
@@ -66,7 +66,7 @@ export const convertPublicKeyFormat = (
 export const hexToPublicKey = (hex: string, curve?: EllipticCurve): Uint8Array => {
   const decoded = decodeHex(hex);
   return _exec(
-    curve,
+    curve || ECIES_CONFIG.ellipticCurve,
     () => compatEthPublicKey(decoded),
     () => decoded,
     () => decoded
@@ -74,13 +74,12 @@ export const hexToPublicKey = (hex: string, curve?: EllipticCurve): Uint8Array =
 };
 
 function _exec<T>(
-  curve: EllipticCurve | undefined,
+  curve: EllipticCurve,
   secp256k1Callback: (curveFn: typeof secp256k1) => T,
   x25519Callback: (curveFn: typeof x25519) => T,
   ed25519Callback: (curveFn: typeof ed25519) => T
 ): T {
-  const _curve = curve || ECIES_CONFIG.ellipticCurve; // TODO: remove after 0.5.0
-
+  const _curve = curve;
   /* v8 ignore else -- @preserve */
   if (_curve === "secp256k1") {
     return secp256k1Callback(secp256k1);

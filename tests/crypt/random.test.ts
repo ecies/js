@@ -1,20 +1,11 @@
 import { bytesToHex } from "@noble/ciphers/utils";
 import { describe, expect, it } from "vitest";
 
-import {
-  decrypt as _decrypt,
-  encrypt as _encrypt,
-  ECIES_CONFIG,
-  PrivateKey,
-} from "../../src";
+import { decrypt, ECIES_CONFIG, encrypt, PrivateKey } from "../../src";
 import type { EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
 const TEXT = encoder.encode("hello world🌍");
-const decrypt = (sk: Uint8Array | string, data: Uint8Array) =>
-  Uint8Array.from(_decrypt(sk, data));
-const encrypt = (pk: Uint8Array | string, data: Uint8Array) =>
-  Uint8Array.from(_encrypt(pk, data));
 
 interface TestParameter {
   curve: EllipticCurve;
@@ -53,12 +44,6 @@ describe.each(params)("test random encrypt/decrypt on curve: $curve", ({
     ECIES_CONFIG.symmetricNonceLength = 12;
     testRandom();
     ECIES_CONFIG.symmetricNonceLength = 16;
-  });
-
-  it("tests aes256cbc" + caseSuffix, () => {
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-cbc";
-    testRandom();
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
   });
 
   it("tests xchacha20" + caseSuffix, () => {

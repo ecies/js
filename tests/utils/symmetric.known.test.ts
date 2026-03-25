@@ -39,17 +39,6 @@ describe("test known symmetric", () => {
     ECIES_CONFIG.symmetricNonceLength = 16;
   });
 
-  it("tests aes cbc", () => {
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-cbc";
-    testKnown(
-      "",
-      "e7c166554d1bb32792c981fa674cc4d8",
-      "7bf9e536b66a215c22233fe2daaa743a898b9acb9f7802de70b40e3d6e43ef97",
-      "eb38ef61717e1324ae064e86f1c3e797"
-    );
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
-  });
-
   it("tests xchacha20", () => {
     ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
     testKnown(

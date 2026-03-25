@@ -2,7 +2,6 @@ import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
 import type { EllipticCurve } from "../config.js";
 
-import { IS_BUFFER_SUPPORTED } from "../types.js";
 import { convertPublicKeyFormat, getSharedKey, hexToPublicKey } from "../utils/index.js";
 import type { PrivateKey } from "./PrivateKey.js";
 
@@ -16,18 +15,6 @@ export class PublicKey {
 
   private get _uncompressed(): Uint8Array {
     return this.dataUncompressed !== null ? this.dataUncompressed : this.data;
-  }
-
-  /** @deprecated - use `PublicKey.toBytes(false)` instead. You may also need `Buffer.from`. */
-  get uncompressed(): Uint8Array {
-    // TODO: delete
-    return IS_BUFFER_SUPPORTED ? Buffer.from(this._uncompressed) : this._uncompressed;
-  }
-
-  /** @deprecated - use `PublicKey.toBytes()` instead. You may also need `Buffer.from`. */
-  get compressed(): Uint8Array {
-    // TODO: delete
-    return IS_BUFFER_SUPPORTED ? Buffer.from(this.data) : this.data;
   }
 
   constructor(data: Uint8Array, curve?: EllipticCurve) {

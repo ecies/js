@@ -1,4 +1,4 @@
-import { aes256cbc, aes256gcm } from "@ecies/ciphers/aes";
+import { aes256gcm } from "@ecies/ciphers/aes";
 import { xchacha20 } from "@ecies/ciphers/chacha";
 import { type Cipher, concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
@@ -34,12 +34,6 @@ export const symDecrypt = (
     AAD
   );
 
-/** @deprecated - use `symEncrypt` instead. */
-export const aesEncrypt = symEncrypt; // TODO: delete
-
-/** @deprecated - use `symDecrypt` instead. */
-export const aesDecrypt = symDecrypt; // TODO: delete
-
 function _exec(
   callback: typeof _encrypt | typeof _decrypt,
   algorithm: SymmetricAlgorithm,
@@ -52,10 +46,6 @@ function _exec(
     return callback(aes256gcm, key, data, nonceLength, AEAD_TAG_LENGTH, AAD);
   } else if (algorithm === "xchacha20") {
     return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH, AEAD_TAG_LENGTH, AAD);
-  } else if (algorithm === "aes-256-cbc") {
-    // NOT RECOMMENDED. There is neither AAD nor AEAD tag in cbc mode
-    // aes-256-cbc always uses 16 bytes iv
-    return callback(aes256cbc, key, data, 16, 0);
   } else {
     throw new Error("Not implemented");
   }
@@ -66,18 +56,13 @@ function _encrypt(
   key: Uint8Array,
   data: Uint8Array,
   nonceLength: 12 | 16 | 24,
-  tagLength: 16 | 0,
+  tagLength: 16,
   AAD?: Uint8Array
 ): Uint8Array {
   const nonce = randomBytes(nonceLength);
   const cipher = func(key, nonce, AAD);
   // @noble/ciphers format: cipherText || tag
   const encrypted = cipher.encrypt(data);
-
-  if (tagLength === 0) {
-    return concatBytes(nonce, encrypted);
-  }
-
   const cipherTextLength = encrypted.length - tagLength;
   const cipherText = encrypted.subarray(0, cipherTextLength);
   const tag = encrypted.subarray(cipherTextLength);
@@ -90,17 +75,12 @@ function _decrypt(
   key: Uint8Array,
   data: Uint8Array,
   nonceLength: 12 | 16 | 24,
-  tagLength: 16 | 0,
+  tagLength: 16,
   AAD?: Uint8Array
 ): Uint8Array {
   const nonce = data.subarray(0, nonceLength);
   const cipher = func(key, Uint8Array.from(nonce), AAD); // to reset byteOffset
   const encrypted = data.subarray(nonceLength);
-
-  if (tagLength === 0) {
-    return cipher.decrypt(encrypted);
-  }
-
   const tag = encrypted.subarray(0, tagLength);
   const cipherText = encrypted.subarray(tagLength);
   return cipher.decrypt(concatBytes(cipherText, tag));
