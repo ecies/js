@@ -13,6 +13,7 @@
     "sourceMap": false,
     "strict": true,
     "outDir": "dist",
+    "rootDir": "src",
     "esModuleInterop": true
   },
   "include": [
