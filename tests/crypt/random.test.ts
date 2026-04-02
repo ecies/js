@@ -1,8 +1,8 @@
 import { bytesToHex } from "@noble/ciphers/utils";
 import { describe, expect, it } from "vitest";
 
-import { decrypt, ECIES_CONFIG, encrypt, PrivateKey } from "../../src";
-import type { EllipticCurve } from "../../src/config";
+import { decrypt, encrypt, PrivateKey } from "../../src";
+import { Config, type EllipticCurve } from "../../src/config";
 
 const encoder = new TextEncoder();
 const TEXT = encoder.encode("hello world🌍");
@@ -27,52 +27,64 @@ describe.each(params)("test random encrypt/decrypt on curve: $curve", ({
   isEphemeralKeyCompressed,
   isHkdfKeyCompressed,
 }) => {
-  ECIES_CONFIG.ellipticCurve = curve;
-
   let caseSuffix = "";
-  if (ECIES_CONFIG.ellipticCurve === "secp256k1") {
-    ECIES_CONFIG.isEphemeralKeyCompressed = isEphemeralKeyCompressed;
-    ECIES_CONFIG.isHkdfKeyCompressed = isHkdfKeyCompressed;
+  if (curve === "secp256k1") {
     caseSuffix = ` isEphemeralKeyCompressed: ${isEphemeralKeyCompressed} isHkdfKeyCompressed: ${isHkdfKeyCompressed}`;
   }
 
   it("tests aes-256-gcm (16 bytes nonce)" + caseSuffix, () => {
-    testRandom();
+    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+    testRandom(config);
   });
 
   it("tests aes-256-gcm (12 bytes nonce)" + caseSuffix, () => {
-    ECIES_CONFIG.symmetricNonceLength = 12;
-    testRandom();
-    ECIES_CONFIG.symmetricNonceLength = 16;
+    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+    config.symmetricNonceLength = 12;
+    testRandom(config);
   });
 
   it("tests xchacha20" + caseSuffix, () => {
-    ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
-    testRandom();
-    ECIES_CONFIG.symmetricAlgorithm = "aes-256-gcm";
+    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+    config.symmetricAlgorithm = "xchacha20";
+    testRandom(config);
   });
 });
 
-function checkCompressed(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.toBytes(), TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
+function checkCompressed(sk: PrivateKey, config: Config) {
+  const encrypted = encrypt(sk.publicKey.toBytes(), TEXT, config);
+  expect(decrypt(sk.secret, encrypted, config)).toStrictEqual(TEXT);
 }
 
-function checkUncompressed(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.toBytes(false), TEXT);
-  expect(decrypt(sk.secret, encrypted)).toStrictEqual(TEXT);
+function checkUncompressed(sk: PrivateKey, config: Config) {
+  const encrypted = encrypt(sk.publicKey.toBytes(false), TEXT, config);
+  expect(decrypt(sk.secret, encrypted, config)).toStrictEqual(TEXT);
 }
 
-function checkHex(sk: PrivateKey) {
-  const encrypted = encrypt(sk.publicKey.toHex(), TEXT);
-  expect(decrypt(bytesToHex(sk.secret), encrypted)).toStrictEqual(TEXT);
+function checkHex(sk: PrivateKey, config: Config) {
+  const encrypted = encrypt(sk.publicKey.toHex(), TEXT, config);
+  expect(decrypt(bytesToHex(sk.secret), encrypted, config)).toStrictEqual(TEXT);
 }
 
-function testRandom() {
-  const sk1 = new PrivateKey();
-  const sk2 = new PrivateKey();
+function testRandom(config: Config) {
+  const sk1 = new PrivateKey(undefined, config.ellipticCurve);
+  const sk2 = new PrivateKey(undefined, config.ellipticCurve);
 
-  checkCompressed(sk1);
-  checkUncompressed(sk2);
-  checkHex(sk1);
+  checkCompressed(sk1, config);
+  checkUncompressed(sk2, config);
+  checkHex(sk1, config);
+}
+
+function getConfig(
+  curve: EllipticCurve,
+  isEphemeralKeyCompressed: boolean,
+  isHkdfKeyCompressed: boolean
+): Config {
+  const config = new Config();
+  config.ellipticCurve = curve;
+
+  if (config.ellipticCurve === "secp256k1") {
+    config.isEphemeralKeyCompressed = isEphemeralKeyCompressed;
+    config.isHkdfKeyCompressed = isHkdfKeyCompressed;
+  }
+  return config;
 }

@@ -10,10 +10,14 @@ describe("test random symmetric", () => {
   function testRandomKey() {
     const key = randomBytes(32);
     const data = encoder.encode(TEXT);
-    expect(data).toStrictEqual(symDecrypt(key, symEncrypt(key, data)));
+    expect(data).toStrictEqual(
+      symDecrypt(ECIES_CONFIG, key, symEncrypt(ECIES_CONFIG, key, data))
+    );
 
     const aad = randomBytes(8);
-    expect(data).toStrictEqual(symDecrypt(key, symEncrypt(key, data, aad), aad));
+    expect(data).toStrictEqual(
+      symDecrypt(ECIES_CONFIG, key, symEncrypt(ECIES_CONFIG, key, data, aad), aad)
+    );
   }
 
   it("tests aes gcm 16 bytes nonce", () => {

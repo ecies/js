@@ -10,8 +10,7 @@ describe("test validation", () => {
 
     expect(() => PrivateKey.fromHex("00")).toThrow(ERROR);
 
-    const groupOrderInt =
-      "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141";
+    const groupOrderInt = "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141";
     expect(() => PrivateKey.fromHex(groupOrderInt)).toThrow(ERROR);
 
     const groupOrderIntMinus1 =

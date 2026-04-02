@@ -32,7 +32,7 @@ export function encrypt(
   const sharedKey = ephemeralSK.encapsulate(receiverPK, config.isHkdfKeyCompressed);
   const ephemeralPK = ephemeralSK.publicKey.toBytes(config.isEphemeralKeyCompressed);
 
-  const encrypted = symEncrypt(sharedKey, data);
+  const encrypted = symEncrypt(config, sharedKey, data);
   return concatBytes(ephemeralPK, encrypted);
 }
 
@@ -63,7 +63,7 @@ export function decrypt(
   const ephemeralPK = new PublicKey(data.subarray(0, keySize), curve);
   const encrypted = data.subarray(keySize);
   const sharedKey = ephemeralPK.decapsulate(receiverSK, config.isHkdfKeyCompressed);
-  return symDecrypt(sharedKey, encrypted);
+  return symDecrypt(config, sharedKey, encrypted);
 }
 
 export { ECIES_CONFIG } from "./config.js";

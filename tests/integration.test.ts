@@ -31,10 +31,7 @@ describe("test encrypt and decrypt against python version", () => {
   });
 });
 
-async function eciesApi(
-  url: string,
-  params: { data: string; pub?: string; prv?: string }
-) {
+async function eciesApi(url: string, params: { data: string; pub?: string; prv?: string }) {
   const proxy = process.env.https_proxy || process.env.http_proxy;
 
   const { body } = await request(url, {

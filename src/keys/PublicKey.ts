@@ -22,8 +22,7 @@ export class PublicKey {
     const compressed = convertPublicKeyFormat(data, true, curve);
     const uncompressed = convertPublicKeyFormat(data, false, curve);
     this.data = compressed;
-    this.dataUncompressed =
-      compressed.length !== uncompressed.length ? uncompressed : null;
+    this.dataUncompressed = compressed.length !== uncompressed.length ? uncompressed : null;
   }
 
   public toBytes(compressed: boolean = true): Uint8Array {
