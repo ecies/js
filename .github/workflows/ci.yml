@@ -76,6 +76,10 @@ jobs:
 
       - run: pnpm install && pnpm build && cd example/runtime && pnpm install
 
+      - run: deno task test
+
+      - run: bun test
+
       - name: check main.js
         run: |
           ./scripts/check-runtime.sh example/runtime/main.js

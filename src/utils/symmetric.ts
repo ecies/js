@@ -3,47 +3,33 @@ import { xchacha20 } from "@ecies/ciphers/chacha";
 import { type Cipher, concatBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
 
-import { ECIES_CONFIG, type NonceLength, type SymmetricAlgorithm } from "../config.js";
+import type { Config } from "../config.js";
 import { AEAD_TAG_LENGTH, XCHACHA20_NONCE_LENGTH } from "../consts.js";
 
 export const symEncrypt = (
+  config: Config,
   key: Uint8Array,
   plainText: Uint8Array,
   AAD?: Uint8Array
-): Uint8Array =>
-  _exec(
-    _encrypt,
-    ECIES_CONFIG.symmetricAlgorithm,
-    ECIES_CONFIG.symmetricNonceLength,
-    key,
-    plainText,
-    AAD
-  );
+): Uint8Array => _exec(_encrypt, config, key, plainText, AAD);
 
 export const symDecrypt = (
+  config: Config,
   key: Uint8Array,
   cipherText: Uint8Array,
   AAD?: Uint8Array
-): Uint8Array =>
-  _exec(
-    _decrypt,
-    ECIES_CONFIG.symmetricAlgorithm,
-    ECIES_CONFIG.symmetricNonceLength,
-    key,
-    cipherText,
-    AAD
-  );
+): Uint8Array => _exec(_decrypt, config, key, cipherText, AAD);
 
 function _exec(
   callback: typeof _encrypt | typeof _decrypt,
-  algorithm: SymmetricAlgorithm,
-  nonceLength: NonceLength, // aes-256-gcm only
+  config: Config,
   key: Uint8Array,
   data: Uint8Array,
   AAD?: Uint8Array
 ): Uint8Array {
+  const algorithm = config.symmetricAlgorithm;
   if (algorithm === "aes-256-gcm") {
-    return callback(aes256gcm, key, data, nonceLength, AEAD_TAG_LENGTH, AAD);
+    return callback(aes256gcm, key, data, config.symmetricNonceLength, AEAD_TAG_LENGTH, AAD);
   } else if (algorithm === "xchacha20") {
     return callback(xchacha20, key, data, XCHACHA20_NONCE_LENGTH, AEAD_TAG_LENGTH, AAD);
   } else {

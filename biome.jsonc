@@ -15,7 +15,7 @@
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "lineWidth": 90
+    "lineWidth": 95
   },
   "assist": {
     "actions": {

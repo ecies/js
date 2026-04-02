@@ -3,6 +3,8 @@
 ## 0.5.0
 
 - API change: `encrypt/decrypt` now always returns a `Uint8Array` instead of a `Buffer`
+- API change: `symEncrypt/symDecrypt` now accept an optional `Config` parameter instead of relying on the global `ECIES_CONFIG`
+  - It fixed a bug caused by config discrepancy between `encrypt/decrypt` and `symEncrypt/symDecrypt`
 - Remove deprecated APIs and `utils` re-exports
 - Bump dependencies
 

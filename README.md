@@ -56,21 +56,23 @@ See [Configuration](#configuration) to control with more granularity.
 
 ## API
 
-### `encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array): Uint8Array`
+### `encrypt(receiverRawPK: string | Uint8Array, data: Uint8Array, config?: Config): Uint8Array`
 
 Parameters:
 
 - `receiverRawPK` - Receiver's public key, hex `string` or `Uint8Array`
 - `data` - Data to encrypt
+- `config` - Optional configuration (defaults to `ECIES_CONFIG`)
 
 Returns: `Uint8Array`
 
-### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array): Uint8Array`
+### `decrypt(receiverRawSK: string | Uint8Array, data: Uint8Array, config?: Config): Uint8Array`
 
 Parameters:
 
 - `receiverRawSK` - Receiver's private key, hex `string` or `Uint8Array`
 - `data` - Data to decrypt
+- `config` - Optional configuration (defaults to `ECIES_CONFIG`)
 
 Returns: `Uint8Array`
 

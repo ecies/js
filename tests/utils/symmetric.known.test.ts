@@ -78,5 +78,5 @@ function testKnown(
 
   const plainText = decodeHex(_plainText);
   const aad = decodeHex(_aad);
-  expect(symDecrypt(key, data, aad)).toStrictEqual(plainText);
+  expect(symDecrypt(ECIES_CONFIG, key, data, aad)).toStrictEqual(plainText);
 }
