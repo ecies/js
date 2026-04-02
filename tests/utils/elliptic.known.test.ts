@@ -11,11 +11,11 @@ describe("test known secp256k1", () => {
     "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a";
 
   it("tests known pk", () => {
-    expect(getPublicKey(hexToBytes(sk), "secp256k1")).toStrictEqual(decodeHex(pk));
+    expect(getPublicKey("secp256k1", hexToBytes(sk))).toStrictEqual(decodeHex(pk));
   });
 
   it("tests hexToPublicKey", () => {
-    expect(hexToPublicKey(pkUncompressed, "secp256k1")).toStrictEqual(
+    expect(hexToPublicKey("secp256k1", pkUncompressed)).toStrictEqual(
       hexToBytes("04" + pkUncompressed)
     );
   });
@@ -35,7 +35,7 @@ describe("test known x25519", () => {
   it("tests known pk", () => {
     const sk = "a8abababababababababababababababababababababababababababababab6b";
     const pk = "e3712d851a0e5d79b831c5e34ab22b41a198171de209b8b8faca23a11c624859";
-    expect(getPublicKey(hexToBytes(sk), "x25519")).toStrictEqual(decodeHex(pk));
+    expect(getPublicKey("x25519", hexToBytes(sk))).toStrictEqual(decodeHex(pk));
   });
 
   it("tests getSharedPoint", () => {
@@ -83,6 +83,6 @@ function testGetSharedPoint(
   curve: EllipticCurve
 ) {
   expect(
-    getSharedPoint(decodeHex(sk), hexToPublicKey(pk, curve), compressed, curve)
+    getSharedPoint(curve, decodeHex(sk), hexToPublicKey(curve, pk), compressed)
   ).toStrictEqual(decodeHex(shared));
 }
