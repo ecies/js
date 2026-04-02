@@ -4,9 +4,9 @@ import type { EllipticCurve } from "../../src/config";
 import { getValidSecret, isValidPrivateKey } from "../../src/utils";
 
 describe("test random elliptic", () => {
-  function testRandom(curve?: EllipticCurve) {
+  function testRandom(curve: EllipticCurve) {
     const key = getValidSecret(curve);
-    expect(isValidPrivateKey(key, curve)).toBe(true);
+    expect(isValidPrivateKey(curve, key)).toBe(true);
   }
 
   it("tests secp256k1", () => {

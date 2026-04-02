@@ -1,6 +1,6 @@
 import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
-import type { EllipticCurve } from "../config.js";
+import { ECIES_CONFIG, type EllipticCurve } from "../config.js";
 
 import {
   decodeHex,
@@ -13,35 +13,54 @@ import {
 import { PublicKey } from "./PublicKey.js";
 
 export class PrivateKey {
-  public static fromHex(hex: string, curve?: EllipticCurve): PrivateKey {
+  /**
+   * Creates a `PrivateKey` instance from a hexadecimal string.
+   * @param hex - The hexadecimal string representing the private key.
+   * @param curve - (optional) The elliptic curve to use (default: `ECIES_CONFIG.ellipticCurve`).
+   * @returns A new `PrivateKey` instance.
+   */
+  public static fromHex(
+    hex: string,
+    curve: EllipticCurve = ECIES_CONFIG.ellipticCurve
+  ): PrivateKey {
     return new PrivateKey(decodeHex(hex), curve);
   }
 
-  private readonly curve?: EllipticCurve;
+  private readonly curve: EllipticCurve;
   private readonly data: Uint8Array;
   public readonly publicKey: PublicKey;
 
   /**
    * @description
    * In version 0.4.18, `Buffer` is returned when available, otherwise `Uint8Array`.
-   * From version 0.5.0, `Uint8Array` will be returned instead of `Buffer`.
+   * From version 0.5.0, `Uint8Array` is returned instead of `Buffer`.
    */
   get secret(): Uint8Array {
     return this.data;
   }
 
-  constructor(secret?: Uint8Array, curve?: EllipticCurve) {
+  /**
+   * Constructs a `PrivateKey` instance from a byte array or generates a new random private key if no argument is provided.
+   * @param secret - (optional) The byte array representing the private key. If not provided, a new random private key will be generated.
+   * @param curve - (optional) The elliptic curve to use (default: `ECIES_CONFIG.ellipticCurve`).
+   * @throws Will throw an error if the provided `secret` is not a valid private key for the specified curve.
+   */
+  constructor(secret?: Uint8Array, curve: EllipticCurve = ECIES_CONFIG.ellipticCurve) {
     this.curve = curve;
     if (secret === undefined) {
       this.data = getValidSecret(curve);
-    } else if (isValidPrivateKey(secret, curve)) {
+    } else if (isValidPrivateKey(curve, secret)) {
       this.data = secret;
     } else {
       throw new Error("Invalid private key");
     }
-    this.publicKey = new PublicKey(getPublicKey(this.data, curve), curve);
+    this.publicKey = new PublicKey(getPublicKey(curve, this.data), curve);
   }
 
+  /**
+   * Converts the private key to a hexadecimal string.
+   * @returns The private key as a hexadecimal string.
+   */
   public toHex(): string {
     return bytesToHex(this.data);
   }
@@ -67,10 +86,21 @@ export class PrivateKey {
     return getSharedKey(senderPoint, sharedPoint);
   }
 
+  /**
+   * Multiplies the private key with a public key to derive a shared point.
+   * @param pk - The public key to multiply with.
+   * @param compressed - (default: `false`) Whether to use compressed or uncompressed public keys (secp256k1 only).
+   * @returns The shared point as a Uint8Array.
+   */
   public multiply(pk: PublicKey, compressed: boolean = false): Uint8Array {
-    return getSharedPoint(this.data, pk.toBytes(true), compressed, this.curve);
+    return getSharedPoint(this.curve, this.data, pk.toBytes(true), compressed);
   }
 
+  /**
+   * Compares this private key with another for equality.
+   * @param other - The other `PrivateKey` to compare with.
+   * @returns `true` if the private keys are equal, `false` otherwise.
+   */
   public equals(other: PrivateKey): boolean {
     return equalBytes(this.data, other.data);
   }
