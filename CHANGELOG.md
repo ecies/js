@@ -7,6 +7,7 @@
   - It fixed a bug caused by config discrepancy between `encrypt/decrypt` and `symEncrypt/symDecrypt`
 - Remove deprecated APIs and `utils` re-exports
 - Bump dependencies
+- Bump emitted JavaScript target to es2021
 
 ## 0.4.18
 

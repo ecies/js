@@ -1,8 +1,6 @@
 import { bytesToHex } from "@noble/ciphers/utils";
 import { ECIES_CONFIG, PrivateKey, decrypt, encrypt } from "eciesjs";
 
-import "./style.css";
-
 ECIES_CONFIG.ellipticCurve = "x25519";
 ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 

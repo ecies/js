@@ -190,7 +190,7 @@ If you want a WASM version to run directly in modern browsers or on some blockch
 For bun/deno, see [`example/runtime`](./example/runtime). There are some limitations currently, mentioned in [`@ecies/ciphers`](https://github.com/ecies/js-ciphers#known-limitations):
 
 - `chacha20-poly1305`'s pure JS implementation is used on bun (`node:crypto`'s `chacha20-poly1305` is not available due to lack of implementation);
-- `chacha20-poly1305` does not work on deno by default. You need to upgrade deno and run with `--conditions deno` (>=2.4.0) or `--unstable-node-conditions deno`(>=2.3.6,<2.4.0).
+- You may need to upgrade deno and/or run with `--conditions deno` (>=2.4.0) or `--unstable-node-conditions deno`(>=2.3.6,<2.4.0).
 
 ### React Native
 

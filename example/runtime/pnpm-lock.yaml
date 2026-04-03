@@ -34,7 +34,7 @@ packages:
 
   eciesjs@file:../..:
     resolution: {directory: ../.., type: directory}
-    engines: {bun: '>=1', deno: '>=2', node: '>=16'}
+    engines: {bun: '>=1', deno: '>=2.7.10', node: '>=16'}
 
 snapshots:
 
