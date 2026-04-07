@@ -1,15 +1,134 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eciesjs App</title>
+  <title>eciesjs · specification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="/style.css" />
+  <script>
+    (() => {
+      const stored = localStorage.getItem("eciesjs-theme");
+      const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+      document.documentElement.dataset.theme = stored || (prefersLight ? "light" : "dark");
+    })();
+  </script>
 </head>
 
 <body>
-  <div id="app"></div>
+  <main id="app">
+    <nav class="topbar">
+      <span class="topbar-id">ECIES.JS</span>
+      <button id="theme-toggle" type="button" class="theme-toggle" aria-label="Toggle theme">
+        <span data-theme-label></span>
+      </button>
+    </nav>
+
+    <header class="masthead">
+      <h1 class="title">eciesjs<span class="title-cursor">_</span></h1>
+      <p class="subtitle">Elliptic Curve Integrated Encryption Scheme, in your browser.</p>
+    </header>
+
+    <section class="entry">
+      <header class="section-head">
+        <span class="section-id">§&nbsp;1.0</span>
+        <span class="section-name">CONFIGURATION</span>
+        <span class="section-rule"></span>
+      </header>
+      <div class="rows">
+        <label class="row">
+          <span class="row-label">CURVE</span>
+          <div class="select-wrap">
+            <select id="curve">
+              <option value="secp256k1">secp256k1</option>
+              <option value="x25519" selected>x25519</option>
+              <option value="ed25519">ed25519</option>
+            </select>
+            <span class="select-arrow" aria-hidden="true">▾</span>
+          </div>
+        </label>
+        <label class="row">
+          <span class="row-label">CIPHER</span>
+          <div class="select-wrap">
+            <select id="algo">
+              <option value="aes-256-gcm">aes-256-gcm</option>
+              <option value="xchacha20" selected>xchacha20</option>
+            </select>
+            <span class="select-arrow" aria-hidden="true">▾</span>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <section class="entry">
+      <header class="section-head">
+        <span class="section-id">§&nbsp;2.0</span>
+        <span class="section-name">KEYPAIR</span>
+        <span class="section-rule"></span>
+        <button id="regenerate" type="button" class="btn btn-ghost">↻&nbsp;regenerate</button>
+      </header>
+      <div class="rows">
+        <div class="row">
+          <span class="row-label">PUB</span>
+          <code id="public-key" class="row-value">—</code>
+        </div>
+        <div class="row">
+          <span class="row-label">SEC</span>
+          <code id="secret-key" class="row-value">—</code>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry">
+      <header class="section-head">
+        <span class="section-id">§&nbsp;3.0</span>
+        <span class="section-name">ENCRYPT</span>
+        <span class="section-rule"></span>
+      </header>
+      <div class="rows">
+        <div class="row row-stack">
+          <span class="row-label">INPUT</span>
+          <textarea id="plaintext" rows="3" spellcheck="false">hello eciesjs🔒</textarea>
+        </div>
+        <button id="encrypt-btn" type="button" class="btn btn-primary">
+          <span class="prompt">&gt;</span>&nbsp;execute&nbsp;encrypt
+        </button>
+        <div class="row row-stack">
+          <span class="row-label">CIPHERTEXT&nbsp;<span class="row-label-aux">[hex]</span></span>
+          <pre id="ciphertext" class="row-value block">—</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry">
+      <header class="section-head">
+        <span class="section-id">§&nbsp;4.0</span>
+        <span class="section-name">DECRYPT</span>
+        <span class="section-rule"></span>
+      </header>
+      <div class="rows">
+        <button id="decrypt-btn" type="button" class="btn btn-primary" disabled>
+          <span class="prompt">&gt;</span>&nbsp;execute&nbsp;decrypt
+        </button>
+        <div class="row row-stack">
+          <span class="row-label">PLAINTEXT</span>
+          <pre id="decrypted" class="row-value block">—</pre>
+        </div>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <span class="colophon-rule"></span>
+      <a href="https://github.com/ecies/js" target="_blank"
+        rel="noreferrer">github.com/ecies/js</a>
+    </footer>
+  </main>
+
   <script type="module" src="/script.js"></script>
 </body>
 
