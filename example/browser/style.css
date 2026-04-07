@@ -5,10 +5,8 @@
 
 :root {
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-
   --max-w: 680px;
   --gutter: 56px;
-
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -196,6 +194,7 @@ body::after {
 .entry {
   padding: 2.5rem 0;
   animation: rise 0.8s var(--ease-out) both;
+
   /* Skip rendering off-screen entries on initial paint. */
   content-visibility: auto;
   contain-intrinsic-size: auto 360px;
@@ -387,16 +386,16 @@ textarea::placeholder {
   border: 1px solid var(--accent);
 }
 
-.btn-primary:hover:not(:disabled) {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-
 .btn-primary:disabled {
   color: var(--ink-soft);
   border-color: var(--ink-faint);
   border-style: dashed;
   cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .prompt {
@@ -475,6 +474,7 @@ textarea::placeholder {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
