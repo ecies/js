@@ -1,6 +1,6 @@
 # eciesjs
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/app/ecies/js)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/47784cde956642b1b9e8e33cb8551674)](https://app.codacy.com/gh/ecies/js)
 [![License](https://img.shields.io/github/license/ecies/js.svg)](https://github.com/ecies/js)
 [![NPM Package](https://img.shields.io/npm/v/eciesjs.svg)](https://www.npmjs.com/package/eciesjs)
 [![NPM Downloads](https://img.shields.io/npm/dm/eciesjs)](https://npm-stat.link/eciesjs)
