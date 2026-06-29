@@ -27,7 +27,7 @@ jobs:
       - run: pnpm check
       - run: pnpm run build && npm publish --dry-run
 
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v7
         if: matrix.os == 'ubuntu-latest' && matrix.node == 24
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -76,7 +76,7 @@ jobs:
 
       - run: pnpm install && pnpm build && cd example/runtime && pnpm install
 
-      - run: deno task test
+      - run: deno install && deno task test
 
       - run: bun test
 
