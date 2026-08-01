@@ -68,7 +68,7 @@
     "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "typescript": "^7.0.2",
-    "undici": "^7.28.0",
+    "undici": "^8.9.0",
     "vitest": "^4.1.10"
   },
   "pnpm": {
