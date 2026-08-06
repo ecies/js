@@ -11,11 +11,11 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           registry-url: "https://registry.npmjs.org"
 
       - run: pnpm install && pnpm test -- --bail 1

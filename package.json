@@ -64,11 +64,11 @@
     "@noble/hashes": "^1.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.3",
-    "@types/node": "^26.1.1",
+    "@biomejs/biome": "2.5.7",
+    "@types/node": "^26.1.2",
     "@vitest/coverage-v8": "^4.1.10",
     "typescript": "^7.0.2",
-    "undici": "^7.28.0",
+    "undici": "^8.10.0",
     "vitest": "^4.1.10"
   },
   "pnpm": {
