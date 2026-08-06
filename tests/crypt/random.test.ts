@@ -22,33 +22,32 @@ const params: TestParameter[] = [
   { curve: "ed25519", isEphemeralKeyCompressed: false, isHkdfKeyCompressed: false },
 ];
 
-describe.each(params)("test random encrypt/decrypt on curve: $curve", ({
-  curve,
-  isEphemeralKeyCompressed,
-  isHkdfKeyCompressed,
-}) => {
-  let caseSuffix = "";
-  if (curve === "secp256k1") {
-    caseSuffix = ` isEphemeralKeyCompressed: ${isEphemeralKeyCompressed} isHkdfKeyCompressed: ${isHkdfKeyCompressed}`;
+describe.each(params)(
+  "test random encrypt/decrypt on curve: $curve",
+  ({ curve, isEphemeralKeyCompressed, isHkdfKeyCompressed }) => {
+    let caseSuffix = "";
+    if (curve === "secp256k1") {
+      caseSuffix = ` isEphemeralKeyCompressed: ${isEphemeralKeyCompressed} isHkdfKeyCompressed: ${isHkdfKeyCompressed}`;
+    }
+
+    it("tests aes-256-gcm (16 bytes nonce)" + caseSuffix, () => {
+      const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+      testRandom(config);
+    });
+
+    it("tests aes-256-gcm (12 bytes nonce)" + caseSuffix, () => {
+      const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+      config.symmetricNonceLength = 12;
+      testRandom(config);
+    });
+
+    it("tests xchacha20" + caseSuffix, () => {
+      const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
+      config.symmetricAlgorithm = "xchacha20";
+      testRandom(config);
+    });
   }
-
-  it("tests aes-256-gcm (16 bytes nonce)" + caseSuffix, () => {
-    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
-    testRandom(config);
-  });
-
-  it("tests aes-256-gcm (12 bytes nonce)" + caseSuffix, () => {
-    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
-    config.symmetricNonceLength = 12;
-    testRandom(config);
-  });
-
-  it("tests xchacha20" + caseSuffix, () => {
-    const config = getConfig(curve, isEphemeralKeyCompressed, isHkdfKeyCompressed);
-    config.symmetricAlgorithm = "xchacha20";
-    testRandom(config);
-  });
-});
+);
 
 function checkCompressed(sk: PrivateKey, config: Config) {
   const encrypted = encrypt(sk.publicKey.toBytes(), TEXT, config);
