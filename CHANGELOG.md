@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Bump dependencies
+
 ## 0.5.0
 
 - API change: `encrypt/decrypt` now always returns a `Uint8Array` instead of a `Buffer`
