@@ -107,8 +107,14 @@ const getSharedPointOnEd25519 = (
   sk: Uint8Array,
   pk: Uint8Array
 ): Uint8Array => {
+  const point = curve.Point.fromBytes(pk);
+  // A small-order point makes the shared point one of at most 8 that anyone can derive, and a
+  // point with a small-order component makes it depend on the scalar mod 8, which decrypt then
+  // leaks. Both checks are needed: the identity counts as torsion-free.
+  if (point.isSmallOrder() || !point.isTorsionFree()) {
+    throw new Error("Invalid public key");
+  }
   // Note: scalar is hashed from sk
   const { scalar } = curve.utils.getExtendedPublicKey(sk);
-  const point = curve.Point.fromBytes(pk).multiply(scalar);
-  return point.toBytes();
+  return point.multiply(scalar).toBytes();
 };
