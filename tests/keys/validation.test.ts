@@ -1,9 +1,10 @@
-import { concatBytes } from "@noble/ciphers/utils";
+import { bytesToHex, concatBytes } from "@noble/ciphers/utils";
 import { ED25519_TORSION_SUBGROUP, ed25519 } from "@noble/curves/ed25519";
-import { describe, expect, it } from "vitest";
+import { secp256k1 } from "@noble/curves/secp256k1";
+import { describe, expect, it, vi } from "vitest";
 
 import { decrypt, encrypt, PrivateKey, PublicKey } from "../../src";
-import { Config } from "../../src/config";
+import { Config, type EllipticCurve } from "../../src/config";
 import { decodeHex, getSharedKey, getSharedPoint, symEncrypt } from "../../src/utils";
 
 describe("test validation", () => {
@@ -107,5 +108,92 @@ describe("refuses small-order and mixed-order ed25519 public keys (#922)", () =>
     const receiver = new PrivateKey(undefined, "ed25519");
     const payload = concatBytes(decodeHex(pk), new Uint8Array(64));
     expect(() => decrypt(receiver.secret, payload, config)).toThrow(error);
+  });
+});
+
+const randomPublicKey = (curve: EllipticCurve, compressed: boolean = true): Uint8Array =>
+  new PrivateKey(undefined, curve).publicKey.toBytes(compressed);
+
+// PublicKey used to re-encode a secp256k1 key by multiplying it by 1, a full scalar
+// multiplication per encoding, which made encrypt and decrypt about 4x slower (#923)
+describe("decodes secp256k1 public keys without a scalar multiplication (#923)", () => {
+  const secretOne = decodeHex(`${"00".repeat(31)}01`);
+  // the generator's coordinates
+  const gx = "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798";
+  const gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8";
+
+  it.each([true, false])("gives noble's encodings, given compressed: %s", (compressed) => {
+    const bytes = randomPublicKey("secp256k1", compressed);
+    const point = secp256k1.Point.fromBytes(bytes);
+    const pk = new PublicKey(bytes, "secp256k1");
+    expect(pk.toBytes(true)).toStrictEqual(point.toBytes(true));
+    expect(pk.toBytes(false)).toStrictEqual(point.toBytes(false));
+  });
+
+  it("does no scalar multiplication", () => {
+    const bytes = randomPublicKey("secp256k1");
+    const multiply = vi.spyOn(secp256k1.Point.prototype, "multiply");
+    const multiplyUnsafe = vi.spyOn(secp256k1.Point.prototype, "multiplyUnsafe");
+    try {
+      expect(new PublicKey(bytes, "secp256k1").toBytes()).toStrictEqual(bytes);
+      expect(multiply).not.toHaveBeenCalled();
+      expect(multiplyUnsafe).not.toHaveBeenCalled();
+    } finally {
+      multiply.mockRestore();
+      multiplyUnsafe.mockRestore();
+    }
+  });
+
+  it.each([
+    ["no point has this x", `02${"00".repeat(31)}05`, "is not on curve, sqrt error"],
+    ["x is not below the field prime", `02${"ff".repeat(28)}fffffc2f`, "wrong x"],
+    ["off the curve", `04${gx}${"00".repeat(32)}`, "bad point: is not on curve"],
+    ["hybrid prefix", `06${gx}${gy}`, "bad point: got length 65"],
+    ["uncompressed prefix, compressed length", `04${gx}`, "bad point: got length 33"],
+    ["empty", "", "bad point: got length 0"],
+  ])("refuses what getSharedSecret refuses: %s", (_, hex, error) => {
+    const bytes = decodeHex(hex);
+    expect(() => secp256k1.getSharedSecret(secretOne, bytes)).toThrow();
+    expect(() => new PublicKey(bytes, "secp256k1")).toThrow(error);
+  });
+});
+
+// getSharedSecret also took a hex string, so new PublicKey used to accept one on secp256k1,
+// while x25519 and ed25519 kept whatever they were given as the key. new PrivateKey kept a hex
+// string as the key on every curve, and on secp256k1 a bigint (#923)
+describe("refuses keys that are not a Uint8Array (#923)", () => {
+  const curves: EllipticCurve[] = ["secp256k1", "x25519", "ed25519"];
+  // what an untyped caller can pass
+  const notBytes = (bytes: Uint8Array) =>
+    [
+      bytesToHex(bytes),
+      BigInt(`0x${bytesToHex(bytes)}`),
+      Array.from(bytes),
+      bytes.buffer,
+    ] as unknown as Uint8Array[];
+
+  it.each(curves)("PublicKey refuses them on %s; fromHex and Buffer work", (curve) => {
+    const bytes = randomPublicKey(curve);
+    const hex = bytesToHex(bytes);
+    for (const untyped of notBytes(bytes)) {
+      expect(() => new PublicKey(untyped, curve)).toThrow("Uint8Array expected");
+    }
+
+    // the ways in that stay: fromHex for hex, and any Uint8Array, such as a Node Buffer
+    expect(PublicKey.fromHex(hex, curve).toHex()).toBe(hex);
+    expect(PublicKey.fromHex(`0x${hex}`, curve).toHex()).toBe(hex);
+    expect(new PublicKey(Buffer.from(bytes), curve).toHex()).toBe(hex);
+  });
+
+  it.each(curves)("PrivateKey refuses them on %s; fromHex and Buffer work", (curve) => {
+    const secret = new PrivateKey(undefined, curve).secret;
+    const hex = bytesToHex(secret);
+    for (const untyped of notBytes(secret)) {
+      expect(() => new PrivateKey(untyped, curve)).toThrow("Uint8Array expected");
+    }
+
+    expect(PrivateKey.fromHex(hex, curve).toHex()).toBe(hex);
+    expect(PrivateKey.fromHex(`0x${hex}`, curve).toHex()).toBe(hex);
+    expect(new PrivateKey(Buffer.from(secret), curve).toHex()).toBe(hex);
   });
 });

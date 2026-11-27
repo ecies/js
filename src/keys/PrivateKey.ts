@@ -1,4 +1,4 @@
-import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+import { abytes, bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
 import { ECIES_CONFIG, type EllipticCurve } from "../config.js";
 
@@ -43,16 +43,20 @@ export class PrivateKey {
    * Constructs a `PrivateKey` instance from a byte array or generates a new random private key if no argument is provided.
    * @param secret - (optional) The byte array representing the private key. If not provided, a new random private key will be generated.
    * @param curve - (optional) The elliptic curve to use (default: `ECIES_CONFIG.ellipticCurve`).
-   * @throws Will throw an error if the provided `secret` is not a valid private key for the specified curve.
+   * @throws Will throw an error if the provided `secret` is not a `Uint8Array`, or not a valid private key for the specified curve.
    */
   constructor(secret?: Uint8Array, curve: EllipticCurve = ECIES_CONFIG.ellipticCurve) {
     this.curve = curve;
     if (secret === undefined) {
       this.data = getValidSecret(curve);
-    } else if (isValidPrivateKey(curve, secret)) {
-      this.data = secret;
     } else {
-      throw new Error("Invalid private key");
+      // for untyped callers: every curve would otherwise keep a hex string as the key, and
+      // secp256k1 a bigint
+      abytes(secret);
+      if (!isValidPrivateKey(curve, secret)) {
+        throw new Error("Invalid private key");
+      }
+      this.data = secret;
     }
     this.publicKey = new PublicKey(getPublicKey(curve, this.data), curve);
   }
