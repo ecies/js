@@ -1,13 +1,16 @@
 import { ed25519 } from "@noble/curves/ed25519";
 import { hkdf } from "@noble/hashes/hkdf";
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
 import { decrypt, encrypt, PrivateKey } from "../../src";
 import { Config, type EllipticCurve } from "../../src/config";
 
 // records each HKDF input (ephemeral key || shared point) and output (the symmetric key)
-vi.mock("@noble/hashes/hkdf", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("@noble/hashes/hkdf")>();
+type Hkdf = typeof import("@noble/hashes/hkdf");
+vi.mock("@noble/hashes/hkdf", async (importOriginal?: () => Promise<Hkdf>) => {
+  // bun test passes no importOriginal; there, importing the module inside its own factory
+  // gives the original
+  const mod = importOriginal ? await importOriginal() : await import("@noble/hashes/hkdf");
   return { ...mod, hkdf: vi.fn(mod.hkdf) };
 });
 
@@ -41,7 +44,7 @@ describe.each<EllipticCurve>(["secp256k1", "x25519", "ed25519"])(
     // checks the one key derivation that encrypt or decrypt ran, and every hashed secret key
     // that eciesjs got from ed25519.utils
     const expectWiped = () => {
-      const hkdfMock = vi.mocked(hkdf).mock;
+      const hkdfMock = (hkdf as Mock<typeof hkdf>).mock; // bun test has no vi.mocked
       expect(hkdfMock.calls).toHaveLength(1);
       expect(isWiped(hkdfMock.calls[0][1] as Uint8Array)).toBe(true); // the HKDF input
       expect(isWiped(hkdfMock.results[0].value)).toBe(true); // the derived key
