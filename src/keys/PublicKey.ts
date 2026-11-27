@@ -1,4 +1,4 @@
-import { bytesToHex, equalBytes } from "@noble/ciphers/utils";
+import { abytes, bytesToHex, equalBytes } from "@noble/ciphers/utils";
 
 import { ECIES_CONFIG, type EllipticCurve } from "../config.js";
 
@@ -32,6 +32,9 @@ export class PublicKey {
    * @param curve - (optional) The elliptic curve to use (default: `ECIES_CONFIG.ellipticCurve`).
    */
   constructor(data: Uint8Array, curve: EllipticCurve = ECIES_CONFIG.ellipticCurve) {
+    // for untyped callers: x25519 and ed25519 would otherwise keep whatever they're given as
+    // the key
+    abytes(data);
     // data can be either compressed or uncompressed if secp256k1
     const compressed = convertPublicKeyFormat(curve, data, true);
     const uncompressed = convertPublicKeyFormat(curve, data, false);

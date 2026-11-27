@@ -53,12 +53,9 @@ export const convertPublicKeyFormat = (
   // only for secp256k1
   _exec(
     curve,
-    (curve) =>
-      curve.getSharedSecret(
-        Uint8Array.from(Array(31).fill(0).concat([1])), // 1 as private key
-        pk,
-        compressed
-      ),
+    // fromBytes refuses any point getSharedSecret would refuse, so encoding it again needs no
+    // scalar multiplication
+    (curve) => curve.Point.fromBytes(pk).toBytes(compressed),
     () => pk,
     () => pk
   );
