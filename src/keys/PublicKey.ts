@@ -70,9 +70,12 @@ export class PublicKey {
    * @returns Shared secret, derived with HKDF-SHA256.
    */
   public decapsulate(sk: PrivateKey, compressed: boolean = false): Uint8Array {
+    // keep senderPoint: on x25519 and ed25519 it is the caller's array, such as the payload
     const senderPoint = this.toBytes(compressed);
     const sharedPoint = sk.multiply(this, compressed);
-    return getSharedKey(senderPoint, sharedPoint);
+    const sharedKey = getSharedKey(senderPoint, sharedPoint);
+    sharedPoint.fill(0); // best effort: the shared point gives the key
+    return sharedKey;
   }
 
   /**
