@@ -3,6 +3,7 @@
 ## 0.5.1
 
 - Bump dependencies
+- Refuse ed25519 public keys that are small-order or have a small-order component, in `encrypt`, `decrypt` and wherever else a public key meets a secret key
 
 ## 0.5.0
 
