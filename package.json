@@ -58,7 +58,7 @@
     "test:browser": "node ./scripts/gen-browser-tests.mjs && cd tests-browser && pnpm test"
   },
   "dependencies": {
-    "@ecies/ciphers": "^0.2.6",
+    "@ecies/ciphers": "^0.2.7",
     "@noble/ciphers": "^1.3.0",
     "@noble/curves": "^1.9.7",
     "@noble/hashes": "^1.8.0"
