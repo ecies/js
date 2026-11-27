@@ -29,7 +29,7 @@ export const getPublicKey = (curve: EllipticCurve, secret: Uint8Array): Uint8Arr
     curve,
     (curve) => curve.getPublicKey(secret),
     (curve) => curve.getPublicKey(secret),
-    (curve) => curve.getPublicKey(secret)
+    (curve) => getExtendedPublicKeyOnEd25519(curve, secret).pointBytes
   );
 
 export const getSharedPoint = (
@@ -111,7 +111,20 @@ const getSharedPointOnEd25519 = (
   if (point.isSmallOrder() || !point.isTorsionFree()) {
     throw new Error("Invalid public key");
   }
-  // Note: scalar is hashed from sk
-  const { scalar } = curve.utils.getExtendedPublicKey(sk);
+  const { scalar } = getExtendedPublicKeyOnEd25519(curve, sk);
   return point.multiply(scalar).toBytes();
+};
+
+// The scalar and public key that RFC 8032 hashes from an ed25519 secret key. Best effort: the
+// two halves of the hash that noble returns are wiped, since head is the scalar's bytes, which
+// give every shared point, and prefix is the EdDSA nonce key. noble's own copies of the hash
+// are out of reach.
+const getExtendedPublicKeyOnEd25519 = (
+  curve: typeof ed25519,
+  sk: Uint8Array
+): { scalar: bigint; pointBytes: Uint8Array } => {
+  const { head, prefix, scalar, pointBytes } = curve.utils.getExtendedPublicKey(sk);
+  head.fill(0);
+  prefix.fill(0);
+  return { scalar, pointBytes };
 };

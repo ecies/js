@@ -3,6 +3,8 @@
 ## 0.5.1
 
 - Bump dependencies
+- Wipe secrets once they're used, best effort: the HKDF input in `getSharedKey`, the shared point in `encapsulate` and `decapsulate`, the derived key in `encrypt` and `decrypt`, the ephemeral secret key in `encrypt`, and on ed25519 the two halves of the hashed secret key that noble returns to `getPublicKey` and `getSharedPoint`
+  - Copies that noble and `@ecies/ciphers` make inside their own calls stay out of reach
 - Refuse ed25519 public keys that are small-order or have a small-order component, in `encrypt`, `decrypt` and wherever else a public key meets a secret key
 - Decode secp256k1 public keys without a scalar multiplication, making `encrypt` and `decrypt` about 4x faster
 - API change: `new PublicKey` and `new PrivateKey` now refuse anything but a `Uint8Array` on every curve

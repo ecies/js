@@ -31,8 +31,11 @@ export function encrypt(
 
   const sharedKey = ephemeralSK.encapsulate(receiverPK, config.isHkdfKeyCompressed);
   const ephemeralPK = ephemeralSK.publicKey.toBytes(config.isEphemeralKeyCompressed);
+  ephemeralSK.secret.fill(0); // best effort: the ephemeral secret gives the key
 
   const encrypted = symEncrypt(config, sharedKey, data);
+  // no try/finally: if symEncrypt throws, nothing was encrypted under the key
+  sharedKey.fill(0);
   return concatBytes(ephemeralPK, encrypted);
 }
 
@@ -63,7 +66,13 @@ export function decrypt(
   const ephemeralPK = new PublicKey(data.subarray(0, keySize), curve);
   const encrypted = data.subarray(keySize);
   const sharedKey = ephemeralPK.decapsulate(receiverSK, config.isHkdfKeyCompressed);
-  return symDecrypt(config, sharedKey, encrypted);
+  // receiverSK is left alone: given a Uint8Array, it holds the caller's own array
+  try {
+    return symDecrypt(config, sharedKey, encrypted);
+  } finally {
+    // even when the tag check fails: the key still opens the original payload
+    sharedKey.fill(0);
+  }
 }
 
 export { ECIES_CONFIG } from "./config.js";

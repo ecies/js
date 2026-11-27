@@ -85,9 +85,12 @@ export class PrivateKey {
    * @returns Shared secret, derived with HKDF-SHA256.
    */
   public encapsulate(pk: PublicKey, compressed: boolean = false): Uint8Array {
+    // keep senderPoint: it is this key's public key, which stays in use
     const senderPoint = this.publicKey.toBytes(compressed);
     const sharedPoint = this.multiply(pk, compressed);
-    return getSharedKey(senderPoint, sharedPoint);
+    const sharedKey = getSharedKey(senderPoint, sharedPoint);
+    sharedPoint.fill(0); // best effort: the shared point gives the key
+    return sharedKey;
   }
 
   /**
