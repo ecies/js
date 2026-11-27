@@ -30,6 +30,7 @@ export class PublicKey {
    * Constructs a `PublicKey` instance from a byte array.
    * @param data - The byte array representing the public key (compressed or uncompressed if secp256k1).
    * @param curve - (optional) The elliptic curve to use (default: `ECIES_CONFIG.ellipticCurve`).
+   * @throws Will throw an error if the provided `data` is not a `Uint8Array`, or, on secp256k1, not a valid 33- or 65-byte public key.
    */
   constructor(data: Uint8Array, curve: EllipticCurve = ECIES_CONFIG.ellipticCurve) {
     // for untyped callers: x25519 and ed25519 would otherwise keep whatever they're given as

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ecies/ciphers':
-        specifier: ^0.2.6
-        version: 0.2.6(@noble/ciphers@1.3.0)
+        specifier: ^0.2.7
+        version: 0.2.7(@noble/ciphers@1.3.0)
       '@noble/ciphers':
         specifier: ^1.3.0
         version: 1.3.0
@@ -132,11 +132,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@ecies/ciphers@0.2.6':
-    resolution: {integrity: sha512-patgsRPKGkhhoBjETV4XxD0En4ui5fbX0hzayqI3M8tvNMGUoUvmyYAIWwlxBc1KX5cturfqByYdj5bYGRpN9g==}
+  '@ecies/ciphers@0.2.7':
+    resolution: {integrity: sha512-gpl+Ipy9BY+MM9S9MGm9+DpvUIwdIaRDSJuDuV67ByLUxEocz/sLlxyX0keKOC1eFl9H0pAWdtMh1TlWs8J4/Q==}
     engines: {bun: '>=1', deno: '>=2.7.10', node: '>=16'}
     peerDependencies:
-      '@noble/ciphers': ^1.0.0
+      '@noble/ciphers': ^1.1.3
 
   '@esbuild/aix-ppc64@0.27.7':
     resolution: {integrity: sha512-EKX3Qwmhz1eMdEJokhALr0YiD0lhQNwDqkPYyPhiSwKrh7/4KRjQc04sZ8db+5DVVnZ1LmbNDI1uAMPEUBnQPg==}
@@ -877,7 +877,7 @@ snapshots:
   '@biomejs/cli-win32-x64@2.6.9':
     optional: true
 
-  '@ecies/ciphers@0.2.6(@noble/ciphers@1.3.0)':
+  '@ecies/ciphers@0.2.7(@noble/ciphers@1.3.0)':
     dependencies:
       '@noble/ciphers': 1.3.0
 

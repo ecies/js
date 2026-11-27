@@ -9,8 +9,7 @@ const run = (curve, algorithm, message) => {
   // it falls to node:crypto's implementation
   // despite that @ecies/ciphers exports @noble/ciphers implementation to deno
   // see: https://github.com/denoland/deno/issues/23757#issuecomment-3010699763
-  // you need to run with `--conditions deno` (>=2.4.0) or
-  // `--unstable-node-conditions` (>=2.3.6,<2.4.0) for xchacha20 support
+  // you need to run with `--conditions deno` for xchacha20 support
   ECIES_CONFIG.symmetricAlgorithm = algorithm;
 
   const sk = new PrivateKey();

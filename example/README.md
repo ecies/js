@@ -16,10 +16,22 @@ For production, run `pnpm build && pnpm preview`
 
 Run `cd runtime && pnpm install`
 
+### Quick start
+
+Run `node quick-start.js` or `bun run quick-start.js` or `deno run --conditions deno --allow-read quick-start.js`
+
 ### Basic usage
 
-Run `node main.js` or `bun run main.js` or `deno run --allow-read main.js`
+Run `node main.js` or `bun run main.js` or `deno run --conditions deno --allow-read main.js`
 
 ### Check import
 
-Run `node import.js` or `bun run import.js` or `deno run --allow-read import.js`
+Run `node import.js` or `bun run import.js` or `deno run --conditions deno --allow-read import.js`
+
+### Check require
+
+Run `node require.cjs` or `bun run require.cjs` or `deno run --conditions deno --allow-read require.cjs`
+
+> [!NOTE]
+>
+> eciesjs needs Deno 2.7.10 or later, see [Bun/Deno](../README.md#bundeno).

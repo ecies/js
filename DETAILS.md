@@ -109,18 +109,24 @@ const adjustedEncrypted = concatBytes(nonce, tag, cipherText);
 
 ## Key Derivation
 
-Instead of using plain SHA256 for key derivation, we use HKDF-SHA256 which is more secure:
+Instead of using plain SHA256 for key derivation, we use HKDF-SHA256 which is more secure.
+
+Its input is the sender's ephemeral public key followed by the shared point, not the shared point alone. On secp256k1 both are uncompressed by default, and compressed on `isHkdfKeyCompressed = true`:
 
 ```typescript
+import { concatBytes } from '@noble/ciphers/utils';
+import { secp256k1 } from '@noble/curves/secp256k1';
 import { hkdf } from '@noble/hashes/hkdf';
 import { sha256 } from '@noble/hashes/sha2';
 
-// Derive AES key from ECDH shared secret
-const ourPrivateKey = 3n;
-// const ourPublicKey = secp256k1.getPublicKey(ourPrivateKey);
-const theirPrivateKey = 2n;
-const theirPublicKey = secp256k1.getPublicKey(theirPrivateKey);
+// The sender's ephemeral key pair and the receiver's public key
+const ephemeralPrivateKey = 3n;
+const ephemeralPublicKey = secp256k1.getPublicKey(ephemeralPrivateKey, false);
+const receiverPrivateKey = 2n;
+const receiverPublicKey = secp256k1.getPublicKey(receiverPrivateKey, false);
 
-const sharedSecret = secp256k1.getSharedSecret(ourPrivateKey, theirPublicKey);
-const sharedKey = hkdf(sha256, sharedSecret, undefined, undefined, 32);
+// HKDF's input is the ephemeral public key followed by the shared point
+const sharedPoint = secp256k1.getSharedSecret(ephemeralPrivateKey, receiverPublicKey, false);
+const master = concatBytes(ephemeralPublicKey, sharedPoint);
+const sharedKey = hkdf(sha256, master, undefined, undefined, 32);
 ```
