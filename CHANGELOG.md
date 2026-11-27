@@ -7,11 +7,11 @@
   - Copies that noble and `@ecies/ciphers` make inside their own calls stay out of reach
 - Refuse ed25519 public keys that are small-order or have a small-order component, in `encrypt`, `decrypt` and wherever else a public key meets a secret key
 - Decode secp256k1 public keys without a scalar multiplication, making `encrypt` and `decrypt` about 4x faster
-- API change: `new PublicKey` and `new PrivateKey` now refuse anything but a `Uint8Array` on every curve
+- `new PublicKey` and `new PrivateKey` now refuse anything but a `Uint8Array` on every curve
   - `new PublicKey` used to accept a hex string without `0x` on secp256k1, and keep whatever it was given as the key on x25519 and ed25519
   - `new PrivateKey` used to keep a hex string without `0x` as the key on every curve, and a bigint on secp256k1
   - Use `PublicKey.fromHex` and `PrivateKey.fromHex` for hex
-- API change: `convertPublicKeyFormat` now refuses a hex string on secp256k1
+- `convertPublicKeyFormat` now refuses a hex string on secp256k1
 
 ## 0.5.0
 
