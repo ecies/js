@@ -12,6 +12,9 @@
   - `new PrivateKey` used to keep a hex string without `0x` as the key on every curve, and a bigint on secp256k1
   - Use `PublicKey.fromHex` and `PrivateKey.fromHex` for hex
 - `convertPublicKeyFormat` now refuses a hex string on secp256k1
+- `encrypt` now refuses data that isn't a `Uint8Array` on Node, and on Bun with `aes-256-gcm`, through `@ecies/ciphers` 0.2.7
+  - It used to encrypt a string as its UTF-8 bytes there, and any other typed array or a `DataView` as its raw bytes
+  - Encode a string first, such as with `new TextEncoder().encode(text)`
 
 ## 0.5.0
 
