@@ -34,4 +34,4 @@ Run `node require.cjs` or `bun run require.cjs` or `deno run --conditions deno -
 
 > [!NOTE]
 >
-> `--conditions deno` needs Deno 2.4.0 or later. See [Bun/Deno](../README.md#bundeno) for older versions.
+> eciesjs needs Deno 2.7.10 or later, see [Bun/Deno](../README.md#bundeno).
